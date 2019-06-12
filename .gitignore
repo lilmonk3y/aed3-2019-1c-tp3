@@ -1,1 +1,8 @@
 src/random_player
+src/GraphicalBoard.pyc
+src/HumanPlayer.pyc
+src/LogicalBoard.pyc
+src/PlayerCommunicator.pyc
+src/Referee.pyc
+src/__pycache__/
+src/constants.pyc
