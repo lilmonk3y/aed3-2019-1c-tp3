@@ -6,3 +6,4 @@ src/PlayerCommunicator.pyc
 src/Referee.pyc
 src/__pycache__/
 src/constants.pyc
+src/log/
