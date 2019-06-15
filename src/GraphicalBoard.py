@@ -188,7 +188,7 @@ class GraphicalBoard:
             rect = self.tie_rect
 
         while True:
-            # Keep looping until player clicks the mouse or quits.
+            # Keep looping until trabajo clicks the mouse or quits.
             self.draw(update=False)
             self.canvas.blit(winner_img, rect)
             pygame.display.update()

@@ -47,7 +47,7 @@ class Referee:
             if self.graphicalBoard is not None:
                 self.check_exit(self.graphicalBoard.check_user_exits())
 
-            # Select correct player to move
+            # Select correct trabajo to move
             if self.turn == self.player1.color:
                 player = self.player1
                 oponent = self.player2
@@ -55,7 +55,7 @@ class Referee:
                 player = self.player2
                 oponent = self.player1
 
-            # make the player move
+            # make the trabajo move
             if player.human:  # if human playing graphical board exists, previously checked by the __init__ assert
                 self.last_move = self.graphicalBoard.getHumanMove(player.color)
                 self.check_exit(self.last_move)
@@ -84,7 +84,7 @@ class Referee:
                 oponent.finished(TIE)
                 break
 
-            # switch to other player's turn
+            # switch to other trabajo's turn
             self.turn = oponent.color
 
         if self.graphicalBoard is not None:

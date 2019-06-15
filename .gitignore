@@ -7,3 +7,8 @@ src/Referee.pyc
 src/__pycache__/
 src/constants.pyc
 src/log/
+.idea/
+cmake-build-debug/
+venv/
+**/*.DS_Store
+**/*__init__.py
