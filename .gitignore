@@ -12,3 +12,8 @@ cmake-build-debug/
 venv/
 **/*.DS_Store
 **/*__init__.py
+src/CMakeCache.txt
+src/CMakeFiles/
+src/cmake_install.cmake
+src/jugador_test
+src/Makefile
