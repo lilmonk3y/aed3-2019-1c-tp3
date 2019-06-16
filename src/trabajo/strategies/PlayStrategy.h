@@ -5,9 +5,12 @@
 #ifndef AED3_TP3_PLAYSTRATEGY_H
 #define AED3_TP3_PLAYSTRATEGY_H
 
+
+#include "../entities/Tablero.h"
+
 class PlayStrategy{
 public:
-    virtual int selectMove(int sizeFilas) = 0;
+    virtual int selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) = 0;
 
 };
 

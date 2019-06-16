@@ -13,6 +13,15 @@ public:
     void play(int fila, int jugador);
 
     int getFilas();
+    bool columnaLlena(int columna);
+
+    int getColumnas();
+
+    bool hayJugada(int indiceEnColumna, int indiceFila);
+
+    int getIndiceFila(int indiceColumna);
+
+    int jugadaEn(int columna, int fila);
 
 private:
     std::vector<std::vector<int> > matrizFichas;

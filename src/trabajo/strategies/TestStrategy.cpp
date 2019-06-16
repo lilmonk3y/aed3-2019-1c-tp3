@@ -5,7 +5,6 @@
 #include "TestStrategy.h"
 #include <cstdlib>
 
-
-int TestStrategy::selectMove(int sizeFilas) {
-    return rand() % sizeFilas;
+int TestStrategy::selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) {
+    return rand() % tablero->getFilas();
 }

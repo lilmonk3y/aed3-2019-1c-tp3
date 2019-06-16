@@ -10,7 +10,7 @@
 
 class TestStrategy : public PlayStrategy{
 public:
-    int selectMove(int sizeFilas);
+    int selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) override;
 
 };
 

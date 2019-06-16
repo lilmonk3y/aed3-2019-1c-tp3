@@ -3,9 +3,7 @@
 //
 
 #include "Player.h"
-
-#define JUGADA_ENEMIGA 0
-#define JUGADA_ALIADA 1
+#include "entities/Defines.h"
 
 Player::Player(int columns, int rows, int cLinea, int cantidadFichas, PlayStrategy *strategy) {
     this->tablero = new Tablero(columns, rows);
@@ -15,7 +13,7 @@ Player::Player(int columns, int rows, int cLinea, int cantidadFichas, PlayStrate
 }
 
 int Player::play() {
-    int jugada = playStr->selectMove(this->tablero->getFilas());
+    int jugada = playStr->selectMove(this->tablero, this->cLinea, this->cantidadFichas);
     updateMyPlay(jugada);
     return jugada;
 }
