@@ -30,7 +30,7 @@ include_directories(lib/googletest/googletest/include)
 include_directories(lib/googletest/googlemock/include)
 
 #Define your executable
-add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalOfensivo.h)
+add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/MejorVerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/MejorVerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalDefensivo.h)
 
 #Link with GoogleTest
 target_link_libraries(tests gtest gtest_main)
@@ -57,4 +57,4 @@ add_executable(jugador_test
 
 add_executable(jugador_greedy
         src/trabajo/src/players/greedy_player_main.cpp
-        ${SOURCES} src/trabajo/src/strategies/parametriced_strategies/impl/MejorHorizontal.cpp src/trabajo/src/strategies/parametriced_strategies/MejorHorizontal.h src/trabajo/src/strategies/parametriced_strategies/impl/MejorHorizontalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorHorizontalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/MejorVerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalOfensivo.h)
+        ${SOURCES} src/trabajo/src/strategies/parametriced_strategies/impl/MejorHorizontal.cpp src/trabajo/src/strategies/parametriced_strategies/MejorHorizontal.h src/trabajo/src/strategies/parametriced_strategies/impl/MejorHorizontalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorHorizontalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/MejorVerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/MejorVerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/MejorVertical.cpp src/trabajo/src/strategies/parametriced_strategies/MejorVertical.h)

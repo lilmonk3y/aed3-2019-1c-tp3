@@ -6,12 +6,12 @@
 #define AED3_TP3_MEJORVERTICALOFENSIVO_H
 
 
-#include "Strategy.h"
 #include "../../entities/Defines.h"
+#include "MejorVertical.h"
 
-class MejorVerticalOfensivo : public Strategy {
+class MejorVerticalOfensivo : public MejorVertical {
 public:
-    MejorVerticalOfensivo(int peso) : Strategy(peso, MEJOR_VERTICAL_OFENSIVO) {}
+    explicit MejorVerticalOfensivo(int peso) : MejorVertical(peso, MEJOR_VERTICAL_OFENSIVO) {}
     void selectMoves(Tablero *tablero, int cObjetivo) override;
 };
 

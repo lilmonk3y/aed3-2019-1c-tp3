@@ -6,6 +6,7 @@
 #include "parametriced_strategies/MejorHorizontalOfensivo.h"
 #include "parametriced_strategies/MejorHorizontalDefensivo.h"
 #include "parametriced_strategies/MejorVerticalOfensivo.h"
+#include "parametriced_strategies/MejorVerticalDefensivo.h"
 
 
 GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
@@ -17,6 +18,8 @@ GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
                                             new MejorHorizontalDefensivo(pesos->at(MEJOR_HORIZONTAL_DEFENSIVO))));
     this->strategies->insert(std::make_pair(MEJOR_VERTICAL_OFENSIVO,
                                             new MejorVerticalOfensivo(pesos->at(MEJOR_VERTICAL_OFENSIVO))));
+    this->strategies->insert(std::make_pair(MEJOR_VERTICAL_DEFENSIVO,
+                                            new MejorVerticalDefensivo(pesos->at(MEJOR_VERTICAL_DEFENSIVO))));
 }
 
 int GreedyStrategy::selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) {
