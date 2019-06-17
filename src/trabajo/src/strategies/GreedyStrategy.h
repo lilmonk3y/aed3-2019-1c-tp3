@@ -19,6 +19,14 @@ public:
 
 private:
     std::map<STRATEGY_NAME, Strategy*> *strategies;
+
+    int elegirMejorMovimientoFactible(Tablero *tablero, std::vector<int> *mejoresMovimientos);
+
+    std::vector<int> *
+    ponderarLosMovimientosDeLasEstrategias(const std::vector<Strategy *> &strategy,
+                                           std::vector<int> *mejoresMovimientos);
+
+    int elegirMejorIndice(std::vector<int> *pVector);
 };
 
 

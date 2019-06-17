@@ -24,16 +24,52 @@ int GreedyStrategy::selectMove(Tablero *tablero, int cObjetivo, int cantidadFich
         strategy.push_back( estrategia.second);
     }
 
-    // std::vector<Strategy*> strategy(strategies->begin(), strategies->end()); ver si se puede hacer
     std::sort(strategy.begin(), strategy.end());
 
-    std::vector<int> bestMoves(tablero->getFilas(), 0);
+    auto mejoresMovimientos = new std::vector<int>(tablero->getFilas(), 0);
+    mejoresMovimientos = ponderarLosMovimientosDeLasEstrategias(strategy, mejoresMovimientos);
+
+    return elegirMejorMovimientoFactible(tablero, mejoresMovimientos);
+}
+
+
+
+
+
+
+
+std::vector<int> * GreedyStrategy::ponderarLosMovimientosDeLasEstrategias(const std::vector<Strategy *> &strategy,
+                                                                          std::vector<int> *mejoresMovimientos)  {
     for (auto estrategia : strategy) {
         for (auto movimiento : *estrategia->getMoves()){
-            bestMoves.at(movimiento) += movimiento / estrategia->getWeigth();
+            mejoresMovimientos->at(movimiento) += movimiento / estrategia->getWeigth();
         }
     }
 
-    return std::max_element(bestMoves.begin(), bestMoves.end()).operator*();
+    return mejoresMovimientos;
+}
+
+int GreedyStrategy::elegirMejorMovimientoFactible(Tablero *tablero, std::vector<int> *mejoresMovimientos)  {
+    int mejorMovimiento = -1;
+    for(int indiceColumna = 0; indiceColumna < tablero->getColumnas(); indiceColumna++){
+        mejorMovimiento = elegirMejorIndice(mejoresMovimientos);
+
+        if( tablero->columnaLlena(mejorMovimiento) ){
+            mejoresMovimientos->at(mejorMovimiento) = -1;
+        }else{
+            break;
+        }
+    }
+    return mejorMovimiento;
+}
+
+int GreedyStrategy::elegirMejorIndice(std::vector<int> *mejoresMovimientos) {
+    int columna = 0;
+    for(int index = 0; index < mejoresMovimientos->size(); index++){
+        if(mejoresMovimientos->at(columna) < mejoresMovimientos->at(index)){
+            columna = index;
+        }
+    }
+    return columna;
 }
 
