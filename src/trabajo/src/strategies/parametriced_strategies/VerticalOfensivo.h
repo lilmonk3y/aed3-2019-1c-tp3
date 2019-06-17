@@ -7,11 +7,11 @@
 
 
 #include "../../entities/Defines.h"
-#include "MejorVertical.h"
+#include "VerticalStrategy.h"
 
-class MejorVerticalOfensivo : public MejorVertical {
+class VerticalOfensivo : public VerticalStrategy {
 public:
-    explicit MejorVerticalOfensivo(int peso) : MejorVertical(peso, MEJOR_VERTICAL_OFENSIVO) {}
+    explicit VerticalOfensivo(int peso) : VerticalStrategy(peso, VERTICAL_OFENSIVO) {}
     void selectMoves(Tablero *tablero, int cObjetivo) override;
 };
 

@@ -7,6 +7,7 @@
 Tablero::Tablero(int columnas, int filas) {
     this->columnas = columnas;
     this->filas = filas;
+    this->matrizFichas = new std::vector<std::vector<int>*>();
     for(int i = 0; i < columnas; i++){
         auto filas = new std::vector<int>();
         this->matrizFichas->push_back(filas);

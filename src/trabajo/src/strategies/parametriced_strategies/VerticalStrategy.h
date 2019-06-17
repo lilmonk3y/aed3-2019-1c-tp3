@@ -8,12 +8,12 @@
 
 #include "Strategy.h"
 
-class MejorVertical : public Strategy {
+class VerticalStrategy : public Strategy {
 public:
-    MejorVertical(int peso, int name) : Strategy(peso, name) {}
     virtual void selectMoves(Tablero *tablero, int cObjetivo) = 0;
 
 protected:
+    VerticalStrategy(int peso, int name) : Strategy(peso, name) {}
     void mejorVertical(Tablero *tablero, int cObjetivo, int ofensivoOdefensivo);
 };
 

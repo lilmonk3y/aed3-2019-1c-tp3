@@ -8,13 +8,14 @@
 
 #include "Strategy.h"
 
-class MejorHorizontal : public Strategy {
+class HorizontalStrategy : public Strategy {
 public:
-    MejorHorizontal(int peso, int name) : Strategy(peso, name) {}
+    HorizontalStrategy(int peso, int name) : Strategy(peso, name) {}
     virtual void selectMoves(Tablero *tablero, int cObjetivo) = 0;
 
 protected:
     void mejorHorizontal(Tablero *tablero, int cObjetivo, int ofensivoOdefensivo);
+    bool completarFila(int columnaEsperada, int indiceFila, int jugadasDelJugador, int cObjetivo, Tablero *tablero);
 };
 
 

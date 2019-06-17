@@ -2,9 +2,9 @@
 // Created by Christian nahuel Rivera on 17/6/19.
 //
 
-#include "../MejorVertical.h"
+#include "../VerticalStrategy.h"
 
-void MejorVertical::mejorVertical(Tablero *tablero, int cObjetivo, int ofensivoOdefensivo) {
+void VerticalStrategy::mejorVertical(Tablero *tablero, int cObjetivo, int ofensivoOdefensivo) {
     this->moves->clear();
 
     for(int indexColumna = 0; indexColumna < tablero->getColumnas(); indexColumna++){
