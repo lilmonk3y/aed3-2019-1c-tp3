@@ -2,7 +2,7 @@
 // Created by Christian nahuel Rivera on 15/6/19.
 //
 
-#include "Strategy.h"
+#include "../Strategy.h"
 
 bool Strategy::completarFila(int columnaEsperada, int indiceFila,  int jugadasDelJugador, int cObjetivo, Tablero *tablero) {
     int jugadasConsecutivasADerecha = 0;
@@ -24,4 +24,10 @@ bool Strategy::completarFila(int columnaEsperada, int indiceFila,  int jugadasDe
     }
 
     return jugadasConsecutivasADerecha + jugadasConsecutivasAIzquierda + 1 >= cObjetivo;
+}
+
+Strategy::Strategy(float peso, int name) {
+    this->name = name;
+    this->peso = peso;
+    moves = new std::list<int>();
 }

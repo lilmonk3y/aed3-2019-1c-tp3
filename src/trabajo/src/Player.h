@@ -12,21 +12,11 @@
 class Player {
 public:
     Player();
-
     Player(int columns, int rows, int cLinea, int cantidadFichas, PlayStrategy * playStrategy);
+
     int play();
     void updateMyPlay(int fila);
     void updateOponentPlay(int fila);
-
-    void setTablero(Tablero *pTablero);
-
-    void setClinea(int i);
-
-    void setCantidadFichas(int i);
-
-    void setStrategy(PlayStrategy *pStrategy);
-
-    //void initPlayer(Player* player, int columns, int rows, int cLinea, int cantidadFichas, PlayStrategy *strategy);
 
 private:
     Tablero *tablero;

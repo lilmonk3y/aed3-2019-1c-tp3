@@ -9,7 +9,9 @@ int main(){
     Game *game = new Game();
 
     auto *pesos = new std::map<STRATEGY_NAME, PESO>();
-    pesos->insert(std::make_pair(MEJOR_HORIZONTAL_OFENSIVO, 1));
+    pesos->insert(std::make_pair(MEJOR_HORIZONTAL_OFENSIVO, std::rand()));
+    pesos->insert(std::make_pair(MEJOR_HORIZONTAL_DEFENSIVO, std::rand()));
+    pesos->insert(std::make_pair(MEJOR_VERTICAL_OFENSIVO, std::rand()));
 
     game->runGame(new GreedyStrategy(pesos));
 

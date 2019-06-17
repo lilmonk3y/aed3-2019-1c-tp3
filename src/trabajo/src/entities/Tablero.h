@@ -23,8 +23,10 @@ public:
 
     int jugadaEn(int columna, int fila);
 
+    std::vector<int> *getColumna(int i);
+
 private:
-    std::vector<std::vector<int> > matrizFichas;
+    std::vector<std::vector<int> *> *matrizFichas;
     int columnas;
     int filas;
 };
