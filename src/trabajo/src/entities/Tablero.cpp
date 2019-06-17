@@ -31,7 +31,7 @@ int Tablero::getColumnas() {
 
 bool Tablero::hayJugada(int indiceEnColumna, int indiceFila) {
     int columna = this->matrizFichas.at(indiceEnColumna).size();
-    return columna >= indiceFila;
+    return columna > indiceFila;
 }
 
 /*

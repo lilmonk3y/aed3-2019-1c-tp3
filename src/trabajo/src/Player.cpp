@@ -12,6 +12,13 @@ Player::Player(int columns, int rows, int cLinea, int cantidadFichas, PlayStrate
     this->playStr = strategy;
 }
 
+//void Player::initPlayer(Player* player, int columns, int rows, int cLinea, int cantidadFichas, PlayStrategy *strategy) {
+//    player->setTablero(new Tablero(columns, rows));
+//    player->setClinea(cLinea);
+//    player->setCantidadFichas(cantidadFichas);
+//    player->setStrategy(strategy);
+//}
+
 int Player::play() {
     int jugada = playStr->selectMove(this->tablero, this->cLinea, this->cantidadFichas);
     updateMyPlay(jugada);
@@ -25,4 +32,24 @@ void Player::updateOponentPlay(int fila) {
 
 void Player::updateMyPlay(int fila) {
     tablero->play(fila, JUGADA_ALIADA);
+}
+
+Player::Player() {
+
+}
+
+void Player::setTablero(Tablero *pTablero) {
+    this->tablero = pTablero;
+}
+
+void Player::setClinea(int i) {
+    this->cLinea = i;
+}
+
+void Player::setCantidadFichas(int i) {
+    this->cLinea = i;
+}
+
+void Player::setStrategy(PlayStrategy *pStrategy) {
+    this->playStr = pStrategy;
 }

@@ -8,6 +8,7 @@
 MejorHorizontalOfensivo::MejorHorizontalOfensivo(int nombre, int nuevoPeso) {
     estrategia = nombre;
     peso = nuevoPeso;
+    moves = new std::list<int>();
 }
 
 void MejorHorizontalOfensivo::selectMoves(Tablero *tablero, int cObjetivo) {

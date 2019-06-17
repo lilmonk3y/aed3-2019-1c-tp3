@@ -40,11 +40,9 @@ public:
     bool completarFila(int columnaEsperada, int indiceFila, int jugadasDelJugador, int cObjetivo, Tablero *tablero);
 
 
-private:
-    std::list<int> *moves;
-
 protected:
     int estrategia;
     int peso;
+    std::list<int> *moves;
 };
 #endif //AED3_TP3_STRATEGY_H
