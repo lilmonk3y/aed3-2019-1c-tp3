@@ -54,5 +54,6 @@ std::vector<int> *Tablero::getColumna(int columna) {
 }
 
 int Tablero::getTamanoColumna(int i) {
+    if( i >= this->getColumnas() || i < 0) return -1;
     return this->matrizFichas->at(i)->size() -1;
 }
