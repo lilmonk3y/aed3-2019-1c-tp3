@@ -28,6 +28,7 @@ TEST_F(PlayerTest, test)
     pesos->insert(std::make_pair(DIAGONAL_45_OFENSIVO, std::rand()));
     pesos->insert(std::make_pair(DIAGONAL_45_DEFENSIVO, std::rand()));
     pesos->insert(std::make_pair(DIAGONAL_315_OFENSIVO, std::rand()));
+    pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO, std::rand()));
     player = new Player(7, 6, 4, 21, new GreedyStrategy(pesos));
 
     int move = player->play();

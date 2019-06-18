@@ -10,10 +10,10 @@
 
 class Diagonal45Strategy : public Strategy{
 public:
-    Diagonal45Strategy(float peso, int name) : Strategy(peso, name) {}
     virtual void selectMoves(Tablero *tablero, int cObjetivo) = 0;
 
 protected:
+    Diagonal45Strategy(float peso, int name) : Strategy(peso, name) {}
     void mejorDiagonal45(Tablero *tablero, int cObjetivo, int ofensivoOdefensivo);
 };
 

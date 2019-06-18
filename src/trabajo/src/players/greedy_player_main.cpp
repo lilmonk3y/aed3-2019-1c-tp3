@@ -18,6 +18,7 @@ int main(){
     pesos->insert(std::make_pair(DIAGONAL_45_OFENSIVO, std::rand()));
     pesos->insert(std::make_pair(DIAGONAL_45_DEFENSIVO, std::rand()));
     pesos->insert(std::make_pair(DIAGONAL_315_OFENSIVO, std::rand()));
+    pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO, std::rand()));
 
     game->runGame(new GreedyStrategy(pesos));
 
