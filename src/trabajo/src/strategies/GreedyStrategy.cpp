@@ -3,19 +3,41 @@
 //
 
 #include "GreedyStrategy.h"
-#include "parametriced_strategies/MejorHorizontalOfensivo.h"
+#include "parametriced_strategies/HorizontalOfensivo.h"
+#include "parametriced_strategies/HorizontalDefensivo.h"
+#include "parametriced_strategies/VerticalOfensivo.h"
+#include "parametriced_strategies/VerticalDefensivo.h"
+#include "parametriced_strategies/Diagonal45Ofensivo.h"
+#include "parametriced_strategies/Diagonal45Defensivo.h"
+#include "parametriced_strategies/Diagonal315Ofensivo.h"
+#include "parametriced_strategies/Diagonal315Defensivo.h"
+#include "parametriced_strategies/JugadaAleatoria.h"
 
 
 GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
     this->strategies = new std::map<STRATEGY_NAME, Strategy*>();
 
-    this->strategies->insert(std::make_pair(MEJOR_HORIZONTAL_OFENSIVO,
-            new MejorHorizontalOfensivo( MEJOR_HORIZONTAL_OFENSIVO, pesos->at(MEJOR_HORIZONTAL_OFENSIVO))));
+    this->strategies->insert(std::make_pair(HORIZONTAL_OFENSIVO,
+                                            new HorizontalOfensivo(pesos->at(HORIZONTAL_OFENSIVO))));
+    this->strategies->insert(std::make_pair(HORIZONTAL_OFENSIVO,
+                                            new HorizontalDefensivo(pesos->at(HORIZONTAL_DEFENSIVO))));
+    this->strategies->insert(std::make_pair(VERTICAL_OFENSIVO,
+                                            new VerticalOfensivo(pesos->at(VERTICAL_OFENSIVO))));
+    this->strategies->insert(std::make_pair(VERTICAL_DEFENSIVO,
+                                            new VerticalDefensivo(pesos->at(VERTICAL_DEFENSIVO))));
+    this->strategies->insert(std::make_pair(DIAGONAL_45_OFENSIVO,
+                                            new Diagonal45Ofensivo(pesos->at(DIAGONAL_45_OFENSIVO))));
+    this->strategies->insert(std::make_pair(DIAGONAL_45_DEFENSIVO,
+                                            new Diagonal45Defensivo(pesos->at(DIAGONAL_45_DEFENSIVO))));
+    this->strategies->insert(std::make_pair(DIAGONAL_315_OFENSIVO,
+                                            new Diagonal315Ofensivo(pesos->at(DIAGONAL_315_OFENSIVO))));
+    this->strategies->insert(std::make_pair(DIAGONAL_315_DEFENSIVO,
+                                            new Diagonal315Defensivo(pesos->at(DIAGONAL_315_DEFENSIVO))));
+    this->strategies->insert(std::make_pair(JUGADA_ALEATORIA,
+                                            new JugadaAleatoria(pesos->at(JUGADA_ALEATORIA))));
 }
 
 int GreedyStrategy::selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) {
-    // unoParaGanar()
-    // unoParaPerder()
 
     std::vector<Strategy*> strategy;
     for (auto estrategia : *this->strategies) {

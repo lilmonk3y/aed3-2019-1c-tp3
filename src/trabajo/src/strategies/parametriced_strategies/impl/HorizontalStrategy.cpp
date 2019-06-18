@@ -1,10 +1,20 @@
 //
-// Created by Christian nahuel Rivera on 15/6/19.
+// Created by Christian nahuel Rivera on 17/6/19.
 //
 
-#include "Strategy.h"
+#include "../HorizontalStrategy.h"
 
-bool Strategy::completarFila(int columnaEsperada, int indiceFila,  int jugadasDelJugador, int cObjetivo, Tablero *tablero) {
+void HorizontalStrategy::mejorHorizontal(Tablero *tablero, int cObjetivo, int ofensivoOdefensivo) {
+    this->getMoves()->clear(); // limpio los movimientos previos
+
+    for(int indiceColumna = 0; indiceColumna < tablero->getColumnas(); indiceColumna++){
+        if( completarFila(indiceColumna,tablero->getIndiceFila(indiceColumna), ofensivoOdefensivo, cObjetivo, tablero) ){
+            this->getMoves()->push_back(indiceColumna);
+        }
+    }
+}
+
+bool HorizontalStrategy::completarFila(int columnaEsperada, int indiceFila,  int jugadasDelJugador, int cObjetivo, Tablero *tablero) {
     int jugadasConsecutivasADerecha = 0;
     for(int columnaADerecha = columnaEsperada+1; columnaADerecha < tablero->getColumnas(); columnaADerecha++){
         if( tablero->hayJugada(columnaADerecha, indiceFila) && tablero->jugadaEn(columnaADerecha, indiceFila) == jugadasDelJugador ){

@@ -6,11 +6,12 @@
 #define AED3_TP3_MEJORHORIZONTALOFENSIVO_H
 
 
-#include "Strategy.h"
+#include "HorizontalStrategy.h"
+#include "../../entities/Defines.h"
 
-class MejorHorizontalOfensivo : public Strategy {
+class HorizontalOfensivo : public HorizontalStrategy {
 public:
-    MejorHorizontalOfensivo(int nombre, int peso);
+    HorizontalOfensivo(int peso) : HorizontalStrategy(peso, HORIZONTAL_OFENSIVO) {};
     void selectMoves(Tablero *tablero, int cObjetivo) override;
 
 };
