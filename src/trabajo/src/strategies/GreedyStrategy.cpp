@@ -11,6 +11,7 @@
 #include "parametriced_strategies/Diagonal45Defensivo.h"
 #include "parametriced_strategies/Diagonal315Ofensivo.h"
 #include "parametriced_strategies/Diagonal315Defensivo.h"
+#include "parametriced_strategies/JugadaAleatoria.h"
 
 
 GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
@@ -32,11 +33,11 @@ GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
                                             new Diagonal315Ofensivo(pesos->at(DIAGONAL_315_OFENSIVO))));
     this->strategies->insert(std::make_pair(DIAGONAL_315_DEFENSIVO,
                                             new Diagonal315Defensivo(pesos->at(DIAGONAL_315_DEFENSIVO))));
+    this->strategies->insert(std::make_pair(JUGADA_ALEATORIA,
+                                            new JugadaAleatoria(pesos->at(JUGADA_ALEATORIA))));
 }
 
 int GreedyStrategy::selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) {
-    // unoParaGanar()
-    // unoParaPerder()
 
     std::vector<Strategy*> strategy;
     for (auto estrategia : *this->strategies) {

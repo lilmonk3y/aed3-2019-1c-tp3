@@ -32,6 +32,8 @@ set(SOURCES
         src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h
         src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h
         src/trabajo/src/strategies/parametriced_strategies/Diagonal315Strategy.h
+        src/trabajo/src/strategies/parametriced_strategies/impl/JugadaAleatoria.cpp
+        src/trabajo/src/strategies/parametriced_strategies/JugadaAleatoria.h
         src/trabajo/src/strategies/parametriced_strategies/impl/Strategy.cpp
         src/trabajo/src/strategies/parametriced_strategies/Strategy.h
         src/trabajo/src/entities/Tablero.cpp
@@ -48,7 +50,7 @@ include_directories(lib/googletest/googletest/include)
 include_directories(lib/googletest/googlemock/include)
 
 #Define your executable
-add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h)
+add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/JugadaAleatoria.cpp src/trabajo/src/strategies/parametriced_strategies/JugadaAleatoria.h)
 
 #Link with GoogleTest
 target_link_libraries(tests gtest gtest_main)
