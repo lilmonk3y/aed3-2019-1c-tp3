@@ -25,6 +25,8 @@ public:
 
     std::vector<int> *getColumna(int i);
 
+    int getTamanoColumna(int i);
+
 private:
     std::vector<std::vector<int> *> *matrizFichas;
     int columnas;

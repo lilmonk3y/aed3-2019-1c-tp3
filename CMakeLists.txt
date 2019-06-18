@@ -36,7 +36,7 @@ include_directories(lib/googletest/googletest/include)
 include_directories(lib/googletest/googlemock/include)
 
 #Define your executable
-add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h)
+add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/Diagonal45Ofensivo.h)
 
 #Link with GoogleTest
 target_link_libraries(tests gtest gtest_main)
@@ -63,4 +63,4 @@ add_executable(jugador_test
 
 add_executable(jugador_greedy
         src/trabajo/src/players/greedy_player_main.cpp
-        ${SOURCES} src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalStrategy.cpp src/trabajo/src/strategies/parametriced_strategies/HorizontalStrategy.h src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/HorizontalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalStrategy.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalStrategy.h)
+        ${SOURCES} src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalStrategy.cpp src/trabajo/src/strategies/parametriced_strategies/HorizontalStrategy.h src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/HorizontalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalStrategy.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalStrategy.h src/trabajo/src/strategies/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/Diagonal45Ofensivo.h)

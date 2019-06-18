@@ -7,6 +7,7 @@
 #include "parametriced_strategies/HorizontalDefensivo.h"
 #include "parametriced_strategies/VerticalOfensivo.h"
 #include "parametriced_strategies/VerticalDefensivo.h"
+#include "Diagonal45Ofensivo.h"
 
 
 GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
@@ -20,6 +21,8 @@ GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {
                                             new VerticalOfensivo(pesos->at(VERTICAL_OFENSIVO))));
     this->strategies->insert(std::make_pair(VERTICAL_DEFENSIVO,
                                             new VerticalDefensivo(pesos->at(VERTICAL_DEFENSIVO))));
+    this->strategies->insert(std::make_pair(DIAGONAL_45_OFENSIVO,
+                                            new Diagonal45Ofensivo(pesos->at(DIAGONAL_45_OFENSIVO))));
 }
 
 int GreedyStrategy::selectMove(Tablero *tablero, int cObjetivo, int cantidadFichas) {

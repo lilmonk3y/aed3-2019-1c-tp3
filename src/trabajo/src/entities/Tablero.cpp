@@ -31,8 +31,10 @@ int Tablero::getColumnas() {
 }
 
 bool Tablero::hayJugada(int indiceEnColumna, int indiceFila) {
-    int columna = this->matrizFichas->at(indiceEnColumna)->size();
-    return columna > indiceFila;
+    if( this->matrizFichas->size() <= indiceEnColumna || indiceEnColumna < 0) return false;
+    if( this->matrizFichas->at(indiceEnColumna)->size() <= indiceFila || indiceFila < 0) return false;
+
+    return indiceFila < this->matrizFichas->at(indiceEnColumna)->size();
 }
 
 /*
@@ -40,7 +42,7 @@ bool Tablero::hayJugada(int indiceEnColumna, int indiceFila) {
  * Como size = cantElementos desde el 1, me da la posición en la columna.
  */
 int Tablero::getIndiceFila(int indiceColumna) {
-    return this->matrizFichas->at(indiceColumna)->size();
+    return this->matrizFichas->at(indiceColumna)->size() -1;
 }
 
 int Tablero::jugadaEn(int columna, int fila) {
@@ -49,4 +51,8 @@ int Tablero::jugadaEn(int columna, int fila) {
 
 std::vector<int> *Tablero::getColumna(int columna) {
     return this->matrizFichas->at(columna);
+}
+
+int Tablero::getTamanoColumna(int i) {
+    return this->matrizFichas->at(i)->size() -1;
 }
