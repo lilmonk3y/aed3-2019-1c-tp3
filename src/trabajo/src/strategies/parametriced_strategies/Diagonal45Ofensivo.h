@@ -6,12 +6,13 @@
 #define AED3_TP3_DIAGONAL45OFENSIVO_H
 
 
-#include "parametriced_strategies/Strategy.h"
-#include "../entities/Defines.h"
+#include "Strategy.h"
+#include "../../entities/Defines.h"
+#include "Diagonal45Strategy.h"
 
-class Diagonal45Ofensivo : public Strategy{
+class Diagonal45Ofensivo : public Diagonal45Strategy{
 public:
-    Diagonal45Ofensivo(float peso) : Strategy(peso, DIAGONAL_45_OFENSIVO){}
+    explicit Diagonal45Ofensivo(float peso) : Diagonal45Strategy(peso, DIAGONAL_45_OFENSIVO){}
     void selectMoves(Tablero *tablero, int cObjetivo) override;
 
 };
