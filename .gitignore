@@ -30,3 +30,9 @@ lib/googletest/googlemock/CTestTestfile.cmake
 lib/googletest/googlemock/Makefile
 lib/googletest/googlemock/cmake_install.cmake
 lib/googletest/googlemock/gtest/
+jugador_greedy
+jugador_test
+lib/googletest/googlemock/libgmock.a
+lib/googletest/googlemock/libgmock_main.a
+random_player
+tests
