@@ -12,6 +12,7 @@
 #include "parametriced_strategies/Diagonal315Ofensivo.h"
 #include "parametriced_strategies/Diagonal315Defensivo.h"
 #include "parametriced_strategies/JugadaAleatoria.h"
+#include <algorithm>
 
 
 GreedyStrategy::GreedyStrategy( std::map<STRATEGY_NAME, PESO> *pesos) {

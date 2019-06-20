@@ -3,6 +3,7 @@
 //
 
 #include "../JugadaAleatoria.h"
+#include <random>
 
 void JugadaAleatoria::selectMoves(Tablero *tablero, int cObjetivo) {
     this->moves->clear();
