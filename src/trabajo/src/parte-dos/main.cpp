@@ -1,15 +1,16 @@
 #include <iostream>
 #include <string>
+#include <cstdint>
 #include "player.h"
 #include "manager.hpp"
 
 using namespace std;
 
-extern Player* player;
+extern Player* player; // it has to be a pointer (which I try to avoid) because of object slicing
 
 int main() {
     while (manager.move_expected()) {
-        int move = player->move(state); // column
+        uint32_t move = player->move(state); // column
         manager.send_move(move);
     }
 

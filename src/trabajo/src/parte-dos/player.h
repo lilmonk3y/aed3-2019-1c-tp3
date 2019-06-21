@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "manager.hpp"
+#include <cstdint>
 
 using namespace std;
 
@@ -16,31 +17,31 @@ using namespace std;
 
 class Player {
 public:
-  virtual int move(const GameState& state) {
+  virtual uint32_t move(const GameState& state) {
     return try_all_columns_and_return_best(state);
   }
 
   virtual ~Player() = default;
 
 private:
-  virtual int score_board_state(const GameState& state) {
+  virtual double score_board_state(const GameState& state) {
     // ---------------------------------------------------------------------------------------------
-    // Players based on evaluating all possible moves should override this function only
+    // Players based on greedily evaluating all possible moves should override this function
     // ---------------------------------------------------------------------------------------------
     return 0;
   }
 
-  int try_all_columns_and_return_best(GameState state) {
+  uint32_t try_all_columns_and_return_best(GameState state) {
     // The state in this function is a copy to enable temporary modifications
 
-    int best_column = 0;
-    int max_score = 0;
+    uint32_t best_column = 0;
+    double max_score = 0;
 
-    for (int column = 0; column < state.columns; ++column) {
+    for (uint32_t column = 0; column < state.columns; ++column) {
       if (state.column_full(column)) continue;
 
       state.fill_column(column, state.my_color);
-      int score = score_board_state(state);
+      double score = score_board_state(state);
       if (score > max_score) {
         max_score = score;
         best_column = column;

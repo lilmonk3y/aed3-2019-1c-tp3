@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 using namespace std;
 
@@ -31,18 +32,18 @@ public:
     vector<vector<Color>> board;
     Color my_color;
     Color opponent_color;
-    int columns;
-    int rows;
-    int pieces_per_player;
-    int pieces_to_win;
-    int matches_won = 0;
-    int matches_lost = 0;
-    int matches_tied = 0;
-    vector<int> pieces_on_column;
+    uint32_t columns;
+    uint32_t rows;
+    uint32_t pieces_per_player;
+    uint32_t pieces_to_win;
+    uint32_t matches_won = 0;
+    uint32_t matches_lost = 0;
+    uint32_t matches_tied = 0;
+    vector<uint32_t> pieces_on_column;
     bool first_move = true;
 
     bool board_empty() {
-        for (int col = 0; col < columns; ++col) {
+        for (uint32_t col = 0; col < columns; ++col) {
             if (pieces_on_column[col] > 0) return false;
         }
         return true;
@@ -50,20 +51,20 @@ public:
 
     // True if and only if column is full
     // Pre: column < columns
-    bool column_full(int column) const {
+    bool column_full(uint32_t column) const {
         return pieces_on_column[column] == rows;
     }
 
     // Pre: column < columns and not column_full(column)
-    void fill_column(int column, Color color) {
+    void fill_column(uint32_t column, Color color) {
         first_move = false;
-        int row = pieces_on_column[column]++;
+        uint32_t row = pieces_on_column[column]++;
         board[column][row] = color;
     }
 
     // Pre: column < columns and pieces_on_column[column] > 0
-    void remove_column_top(int column) {
-        int row = --pieces_on_column[column];
+    void remove_column_top(uint32_t column) {
+        uint32_t row = --pieces_on_column[column];
         board[column][row] = NONE;
     }
 
@@ -73,7 +74,7 @@ public:
         else matches_tied += 1;
     }
 
-    void start_new_game(int columns, int rows, int pieces_to_win, int pieces_per_player,
+    void start_new_game(uint32_t columns, uint32_t rows, uint32_t pieces_to_win, uint32_t pieces_per_player,
         Color my_color, Color opponent_color) {
         // Starting a new game does not modify matches_won, matches_lost and matches_tied record
 
@@ -86,7 +87,7 @@ public:
 
         // board[COLUMN][ROW]
         board.resize(columns);
-        for (int col = 0; col < columns; ++col) {
+        for (uint32_t col = 0; col < columns; ++col) {
             board[col].assign(rows, NONE);
         }
         pieces_on_column.assign(columns, 0);
@@ -100,7 +101,7 @@ public:
 static class GameCommunicationManager {
 public: 
 
-    void send_move(int column) {
+    void send_move(uint32_t column) {
         state.fill_column(column, state.my_color);
         cout << column << endl;
     }
@@ -123,7 +124,7 @@ public:
         if (NEW_GAME(msg)) {
             start_new_game(msg);
         } else {
-            int opponent_move_column = stoi(msg);
+            uint32_t opponent_move_column = stoi(msg);
             state.fill_column(opponent_move_column, state.opponent_color);
         }
 
@@ -149,8 +150,7 @@ private:
         cin >> opponent_color_signal;
         Color opponent_color = get_color(opponent_color_signal);
 
-
-        int columns, rows, pieces_to_win, pieces_per_player;
+        uint32_t columns, rows, pieces_to_win, pieces_per_player;
 
         cin >> columns >> rows >> pieces_to_win >> pieces_per_player;
 
@@ -160,9 +160,10 @@ private:
         string who_moves_first;
         cin >> who_moves_first;
         if (who_moves_first == OPPONENT_MOVES_FIRST_SIGNAL) {
-            int opponent_move_column;
+            uint32_t opponent_move_column;
             cin >> opponent_move_column;
             state.fill_column(opponent_move_column, state.opponent_color);
+            state.first_move = true;
         }
     }
 } manager;

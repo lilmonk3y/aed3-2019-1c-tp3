@@ -61,14 +61,6 @@ target_link_libraries(tests gmock gmock_main)
 
 add_executable(random_player src/random_player.cpp)
 
-set(SOURCES2
-        src/trabajo/src/parte-dos/main.cpp
-        src/trabajo/src/parte-dos/player.h
-        src/trabajo/src/parte-dos/manager.hpp)
-
-add_executable(random_player_2 src/trabajo/src/parte-dos/strategies/random_player.cpp ${SOURCES2})
-add_executable(greedy_player_2 src/trabajo/src/parte-dos/strategies/greedy_player.cpp ${SOURCES2})
-
 add_executable(jugador_test
         src/trabajo/src/players/test_player_main.cpp
         src/trabajo/src/Game.cpp
@@ -86,3 +78,13 @@ add_executable(jugador_test
 add_executable(jugador_greedy
         src/trabajo/src/players/greedy_player_main.cpp
         ${SOURCES} )
+
+set(PLAYER_SOURCES
+        src/trabajo/src/parte-dos/main.cpp
+        src/trabajo/src/parte-dos/player.h
+        src/trabajo/src/parte-dos/manager.hpp)
+file(GLOB PATH_TO_PLAYERS src/trabajo/src/parte-dos/strategies/*.cpp)
+FOREACH(PLAYER_CPP_PATH ${PATH_TO_PLAYERS})
+  get_filename_component(PLAYER_NAME ${PLAYER_CPP_PATH} NAME_WE)
+  add_executable(_${PLAYER_NAME} ${PLAYER_CPP_PATH} ${PLAYER_SOURCES})
+ENDFOREACH()
