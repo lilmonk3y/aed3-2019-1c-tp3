@@ -37,3 +37,4 @@ lib/googletest/googlemock/libgmock_main.a
 random_player
 tests
 random_player_2
+greedy_player_2

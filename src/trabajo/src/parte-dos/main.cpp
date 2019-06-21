@@ -5,11 +5,15 @@
 
 using namespace std;
 
+extern Player* player;
+
 int main() {
     while (manager.move_expected()) {
-        int move = player::get_move(manager.state);
+        int move = player->move(state); // column
         manager.send_move(move);
     }
 
-    manager.exit();
+    manager.send_exit_signal();
+    delete player;
+    return 0;
 }

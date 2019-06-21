@@ -61,11 +61,13 @@ target_link_libraries(tests gmock gmock_main)
 
 add_executable(random_player src/random_player.cpp)
 
-add_executable(random_player_2
+set(SOURCES2
         src/trabajo/src/parte-dos/main.cpp
-        src/trabajo/src/parte-dos/random_player.cpp
         src/trabajo/src/parte-dos/player.h
         src/trabajo/src/parte-dos/manager.hpp)
+
+add_executable(random_player_2 src/trabajo/src/parte-dos/strategies/random_player.cpp ${SOURCES2})
+add_executable(greedy_player_2 src/trabajo/src/parte-dos/strategies/greedy_player.cpp ${SOURCES2})
 
 add_executable(jugador_test
         src/trabajo/src/players/test_player_main.cpp
