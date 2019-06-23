@@ -17,7 +17,7 @@ class NaivePlayer : Player {
 
   // Overriden methods:
 
-  double score_board_state(const GameState& state) override {
+  double score_board_state(GameState state, uint32_t move_column, double aggressiveness) override {
     uint32_t v = longest_vertical_line(state);
     uint32_t h = longest_horizontal_line(state);
     uint32_t d = longest_diagonal_line(state);

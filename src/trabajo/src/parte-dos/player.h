@@ -24,35 +24,30 @@ public:
   virtual ~Player() = default;
 
 private:
-  virtual double score_board_state(const GameState& state) {
+  virtual double score_board_state(GameState state, uint32_t move_column, double aggressiveness) {
     // ---------------------------------------------------------------------------------------------
     // Players based on greedily evaluating all possible moves should override this function
     // ---------------------------------------------------------------------------------------------
     return 0;
   }
 
-  uint32_t try_all_columns_and_return_best(GameState state) {
-    // The state in this function is a copy to enable temporary modifications
-
+  uint32_t try_all_columns_and_return_best(const GameState& state) {
     uint32_t best_column = 0;
     double max_score = 0;
 
     for (uint32_t column = 0; column < state.columns; ++column) {
       if (state.column_full(column)) continue;
 
-      state.fill_column(column, state.my_color);
-      double score = score_board_state(state);
+      double score = score_board_state(state, column, 0.7);
       if (score > max_score) {
         max_score = score;
         best_column = column;
       }
 
-      state.remove_column_top(column);
     }
 
     return best_column;
   }
-
 };
 
 #endif

@@ -82,7 +82,9 @@ add_executable(jugador_greedy
 set(PLAYER_SOURCES
         src/trabajo/src/parte-dos/main.cpp
         src/trabajo/src/parte-dos/player.h
-        src/trabajo/src/parte-dos/manager.hpp)
+        src/trabajo/src/parte-dos/manager.hpp
+        src/trabajo/src/parte-dos/statehelper.cpp
+        src/trabajo/src/parte-dos/statehelper.h)
 file(GLOB PATH_TO_PLAYERS src/trabajo/src/parte-dos/strategies/*.cpp)
 FOREACH(PLAYER_CPP_PATH ${PATH_TO_PLAYERS})
   get_filename_component(PLAYER_NAME ${PLAYER_CPP_PATH} NAME_WE)
