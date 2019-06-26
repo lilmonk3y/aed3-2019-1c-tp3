@@ -1,20 +1,8 @@
 #include "AlgoritmoGenetico.h"
-// includes Defines.H
 
-int AlgoritmoGenetico::selectMove(Tablero* tablero, int cObjetivo, int cantidadFichas){
-    AlgoritmoGenetico* algoritmoGenetico = new AlgoritmoGenetico(tablero);
-    return algoritmoGenetico->correrAlgoritmo()->at(0).getFilaEscogida();
-}
-
-AlgoritmoGenetico::AlgoritmoGenetico(Tablero* tablero) {
-    this -> tablero = tablero;
-    this->columnasTablero = tablero->getColumnas();
-    this->filasTablero = tablero->getFilas();
-    for(int i = 0; i < columnasTablero; i = i + 1) {
-        this->columnasDisponibles[i] = !(this->tablero->columnaLlena(i));
-    }
+AlgoritmoGenetico::AlgoritmoGenetico(int generation,int cantidadGeneraciones) {
     this->generacion = 0;
-    this->cantidadDeGeneraciones = 100;
+    this->cantidadDeGeneraciones = cantidadGeneraciones;
 }
 
 vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
@@ -22,20 +10,21 @@ vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
     this->evaluarTodosLosIndividuos();
     while(condicionTerminacion()) {
         vector<Individuo* >* nuevaGeneracion;
-        for(int i = 0; i < (this->poblacionActual->size()/2); i = i + 1) { // itero todos los pares
-            pair<Individuo*, Individuo*> seleccionados = this->seleccion1(); // PUEDE SER MODIFICADO por seleccion2
+        for(int i = 0; i < (this->poblacionActual->size()/2); i = i + 1) { // itero todos los pares (selecciono de a 2)
+            // seleccionar 2 individuos para luego reproducirse:
+            pair<Individuo*, Individuo*> seleccionados = seleccion1(); // tambien se puede usar seleccion2
             Individuo* seleccionado1 = seleccionados.first;
             Individuo* seleccionado2 = seleccionados.second;
-            // aplicar operaciones geneticas:
-            pair <Individuo*, Individuo*> descendientes = crossover(seleccionado1,seleccionado2);
+            // aplicar operaciones geneticas (reproduccion y mutación):
+            pair <Individuo*, Individuo*> descendientes = crossover(seleccionado1,seleccionado2); // reproduccion
             Individuo* descendiente1 = descendientes.first;
             Individuo* descendiente2 = descendientes.second;
 
             mutacion(descendiente1);
-            mutacion(seleccionado2);
+            mutacion(descendiente2);
             // fitness a descendientes:
-            this->fitness1(descendiente1);  // PUEDE SER MODIFICADO por fitness2
-            this->fitness1(descendiente2);  // PUEDE SER MODIFICADO por fitness2
+            fitness1(descendiente1);  // tambien se puede usar fitness2
+            fitness1(descendiente2);  // tambien se puede usar fitness2
             nuevaGeneracion->push_back(descendiente1);
             nuevaGeneracion->push_back(descendiente2);
         }
@@ -46,98 +35,142 @@ vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() {
-    vector<Individuo* > * nuevaPoblacion = new vector<Individuo*>(this->columnasTablero);
-    for(int i = 0; i < columnasTablero; i = i + 1) {
-        int fitnessIncial = 0;
-        int columna = i;
-        if(!this->tablero->columnaLlena(columna)){
-            Individuo* individuoOfensivo = new Individuo(fitnessIncial, columna, JUGADA_ALIADA); // 1 == ofensivo (jugada aliada)
-            Individuo* individuoDefensivo = new Individuo(fitnessIncial, columna, JUGADA_ENEMIGA); // 0 == defensivo (jugada enemiga)
-            nuevaPoblacion->push_back(individuoOfensivo);
-            nuevaPoblacion->push_back(individuoDefensivo);
-        }
+// fitness1, crossover, seleccion1
+
+vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() { // OK
+    int pesoLimite = 100;  // CONFIGURACION
+    int cantidadIndividuos = 1000;  // CONFIGURACION
+
+    vector<Individuo*>* nuevaPoblacion = new vector<Individuo*>(cantidadIndividuos);
+
+    for(int i = 0; i < cantidadIndividuos; i = i + 1) {
+        // individuos con genes aleatorios entre 0 y pesoLimite-1:
+        Individuo* individuo = new Individuo(rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite);
+        nuevaPoblacion->push_back(individuo);
     }
+
     return nuevaPoblacion;
 }
 
-// LO MAS DIFICIL:
-//#define JUGADA_ENEMIGA 0
-//#define JUGADA_ALIADA 1
 void AlgoritmoGenetico::fitness1(Individuo* individuo) {
-    int columnaEscogida = individuo->getFilaEscogida();
-    int estrategia = individuo->getEstrategia(); // defensiva, ofensiva
-    int valorJugada = valoracion(largoFila( columnaEscogida, estrategia )) +
-            valoracion(largoColumna( columnaEscogida, estrategia )) +
-            valoracion(largoDiagonalIzquierda( columnaEscogida, estrategia)) +
-            valoracion(largoDiagonalDerecha( columnaEscogida, estrategia));
-
-    individuo->setEvaluacion(valorJugada);
+    int cantidadJugadas = hacerCompetir(individuo); // IMPLEMENTAR, si pierde deberia devolver 0
+    individuo->setEvaluacion(valor);
 }
 
 //void AlgoritmoGenetico::fitness2(Individuo* individuo) {}
 
-pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* individuo1,Individuo* individuo2) {
+pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* mejorIndividuo,Individuo* peorIndividuo) {
     pair <Individuo*, Individuo*> descendientes; // no hace falta iniciarlo??
-    int eval = 0;
-    Individuo* descendiente1 = new Individuo(eval,individuo1->getFilaEscogida(),individuo1->getEstrategia());
-    Individuo* descendiente2 = new Individuo(eval,individuo2->getFilaEscogida(),individuo2->getEstrategia());
-    if(individuo1->getEvaluacion() - individuo2->getEvaluacion() > 4) {
+    Individuo* descendiente1 = new Individuo(*mejorIndividuo); // clonacion
+    Individuo* descendiente2 = new Individuo(*peorIndividuo); // clonacion
 
-        if(individuo1->getEvaluacion() > individuo2->getEvaluacion()){
-            if(individuo1->getEstrategia()==individuo2->getEstrategia()) {
-                descendiente2->setFilaEscogida(individuo1->getFilaEscogida());
-            } else {
-                descendiente2->setEstrategia(individuo1->getEstrategia());
-            }
-        }
-        else{
-            if(individuo1->getEstrategia()==individuo2->getEstrategia()) {
-                descendiente1->setFilaEscogida(individuo2->getFilaEscogida());
-            } else {
-                descendiente1->setEstrategia(individuo2->getEstrategia());
-            }
-        }
-
+    if(rand()%2==0){ // 50%
+        descendiente2->jugada_aleatoria = mejorIndividuo->jugada_aleatoria;
+        descendiente2->vertical_ofensivo = mejorIndividuo->vertical_ofensivo;
+        descendiente2->vertical_defensivo = mejorIndividuo->vertical_defensivo;
+        descendiente2->horizontal_ofensivo = mejorIndividuo->horizontal_ofensivo;
+        descendiente2->horizontal_defensivo = mejorIndividuo->horizontal_defensivo;
+    } else {
+        descendiente2->diagonal_45_ofensivo = mejorIndividuo->diagonal_45_ofensivo;
+        descendiente2->diagonal_45_defensivo = mejorIndividuo->diagonal_45_defensivo;
+        descendiente2->diagonal_315_ofensivo = mejorIndividuo->diagonal_315_ofensivo;
+        descendiente2->diagonal_315_defensivo = mejorIndividuo->diagonal_315_defensivo;
     }
-    descendientes.first = descendiente1;
-    descendientes.second = descendiente2;
+
+    descendientes.first = descendiente1; // queda igual al mejor
+    descendientes.second = descendiente2; // hereda cosas del otro individuo, del mejor, la mitad de genes
     return descendientes;
 }
 
-void AlgoritmoGenetico::mutacion(Individuo* individuo) {
-    // ver como anda sin mutacion, pero debería ser minima si no se estanca
-    //if(individuo->getEvaluacion() < 5) { // no muta, ya que gana
-    //}
-}
+void AlgoritmoGenetico::mutacion(Individuo* individuo) { // OK
+    if(rand()%5==1){ // 20% de probabilidad de mutacion // CONFIGURACION: parametro probabilidad de mutacion
+        int pesoLimite = 100; // CONFIGURACION
+        int valorAleatorio = rand()%pesoLimite; // aleatorio de 0 a pesoLimite-1
+        int genAleatorio = rand()%10; // aleatorio de 0 a 9
+        if( genAleatorio==1 ){
+            individuo->horizontal_defensivo =valorAleatorio;
 
-pair <Individuo*, Individuo*> AlgoritmoGenetico::seleccion1() {
-    pair <Individuo*, Individuo*> individuosSeleccionados;
-    for(int i = 0; i < columnasTablero; i = i + 1) {
-        Individuo* individuo1 = poblacionActual->at(i);
-        if(!individuo1->fueSeleccionado()){
-            Individuo* individuo2 = poblacionActual->at(i+1);
-            individuosSeleccionados.first = individuo1;
-            individuosSeleccionados.second = individuo2;
-            individuo1->seleccionar();
-            individuo2->seleccionar();
-            return individuosSeleccionados;
+        }
+        if( genAleatorio==2 ){
+            individuo->horizontal_ofensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==3 ){
+            individuo->vertical_defensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==4 ){
+            individuo->vertical_ofensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==5 ){
+            individuo->diagonal_315_defensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==6 ){
+            individuo->diagonal_315_ofensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==7 ){
+            individuo->diagonal_45_defensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==8 ){
+            individuo->diagonal_45_ofensivo =valorAleatorio;
+
+        }
+        if( genAleatorio==9 ){
+            individuo->jugada_aleatoria =valorAleatorio;
+
         }
     }
+}
+
+pair <Individuo*, Individuo*> AlgoritmoGenetico::seleccion1() {// MEJOR Y PEOR INDIVIDUOS
+
+    pair <Individuo*, Individuo*> individuosSeleccionados;
+
+    int maxFitness=-1; // CONFIGURACION
+    int minFitness=-1; // CONFIGURACION
+    Individuo* mejorIndividuo;
+    Individuo* peorIndividuo;
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos (DEBEN SER PARES)
+        Individuo* individuo = this->poblacionActual->at(i);
+        if(!individuo->fueSeleccionado() && individuo->getEvaluacion()>maxFitness) { // individuo mejor de todos
+            mejorIndividuo = individuo;
+            maxFitness = individuo->getEvaluacion();
+        }
+    }
+
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos (DEBEN SER PARES)
+        Individuo* individuo = this->poblacionActual->at(i);
+        if(!individuo->fueSeleccionado()) {
+            if( minFitness==-1 || individuo->getEvaluacion()<minFitness){
+                peorIndividuo = individuo;
+                minFitness = individuo->getEvaluacion();
+            }
+        }
+    }
+
+    mejorIndividuo->seleccionar(); // marcarlos, asi ya no se pueden seleccionar la proxima vez
+    peorIndividuo->seleccionar();  // marcarlos, asi ya no se pueden seleccionar la proxima vez
+    individuosSeleccionados.first = mejorIndividuo;
+    individuosSeleccionados.second = peorIndividuo;
+    return individuosSeleccionados;
 }
 
 //vector<int> AlgoritmoGenetico::seleccion2(vector<Individuo* >* poblacion) {}
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-void AlgoritmoGenetico::evaluarTodosLosIndividuos() {
-    for(int i = 0; i < columnasTablero; i = i + 1) {
+void AlgoritmoGenetico::evaluarTodosLosIndividuos() { // OK
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos
         Individuo* individuo = this->poblacionActual->at(i);
-        this->fitness1(individuo); // esto puede cambiar por la funcion de fitness 2
+        fitness1(individuo);
     }
 }
 
-bool AlgoritmoGenetico::condicionTerminacion() {
+bool AlgoritmoGenetico::condicionTerminacion() { // OK
     if(this->generacion<this->cantidadDeGeneraciones){
         this->generacion = this->generacion +1 ;
         return true;
@@ -146,7 +179,7 @@ bool AlgoritmoGenetico::condicionTerminacion() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 int AlgoritmoGenetico::valoracion(int largo) {
     if(largo>=4){
         return 21; // ganas, vale mas que todo
@@ -231,4 +264,4 @@ int AlgoritmoGenetico::largoDiagonalDerecha(int columnaEscogida,int tacticaDefen
     }
 
     return largoDiagonal;
-}
+}*/
