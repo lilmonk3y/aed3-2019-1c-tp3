@@ -85,9 +85,7 @@ void AlgoritmoGenetico::fitness2(Individuo* individuo) { // EVALUACION POR CANTI
 void AlgoritmoGenetico::fitness(Individuo* individuo) {
     if( rand()%2==0 ){ //%50
         fitness1(individuo);
-        fitness1(individuo);
     } else {
-        fitness2(individuo);
         fitness2(individuo);
     }
 }
