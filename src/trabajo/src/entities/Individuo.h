@@ -18,7 +18,7 @@ public:
     bool fueSeleccionado();
     void seleccionar();
 
-    // genoma: (genes)
+    // genoma/genotipo: (conjunto de genes)
     PESO horizontal_ofensivo;
     PESO horizontal_defensivo;
     PESO vertical_ofensivo;
@@ -32,7 +32,7 @@ public:
 private:
     // atributos de uso solo para el algoritmo genetico:
     int evaluacion; // dado por la funcion fitness
-    bool seleccionado; // usado para la seleccion
+    bool seleccionado; // usado para la seleccion (marcar si fue seleccionado)
 
 };
 

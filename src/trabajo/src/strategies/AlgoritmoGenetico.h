@@ -6,45 +6,51 @@
 #include <vector>
 #include <map>
 #include "../entities/Defines.h"
+#include "GreedyStrategy.h"
+#include "TestStrategy.h"
 
 using namespace std;
 
 class AlgoritmoGenetico {
 public:
-        AlgoritmoGenetico(int generation,int cantidadGeneraciones);
+        AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,TestStrategy rival);
         vector<Individuo>* correrAlgoritmo();
 
 private:
-        // atributo obligatorio:
+        // ATRIBUTOS:
         vector<Individuo* >* poblacionActual;// se va reemplazando por la nueva generacion.
-
-        // atributos para el criterio de terminacion y funcion fitness (tener memoria)
         int generacion;
         int cantidadDeGeneraciones;
-        int minFitness;
-        int maxFitness;
+        int columnas;
+        int filas;
+        int tamanioLinea;
+        int cantidadFichas;
+        int cantidadMaximaDeJugadas;
+        int pesoLimite;
+        int cantidadIndividuos;
+        int fitnessPromedio;
+        TestStrategy* jugadorRival; // REVISAR
+
+        // METODOS:
 
         // metodos obligatorios de la heuristica:
         vector<Individuo* >* generarPoblacion();
-        void fitness1(Individuo* individuo); // evaluacion ofensiva
-        //void fitness2(Individuo* individuo); // evaluacion ofensiva y defensiva (extension de la anterior)
-        pair <Individuo*, Individuo*> seleccion1(); // cualesquiera (retorna 2 individuos)
-        //pair <Individuo*, Individuo*> seleccion2(vector<Individuo* >* poblacion); // torneo (retorna 2 individuos)
+        void fitness1(Individuo* individuo);
+        void fitness2(Individuo* individuo);
+        pair <Individuo*, Individuo*> seleccion1();
+        pair <Individuo*, Individuo*> seleccion2();
 
         // operadores geneticos (obligatorios)
-        pair <Individuo*, Individuo*> crossover(Individuo* individuo1,Individuo* individuo2); // cruza y reproduccion (dejo la buena, la mala)
+        pair <Individuo*, Individuo*> crossover(Individuo* individuo1,Individuo* individuo2); // cruza y reproduccion
         void mutacion(Individuo* individuo);
 
         // metodos para emprolijar el codigo:
-        void evaluarTodosLosIndividuos();
-        bool condicionTerminacion(); // puede haber multiples criterios de terminacion (1 o varios ANDS)
-
-        // seran borradas:
-        int valoracion(int largo);
-        int largoFila(int columnaEscogida,int tacticaDefensivaOfensiva);
-        int largoDiagonalDerecha(int columnaEscogida,int tacticaDefensivaOfensiva);
-        int largoDiagonalIzquierda(int columnaEscogida,int tacticaDefensivaOfensiva);
-        int largoColumna(int columnaEscogida,int tacticaDefensivaOfensiva);
+        void evaluarTodosLosIndividuos(); // puede ser por fitness1 o fitness2 (cambiar adentro)
+        bool condicionTerminacion1(); // por cantidad de generaciones
+        bool condicionTerminacion2(); // por promedio entre generaciones
+        bool condicionDeMutacion(Individuo* individuo); // probabilidad por evaluacion del individuo
+        void recalcularEvaluacionPromedioDeLaPoblacion();
+        GreedyStrategy* contruirPlayerNuestro(Individuo* individuo);
 };
 
 #endif //AED3_TP3_ALGORITMOGENETICO_H
