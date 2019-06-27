@@ -236,7 +236,7 @@ bool AlgoritmoGenetico::condicionDeMutacion(Individuo* individuo){ // peor fitne
 void AlgoritmoGenetico::evaluarTodosLosIndividuos() {
     for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos
         Individuo* individuo = this->poblacionActual->at(i);
-        fitness1(individuo); // tambien se puede usar fitness2
+        fitness2(individuo);
     }
 }
 
