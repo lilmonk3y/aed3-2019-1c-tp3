@@ -15,7 +15,7 @@ using namespace std;
 
 class AlgoritmoGenetico {
 public:
-        AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,TestStrategy rival);
+        AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,TestStrategy* rival);
         vector<Individuo>* correrAlgoritmo();
 
 private:
@@ -37,8 +37,11 @@ private:
 
         // metodos obligatorios de la heuristica:
         vector<Individuo* >* generarPoblacion();
+        void fitness(Individuo* individuo);
         void fitness1(Individuo* individuo);
         void fitness2(Individuo* individuo);
+
+        pair <Individuo*, Individuo*> seleccion();
         pair <Individuo*, Individuo*> seleccion1();
         pair <Individuo*, Individuo*> seleccion2();
 

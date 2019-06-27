@@ -21,7 +21,7 @@ vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
         vector<Individuo* >* nuevaGeneracion;
         for(int i = 0; i < (this->poblacionActual->size()/2); i = i + 1) { // itero todos los pares (selecciono de a 2)
             // seleccionar 2 individuos para luego reproducirse:
-            pair<Individuo*, Individuo*> seleccionados = seleccion1(); // tambien se puede usar seleccion2
+            pair<Individuo*, Individuo*> seleccionados = seleccion(); // seleccion1 o seleccion2
             Individuo* seleccionado1 = seleccionados.first;
             Individuo* seleccionado2 = seleccionados.second;
             // aplicar operaciones geneticas (reproduccion y mutación):
@@ -32,8 +32,8 @@ vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
             mutacion(descendiente1);
             mutacion(descendiente2);
             // fitness a descendientes:
-            fitness1(descendiente1);  // tambien se puede usar fitness2
-            fitness1(descendiente2);  // tambien se puede usar fitness2
+            fitness(descendiente1);  // fitness 1 + fitness 2
+            fitness(descendiente2);  // fitness 1 + fitness 2
             nuevaGeneracion->push_back(descendiente1);
             nuevaGeneracion->push_back(descendiente2);
         }
@@ -81,6 +81,16 @@ void AlgoritmoGenetico::fitness2(Individuo* individuo) { // EVALUACION POR CANTI
         individuo->setEvaluacion(this->columnas*this->filas); // peor evaluacion es el valor mas alto
     }
  }
+
+void AlgoritmoGenetico::fitness(Individuo* individuo) {
+    if( rand()%2==0 ){ //%50
+        fitness1(individuo);
+        fitness1(individuo);
+    } else {
+        fitness2(individuo);
+        fitness2(individuo);
+    }
+}
 
 pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* mejorIndividuo,Individuo* peorIndividuo) {
     pair <Individuo*, Individuo*> descendientes;
@@ -209,6 +219,14 @@ pair <Individuo*, Individuo*>  AlgoritmoGenetico::seleccion2() { // MEJOR Y SEGU
     individuosSeleccionados.first = mejorIndividuo;
     individuosSeleccionados.second = segundoMejorIndividuo;
     return individuosSeleccionados;
+}
+
+pair <Individuo*, Individuo*> AlgoritmoGenetico::seleccion() {
+    if( rand()%2==0 ) { //50%
+        return seleccion1();
+    } else {
+        return seleccion2();
+    }
 }
 
 //////////////////////////////////OTRAS FUNCIONES///////////////////////////////////////////////////
