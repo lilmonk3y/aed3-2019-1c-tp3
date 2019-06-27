@@ -63,9 +63,9 @@ void AlgoritmoGenetico::fitness1(Individuo* individuo) { // EVALUACION SOLO POR 
     delete playerNuestro; // REVISAR
     delete game; // REVISAR
     if(datos->ganoNuestroJugador){
-        individuo->setEvaluacion(0); // mas baja mejor evaluacion (alternativa:1)
+        individuo->setEvaluacion(this->fitnessPromedio); // si gana es el promedio
     } else {
-        individuo->setEvaluacion(1); // mas alta peor evaluacion (alternativa:filas*columnas)
+        individuo->setEvaluacion(this->columnas*this->filas); // mas alta peor evaluacion
     }
 }
 
