@@ -6,8 +6,10 @@
 #include <vector>
 #include <map>
 #include "../entities/Defines.h"
+
 #include "GreedyStrategy.h"
 #include "TestStrategy.h"
+#include "../Game.h"
 
 using namespace std;
 

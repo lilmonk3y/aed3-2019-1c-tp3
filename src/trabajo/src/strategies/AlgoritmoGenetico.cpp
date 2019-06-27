@@ -57,9 +57,11 @@ vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() {
 }
 
 void AlgoritmoGenetico::fitness1(Individuo* individuo) { // EVALUACION SOLO POR GANADOR
-    // REVISAR
-    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);
-    ResultadosPartida datos = CLASS.jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
+    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);     // REVISAR
+    Game* game = new Game();     // REVISAR
+    ResultadosPartida datos = game->jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
+    delete playerNuestro; // REVISAR
+    delete game; // REVISAR
     if(datos->ganoNuestroJugador){
         individuo->setEvaluacion(0); // mas baja mejor evaluacion (alternativa:1)
     } else {
@@ -68,10 +70,11 @@ void AlgoritmoGenetico::fitness1(Individuo* individuo) { // EVALUACION SOLO POR 
 }
 
 void AlgoritmoGenetico::fitness2(Individuo* individuo) { // EVALUACION POR CANTIDAD DE JUGADAS
-    // REVISAR
-
-    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);
-    ResultadosPartida datos = CLASS.jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
+    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);     // REVISAR
+    Game* game = new Game();    // REVISAR
+    ResultadosPartida datos = game->jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
+    delete playerNuestro; // REVISAR
+    delete game; // REVISAR
     if(datos->ganoNuestroJugador){
         individuo->setEvaluacion(datos->largoPartida);
     } else {
