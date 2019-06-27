@@ -42,7 +42,12 @@ set(SOURCES
         src/trabajo/src/Player.cpp
         src/trabajo/src/Player.h
         src/trabajo/src/Game.cpp
-        src/trabajo/src/Game.h)
+        src/trabajo/src/Game.h
+        src/trabajo/src/entities/Individuo.h
+        src/trabajo/src/entities/Individuo.cpp
+        src/trabajo/src/strategies/AlgoritmoGenetico.h
+        src/trabajo/src/strategies/AlgoritmoGenetico.cpp
+        )
 
 #GTEST_BEGIN
 add_subdirectory(lib/googletest)
