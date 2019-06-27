@@ -1,143 +1,227 @@
 #include "AlgoritmoGenetico.h"
-// includes Defines.H
 
-int AlgoritmoGenetico::selectMove(Tablero* tablero, int cObjetivo, int cantidadFichas){
-    AlgoritmoGenetico* algoritmoGenetico = new AlgoritmoGenetico(tablero);
-    return algoritmoGenetico->correrAlgoritmo()->at(0).getFilaEscogida();
-}
-
-AlgoritmoGenetico::AlgoritmoGenetico(Tablero* tablero) {
-    this -> tablero = tablero;
-    this->columnasTablero = tablero->getColumnas();
-    this->filasTablero = tablero->getFilas();
-    for(int i = 0; i < columnasTablero; i = i + 1) {
-        this->columnasDisponibles[i] = !(this->tablero->columnaLlena(i));
-    }
+AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos, TestStrategy* rival) {
     this->generacion = 0;
-    this->cantidadDeGeneraciones = 100;
+    this->cantidadDeGeneraciones = cantidadGeneraciones;
+    this->columnas = cols;
+    this->filas = fils;
+    this->tamanioLinea = tamLinea;
+    this->cantidadFichas = cantFichas;
+    this->cantidadMaximaDeJugadas = fils*cols;
+    this->pesoLimite = pesoLimite;
+    this->cantidadIndividuos = cantIndividuos;
+    this->fitnessPromedio = 0;
+    TestStrategy* jugadorRival = rival; // REVISAR
 }
 
 vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
     this->poblacionActual = this->generarPoblacion();
     this->evaluarTodosLosIndividuos();
-    while(condicionTerminacion()) {
+    while(condicionTerminacion1() && condicionTerminacion2()) { // condicion 1 ó 2 ó ambas.
         vector<Individuo* >* nuevaGeneracion;
-        for(int i = 0; i < (this->poblacionActual->size()/2); i = i + 1) { // itero todos los pares
-            pair<Individuo*, Individuo*> seleccionados = this->seleccion1(); // PUEDE SER MODIFICADO por seleccion2
+        for(int i = 0; i < (this->poblacionActual->size()/2); i = i + 1) { // itero todos los pares (selecciono de a 2)
+            // seleccionar 2 individuos para luego reproducirse:
+            pair<Individuo*, Individuo*> seleccionados = seleccion1(); // tambien se puede usar seleccion2
             Individuo* seleccionado1 = seleccionados.first;
             Individuo* seleccionado2 = seleccionados.second;
-            // aplicar operaciones geneticas:
-            pair <Individuo*, Individuo*> descendientes = crossover(seleccionado1,seleccionado2);
+            // aplicar operaciones geneticas (reproduccion y mutación):
+            pair <Individuo*, Individuo*> descendientes = crossover(seleccionado1,seleccionado2); // reproduccion
             Individuo* descendiente1 = descendientes.first;
             Individuo* descendiente2 = descendientes.second;
 
             mutacion(descendiente1);
-            mutacion(seleccionado2);
+            mutacion(descendiente2);
             // fitness a descendientes:
-            this->fitness1(descendiente1);  // PUEDE SER MODIFICADO por fitness2
-            this->fitness1(descendiente2);  // PUEDE SER MODIFICADO por fitness2
+            fitness1(descendiente1);  // tambien se puede usar fitness2
+            fitness1(descendiente2);  // tambien se puede usar fitness2
             nuevaGeneracion->push_back(descendiente1);
             nuevaGeneracion->push_back(descendiente2);
         }
-        delete this->poblacionActual; // NO HAYA ALIASING
-        this->poblacionActual = nuevaGeneracion; // NO HAYA ALIASING
+        delete this->poblacionActual; // QUE NO HAYA ALIASING con nuevaGeneracion
+        this->poblacionActual = nuevaGeneracion; //QUE  NO HAYA ALIASING con poblacionActual anterior
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////OPERACIONES OBLIGATORIAS//////////////////////////////////////////////////////////////
 
 vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() {
-    vector<Individuo* > * nuevaPoblacion = new vector<Individuo*>(this->columnasTablero);
-    for(int i = 0; i < columnasTablero; i = i + 1) {
-        int fitnessIncial = 0;
-        int columna = i;
-        if(!this->tablero->columnaLlena(columna)){
-            Individuo* individuoOfensivo = new Individuo(fitnessIncial, columna, JUGADA_ALIADA); // 1 == ofensivo (jugada aliada)
-            Individuo* individuoDefensivo = new Individuo(fitnessIncial, columna, JUGADA_ENEMIGA); // 0 == defensivo (jugada enemiga)
-            nuevaPoblacion->push_back(individuoOfensivo);
-            nuevaPoblacion->push_back(individuoDefensivo);
-        }
+    vector<Individuo*>* nuevaPoblacion = new vector<Individuo*>(cantidadIndividuos);
+
+    for(int i = 0; i < cantidadIndividuos; i = i + 1) {
+        // individuos con genes aleatorios entre 0 y pesoLimite-1:
+        Individuo* individuo = new Individuo(rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite);
+        nuevaPoblacion->push_back(individuo);
     }
+
     return nuevaPoblacion;
 }
 
-// LO MAS DIFICIL:
-//#define JUGADA_ENEMIGA 0
-//#define JUGADA_ALIADA 1
-void AlgoritmoGenetico::fitness1(Individuo* individuo) {
-    int columnaEscogida = individuo->getFilaEscogida();
-    int estrategia = individuo->getEstrategia(); // defensiva, ofensiva
-    int valorJugada = valoracion(largoFila( columnaEscogida, estrategia )) +
-            valoracion(largoColumna( columnaEscogida, estrategia )) +
-            valoracion(largoDiagonalIzquierda( columnaEscogida, estrategia)) +
-            valoracion(largoDiagonalDerecha( columnaEscogida, estrategia));
-
-    individuo->setEvaluacion(valorJugada);
+void AlgoritmoGenetico::fitness1(Individuo* individuo) { // EVALUACION SOLO POR GANADOR
+    // REVISAR
+    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);
+    ResultadosPartida datos = CLASS.jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
+    if(datos->ganoNuestroJugador){
+        individuo->setEvaluacion(0); // mas baja mejor evaluacion (alternativa:1)
+    } else {
+        individuo->setEvaluacion(1); // mas alta peor evaluacion (alternativa:filas*columnas)
+    }
 }
 
-//void AlgoritmoGenetico::fitness2(Individuo* individuo) {}
+void AlgoritmoGenetico::fitness2(Individuo* individuo) { // EVALUACION POR CANTIDAD DE JUGADAS
+    // REVISAR
 
-pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* individuo1,Individuo* individuo2) {
-    pair <Individuo*, Individuo*> descendientes; // no hace falta iniciarlo??
-    int eval = 0;
-    Individuo* descendiente1 = new Individuo(eval,individuo1->getFilaEscogida(),individuo1->getEstrategia());
-    Individuo* descendiente2 = new Individuo(eval,individuo2->getFilaEscogida(),individuo2->getEstrategia());
-    if(individuo1->getEvaluacion() - individuo2->getEvaluacion() > 4) {
-
-        if(individuo1->getEvaluacion() > individuo2->getEvaluacion()){
-            if(individuo1->getEstrategia()==individuo2->getEstrategia()) {
-                descendiente2->setFilaEscogida(individuo1->getFilaEscogida());
-            } else {
-                descendiente2->setEstrategia(individuo1->getEstrategia());
-            }
-        }
-        else{
-            if(individuo1->getEstrategia()==individuo2->getEstrategia()) {
-                descendiente1->setFilaEscogida(individuo2->getFilaEscogida());
-            } else {
-                descendiente1->setEstrategia(individuo2->getEstrategia());
-            }
-        }
-
+    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);
+    ResultadosPartida datos = CLASS.jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
+    if(datos->ganoNuestroJugador){
+        individuo->setEvaluacion(datos->largoPartida);
+    } else {
+        individuo->setEvaluacion(this->columnas*this->filas); // peor evaluacion es el valor mas alto
     }
-    descendientes.first = descendiente1;
-    descendientes.second = descendiente2;
+ }
+
+pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* mejorIndividuo,Individuo* peorIndividuo) {
+    pair <Individuo*, Individuo*> descendientes;
+    Individuo* descendiente1 = new Individuo(*mejorIndividuo); // clonacion
+    Individuo* descendiente2 = new Individuo(*peorIndividuo); // clonacion
+
+    if(rand()%2==0){ // 50%
+        descendiente2->jugada_aleatoria = mejorIndividuo->jugada_aleatoria;
+        descendiente2->vertical_ofensivo = mejorIndividuo->vertical_ofensivo;
+        descendiente2->vertical_defensivo = mejorIndividuo->vertical_defensivo;
+        descendiente2->horizontal_ofensivo = mejorIndividuo->horizontal_ofensivo;
+        descendiente2->horizontal_defensivo = mejorIndividuo->horizontal_defensivo;
+    } else {
+        descendiente2->diagonal_45_ofensivo = mejorIndividuo->diagonal_45_ofensivo;
+        descendiente2->diagonal_45_defensivo = mejorIndividuo->diagonal_45_defensivo;
+        descendiente2->diagonal_315_ofensivo = mejorIndividuo->diagonal_315_ofensivo;
+        descendiente2->diagonal_315_defensivo = mejorIndividuo->diagonal_315_defensivo;
+    }
+
+    descendientes.first = descendiente1; // el mejor sobrevive
+    descendientes.second = descendiente2; // hereda cosas del otro individuo, del mejor, la mitad de genes
     return descendientes;
 }
 
 void AlgoritmoGenetico::mutacion(Individuo* individuo) {
-    // ver como anda sin mutacion, pero debería ser minima si no se estanca
-    //if(individuo->getEvaluacion() < 5) { // no muta, ya que gana
-    //}
-}
+    if(condicionDeMutacion(individuo)){ // % de probabilidad de mutacion depende del desempeño
+        int valorAleatorio = rand()%pesoLimite; // aleatorio de 0 a pesoLimite-1
+        int genAleatorio = rand()%10; // aleatorio de 0 a 9 (CANTIDAD DE GENES)
+        if( genAleatorio==1 ){
+            individuo->horizontal_defensivo = valorAleatorio;
 
-pair <Individuo*, Individuo*> AlgoritmoGenetico::seleccion1() {
-    pair <Individuo*, Individuo*> individuosSeleccionados;
-    for(int i = 0; i < columnasTablero; i = i + 1) {
-        Individuo* individuo1 = poblacionActual->at(i);
-        if(!individuo1->fueSeleccionado()){
-            Individuo* individuo2 = poblacionActual->at(i+1);
-            individuosSeleccionados.first = individuo1;
-            individuosSeleccionados.second = individuo2;
-            individuo1->seleccionar();
-            individuo2->seleccionar();
-            return individuosSeleccionados;
+        }
+        if( genAleatorio==2 ){
+            individuo->horizontal_ofensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==3 ){
+            individuo->vertical_defensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==4 ){
+            individuo->vertical_ofensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==5 ){
+            individuo->diagonal_315_defensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==6 ){
+            individuo->diagonal_315_ofensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==7 ){
+            individuo->diagonal_45_defensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==8 ){
+            individuo->diagonal_45_ofensivo = valorAleatorio;
+
+        }
+        if( genAleatorio==9 ){
+            individuo->jugada_aleatoria = valorAleatorio;
+
         }
     }
 }
 
-//vector<int> AlgoritmoGenetico::seleccion2(vector<Individuo* >* poblacion) {}
+pair <Individuo*, Individuo*> AlgoritmoGenetico::seleccion1() { // MEJOR Y PEOR INDIVIDUOS
 
-/////////////////////////////////////////////////////////////////////////////////////
+    pair <Individuo*, Individuo*> individuosSeleccionados;
+    int peorFitness = 0; // cantidad minima de jugadas (va aumentando cuando es peor)
+    int mejorFitness = filas*columnas; // cantidad maxima de jugadas (va disminuyendo cuando es mejor)
+
+    Individuo* mejorIndividuo;
+    Individuo* peorIndividuo;
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos (DEBEN SER PARES)
+        Individuo* individuo = this->poblacionActual->at(i);
+        if(!individuo->fueSeleccionado() && individuo->getEvaluacion()<=mejorFitness) { // individuo mejor de todos (<= porque pueden ser todos iguales)
+            mejorIndividuo = individuo;
+            mejorFitness = individuo->getEvaluacion();
+        }
+    }
+
+    mejorIndividuo->seleccionar(); // marcarlos, asi ya no se pueden seleccionar la proxima vez
+
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos (DEBEN SER PARES)
+        Individuo* individuo = this->poblacionActual->at(i);
+        if(!individuo->fueSeleccionado()) {
+            if( peorFitness==0 || individuo->getEvaluacion()>=peorFitness){
+                peorIndividuo = individuo;
+                peorFitness = individuo->getEvaluacion();
+            }
+        }
+    }
+
+    peorIndividuo->seleccionar();  // marcarlos, asi ya no se pueden seleccionar la proxima vez
+
+    individuosSeleccionados.first = mejorIndividuo;
+    individuosSeleccionados.second = peorIndividuo;
+    return individuosSeleccionados;
+}
+
+pair <Individuo*, Individuo*>  AlgoritmoGenetico::seleccion2() { // MEJOR Y SEGUNDO MEJOR
+
+    int mejorFitness = filas*columnas; // cantidad maxima de jugadas (va disminuyendo cuando es mejor)
+
+    pair <Individuo*, Individuo*> individuosSeleccionados;
+
+    Individuo* mejorIndividuo=NULL;
+    Individuo* segundoMejorIndividuo=NULL;
+
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos (DEBEN SER PARES)
+        Individuo* individuo = this->poblacionActual->at(i);
+        if(!individuo->fueSeleccionado() && individuo->getEvaluacion()<=mejorFitness) { // individuo mejor de todos
+
+            if(mejorIndividuo!=NULL){
+                segundoMejorIndividuo = mejorIndividuo;
+            }
+            mejorIndividuo = individuo;
+            mejorFitness = individuo->getEvaluacion();
+        }
+    }
+
+    mejorIndividuo->seleccionar(); // marcarlos, asi ya no se pueden seleccionar la proxima vez
+    segundoMejorIndividuo->seleccionar();  // marcarlos, asi ya no se pueden seleccionar la proxima vez
+    individuosSeleccionados.first = mejorIndividuo;
+    individuosSeleccionados.second = segundoMejorIndividuo;
+    return individuosSeleccionados;
+}
+
+//////////////////////////////////OTRAS FUNCIONES///////////////////////////////////////////////////
+
+bool AlgoritmoGenetico::condicionDeMutacion(Individuo* individuo){ // peor fitness (mayor valor), mayor probabilidad
+    return rand()%(this->cantidadMaximaDeJugadas-individuo->getEvaluacion()) == 0; // cantidad de jugadas cercanas a la maxima, es mas probable.
+}
 
 void AlgoritmoGenetico::evaluarTodosLosIndividuos() {
-    for(int i = 0; i < columnasTablero; i = i + 1) {
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos
         Individuo* individuo = this->poblacionActual->at(i);
-        this->fitness1(individuo); // esto puede cambiar por la funcion de fitness 2
+        fitness1(individuo); // tambien se puede usar fitness2
     }
 }
 
-bool AlgoritmoGenetico::condicionTerminacion() {
+bool AlgoritmoGenetico::condicionTerminacion1() { // por cantidad de generaciones
     if(this->generacion<this->cantidadDeGeneraciones){
         this->generacion = this->generacion +1 ;
         return true;
@@ -145,90 +229,37 @@ bool AlgoritmoGenetico::condicionTerminacion() {
     return false;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////
-
-int AlgoritmoGenetico::valoracion(int largo) {
-    if(largo>=4){
-        return 21; // ganas, vale mas que todo
+bool AlgoritmoGenetico::condicionTerminacion2() { // si el promedio no cambia entre generaciones consecutivas termina
+    int promedioGeneracionAnterior = this->fitnessPromedio;
+    recalcularEvaluacionPromedioDeLaPoblacion();
+    int promedioGeneracionActual = this->fitnessPromedio;
+    if(promedioGeneracionAnterior == promedioGeneracionActual ){
+        return false; // si son iguales los promedios terminar
     }
-    if(largo==3) {
-        return 5;
-    }
-    if(largo==2) {
-        return 3;
-    }
-    return 1;
+    return true; // sino seguir
 }
 
-// PENSAR EN COMPLEJIDADES
-int AlgoritmoGenetico::largoFila(int columnaEscogida,int tacticaDefensivaOfensiva) { // 0=def, 1 =of
-    int filaDeFichaActual = this->tablero->getIndiceFila(columnaEscogida); // indice fila donde seria nueva jugada
-    int largoFila = 1;
-    // contar izquierda:
-    int col = columnaEscogida-1;
-    while( this->tablero->jugadaEn(col,filaDeFichaActual) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoFila++;
-        col = col -1;
+void AlgoritmoGenetico::recalcularEvaluacionPromedioDeLaPoblacion() {
+    int sumatoriaEvaluaciones = 0;
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) { // itero todos los individuos
+        Individuo* individuo = this->poblacionActual->at(i);
+        sumatoriaEvaluaciones = sumatoriaEvaluaciones + individuo->getEvaluacion();
     }
-    // contar derecha:
-    col = columnaEscogida +1;
-    while( this->tablero->jugadaEn(col,filaDeFichaActual) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoFila++;
-        col = col +1;
-    }
-    return largoFila;
+    this->fitnessPromedio = sumatoriaEvaluaciones/this->cantidadIndividuos;
 }
 
-int AlgoritmoGenetico::largoColumna(int columnaEscogida,int tacticaDefensivaOfensiva) { // solo cuenta para abajo
-    int largoColumna = 1;
-    int fila = this->tablero->getIndiceFila(columnaEscogida)-1; // indice fila donde seria nueva jugada
-    while( this->tablero->jugadaEn(columnaEscogida,fila) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoColumna++;
-        fila = fila - 1;
-    }
-    return largoColumna;
+GreedyStrategy* AlgoritmoGenetico::contruirPlayerNuestro(Individuo* individuo) {
+    auto *pesos = new std::map<STRATEGY_NAME, PESO>();
+    pesos->insert(std::make_pair(HORIZONTAL_OFENSIVO, individuo->horizontal_ofensivo ));
+    pesos->insert(std::make_pair(HORIZONTAL_DEFENSIVO, individuo->horizontal_defensivo ));
+    pesos->insert(std::make_pair(VERTICAL_OFENSIVO, individuo->vertical_ofensivo ));
+    pesos->insert(std::make_pair(VERTICAL_DEFENSIVO, individuo->vertical_defensivo ));
+    pesos->insert(std::make_pair(DIAGONAL_45_OFENSIVO, individuo->diagonal_45_ofensivo ));
+    pesos->insert(std::make_pair(DIAGONAL_45_DEFENSIVO,individuo->diagonal_45_defensivo ));
+    pesos->insert(std::make_pair(DIAGONAL_315_OFENSIVO, individuo->diagonal_315_ofensivo ));
+    pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO,individuo->diagonal_315_defensivo ));
+    pesos->insert(std::make_pair(JUGADA_ALEATORIA, individuo->jugada_aleatoria  ));
+
+    return new GreedyStrategy(pesos);
 }
 
-int AlgoritmoGenetico::largoDiagonalIzquierda(int columnaEscogida,int tacticaDefensivaOfensiva) {
-    int largoDiagonal = 1;
-
-    int fila = this->tablero->getIndiceFila(columnaEscogida)-1;
-    int columna = columnaEscogida-1;
-    while( this->tablero->jugadaEn(columna,fila) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoDiagonal++;
-        columna = columna-1;
-        fila = fila-1; // QUIZAS SEA AL REVES +1
-    }
-
-    fila = this->tablero->getIndiceFila(columnaEscogida)+1;
-    columna = columnaEscogida+1;
-    while( this->tablero->jugadaEn(columna,fila) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoDiagonal++;
-        columna = columna+1;
-        fila = fila+1;  // QUIZAS SEA AL REVES +1
-    }
-
-    return largoDiagonal;
-}
-
-int AlgoritmoGenetico::largoDiagonalDerecha(int columnaEscogida,int tacticaDefensivaOfensiva) {
-    int largoDiagonal = 1;
-
-    int fila = this->tablero->getIndiceFila(columnaEscogida)-1;   // QUIZAS SEA AL REVES +1
-    int columna = columnaEscogida-1;   // QUIZAS SEA AL REVES +1
-    while( this->tablero->jugadaEn(columna,fila) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoDiagonal++;
-        columna = columna-1;
-        fila = fila-1; // QUIZAS SEA AL REVES +1
-    }
-
-    fila = this->tablero->getIndiceFila(columnaEscogida)+1;   // QUIZAS SEA AL REVES +1
-    columna = columnaEscogida+1;   // QUIZAS SEA AL REVES +1
-    while( this->tablero->jugadaEn(columna,fila) == tacticaDefensivaOfensiva) { // LIMITES TABLERO
-        largoDiagonal++;
-        columna = columna+1;
-        fila = fila+1;  // QUIZAS SEA AL REVES +1
-    }
-
-    return largoDiagonal;
-}
