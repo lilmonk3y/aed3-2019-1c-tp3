@@ -10,7 +10,7 @@ AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils
     this->cantidadMaximaDeJugadas = fils*cols;
     this->pesoLimite = pesoLimite;
     this->cantidadIndividuos = cantIndividuos;
-    this->fitnessPromedio = 0;
+    this->fitnessPromedio = fils*cols;
     PlayStrategy* jugadorRival = rival;
 }
 
@@ -50,7 +50,8 @@ vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() {
 
     for(int i = 0; i < cantidadIndividuos; i = i + 1) {
         // individuos con genes aleatorios entre 0 y pesoLimite-1:
-        Individuo* individuo = new Individuo(rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite);
+        int evaluacionInicial = this->filas*this->columnas;
+        Individuo* individuo = new Individuo(rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,evaluacionInicial);
         nuevaPoblacion->push_back(individuo);
     }
 

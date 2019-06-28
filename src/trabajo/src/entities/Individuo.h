@@ -9,8 +9,8 @@ using namespace std;
 class Individuo {
 
 public:
-    Individuo();
-    Individuo(PESO,PESO,PESO,PESO,PESO,PESO,PESO,PESO,PESO);
+    Individuo(int pesoGenes,int evaluacion);
+    Individuo(PESO,PESO,PESO,PESO,PESO,PESO,PESO,PESO,PESO,int evaluacion);
     Individuo(Individuo& anotherIndividuo); // constructor por copia
     int getEvaluacion();
     void setEvaluacion(int evaluacion);

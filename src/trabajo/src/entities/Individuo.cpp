@@ -1,22 +1,22 @@
 #include "Individuo.h"
 
-Individuo::Individuo() {
-    this->evaluacion = 0;
+Individuo::Individuo(int pesoGenes,int eval) {
+    this->evaluacion = eval;
     this->seleccionado = false;
     // genoma/genotipo: (conjunto de genes)
-    this->horizontal_defensivo = 0;
-    this->horizontal_ofensivo = 0;
-    this->vertical_defensivo = 0;
-    this->vertical_ofensivo = 0;
-    this->diagonal_45_defensivo = 0;
-    this->diagonal_45_ofensivo = 0;
-    this->diagonal_315_defensivo = 0;
-    this->diagonal_315_ofensivo = 0;
-    this->jugada_aleatoria = 0;
+    this->horizontal_defensivo = pesoGenes;
+    this->horizontal_ofensivo = pesoGenes;
+    this->vertical_defensivo = pesoGenes;
+    this->vertical_ofensivo = pesoGenes;
+    this->diagonal_45_defensivo = pesoGenes;
+    this->diagonal_45_ofensivo = pesoGenes;
+    this->diagonal_315_defensivo = pesoGenes;
+    this->diagonal_315_ofensivo = pesoGenes;
+    this->jugada_aleatoria = pesoGenes;
 }
 
-Individuo::Individuo(PESO gen1,PESO gen2,PESO gen3,PESO gen4,PESO gen5,PESO gen6,PESO gen7,PESO gen8,PESO gen9) {
-    this->evaluacion = 0;
+Individuo::Individuo(PESO gen1,PESO gen2,PESO gen3,PESO gen4,PESO gen5,PESO gen6,PESO gen7,PESO gen8,PESO gen9,int eval) {
+    this->evaluacion = eval;
     this->seleccionado = false;
     // genoma/genotipo: (conjunto de genes)
     this->horizontal_defensivo = gen1;
