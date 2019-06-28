@@ -1,6 +1,6 @@
 #include "AlgoritmoGenetico.h"
 
-AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos, TestStrategy* rival) {
+AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,PlayStrategy* rival) {
     this->generacion = 0;
     this->cantidadDeGeneraciones = cantidadGeneraciones;
     this->columnas = cols;
@@ -11,10 +11,10 @@ AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils
     this->pesoLimite = pesoLimite;
     this->cantidadIndividuos = cantIndividuos;
     this->fitnessPromedio = 0;
-    TestStrategy* jugadorRival = rival; // REVISAR
+    PlayStrategy* jugadorRival = rival;
 }
 
-vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
+Individuo* AlgoritmoGenetico::correrAlgoritmo() {
     this->poblacionActual = this->generarPoblacion();
     this->evaluarTodosLosIndividuos();
     while(condicionTerminacion1() && condicionTerminacion2()) { // condicion 1 ó 2 ó ambas.
@@ -40,6 +40,7 @@ vector<Individuo>* AlgoritmoGenetico::correrAlgoritmo() {
         delete this->poblacionActual; // QUE NO HAYA ALIASING con nuevaGeneracion
         this->poblacionActual = nuevaGeneracion; //QUE  NO HAYA ALIASING con poblacionActual anterior
     }
+    return mejorIndividuo(); // retornar al individuo con mejor aptitud (ademas imprime sus genes en la terminal)
 }
 
 //////////////////////////////////////OPERACIONES OBLIGATORIAS//////////////////////////////////////////////////////////////
@@ -57,11 +58,11 @@ vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() {
 }
 
 void AlgoritmoGenetico::fitness1(Individuo* individuo) { // EVALUACION SOLO POR GANADOR
-    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);     // REVISAR
-    Game* game = new Game();     // REVISAR
+    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);
+    Game* game = new Game();
     ResultadosPartida datos = game->jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
-    delete playerNuestro; // REVISAR
-    delete game; // REVISAR
+    delete playerNuestro;
+    delete game;
     if(datos->ganoNuestroJugador){
         individuo->setEvaluacion(this->fitnessPromedio); // si gana es el promedio
     } else {
@@ -70,11 +71,11 @@ void AlgoritmoGenetico::fitness1(Individuo* individuo) { // EVALUACION SOLO POR 
 }
 
 void AlgoritmoGenetico::fitness2(Individuo* individuo) { // EVALUACION POR CANTIDAD DE JUGADAS
-    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);     // REVISAR
-    Game* game = new Game();    // REVISAR
+    GreedyStrategy* playerNuestro = contruirPlayerNuestro(individuo);
+    Game* game = new Game();
     ResultadosPartida datos = game->jugar(columnas,filas,tamanioLinea,cantidadFichas,playerNuestro,jugadorRival); // REVISAR
-    delete playerNuestro; // REVISAR
-    delete game; // REVISAR
+    delete playerNuestro;
+    delete game;
     if(datos->ganoNuestroJugador){
         individuo->setEvaluacion(datos->largoPartida);
     } else {
@@ -265,6 +266,30 @@ void AlgoritmoGenetico::recalcularEvaluacionPromedioDeLaPoblacion() {
         sumatoriaEvaluaciones = sumatoriaEvaluaciones + individuo->getEvaluacion();
     }
     this->fitnessPromedio = sumatoriaEvaluaciones/this->cantidadIndividuos;
+}
+
+Individuo* AlgoritmoGenetico::mejorIndividuo() {
+    int mejorEvaluacion=this->columnas*this->filas;
+    Individuo* mejorIndividuo;
+    for(std::size_t i=0; i<this->poblacionActual->size(); ++i) {
+        Individuo* individuo = this->poblacionActual->at(i);
+        if(individuo->getEvaluacion()<=mejorEvaluacion){
+            mejorIndividuo = individuo;
+            mejorEvaluacion = individuo->getEvaluacion();
+        }
+    }
+    cout << "evaluacion: " << mejorIndividuo->getEvaluacion() << endl;
+    // mostrar genes en pantalla:
+    cout << "horizontal_ofensivo: " << mejorIndividuo->horizontal_ofensivo << endl;
+    cout << "horizontal_defensivo: " << mejorIndividuo->horizontal_defensivo << endl;
+    cout << "vertical_ofensivo: " << mejorIndividuo->vertical_ofensivo << endl;
+    cout << "vertical_defensivo: " << mejorIndividuo->vertical_defensivo << endl;
+    cout << "diagonal_45_ofensivo: " << mejorIndividuo->diagonal_45_ofensivo << endl;
+    cout << "diagonal_45_defensivo: " << mejorIndividuo->diagonal_45_defensivo << endl;
+    cout << "diagonal_315_ofensivo: " << mejorIndividuo->diagonal_315_ofensivo << endl;
+    cout << "diagonal_315_defensivo: " << mejorIndividuo->diagonal_315_defensivo << endl;
+    cout << "jugada_aleatoria: " << mejorIndividuo->jugada_aleatoria << endl;
+    return mejorIndividuo;
 }
 
 GreedyStrategy* AlgoritmoGenetico::contruirPlayerNuestro(Individuo* individuo) {

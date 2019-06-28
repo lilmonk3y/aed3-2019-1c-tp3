@@ -15,8 +15,8 @@ using namespace std;
 
 class AlgoritmoGenetico {
 public:
-        AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,TestStrategy* rival);
-        vector<Individuo>* correrAlgoritmo();
+        AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,PlayStrategy* rival);
+        Individuo* correrAlgoritmo();
 
 private:
         // ATRIBUTOS:
@@ -55,6 +55,7 @@ private:
         bool condicionTerminacion2(); // por promedio entre generaciones
         bool condicionDeMutacion(Individuo* individuo); // probabilidad por evaluacion del individuo
         void recalcularEvaluacionPromedioDeLaPoblacion();
+        Individuo* mejorIndividuo();
         GreedyStrategy* contruirPlayerNuestro(Individuo* individuo);
 };
 
