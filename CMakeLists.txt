@@ -40,7 +40,9 @@ set(SOURCES
         src/trabajo/src/players/iPlayer.h
         src/trabajo/src/entities/Tablero.cpp
         src/trabajo/src/entities/Tablero.h
-        src/trabajo/src/entities/Defines.h)
+        src/trabajo/src/entities/Defines.h
+        src/trabajo/src/ConsoleGame.h
+        src/trabajo/src/ConsoleGame.cpp)
 
 #GTEST_BEGIN
 add_subdirectory(lib/googletest)
