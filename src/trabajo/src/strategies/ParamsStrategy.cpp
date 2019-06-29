@@ -1,7 +1,3 @@
-//
-// Created by Christian nahuel Rivera on 15/6/19.
-//
-
 #include "ParamsStrategy.h"
 #include <cstdlib>
 #include <limits>
@@ -37,7 +33,8 @@ int ParamsStrategy::calcularPuntajeDelMovimiento(const Tablero& tablero, int cOb
       puntajeLongitudMaximaPropia = calcularPuntajeLongitudMaxima(tablero, cObjetivo, cantidadFichas, columna, JUGADA_ALIADA),
       puntajeLongitudMaximaRival = calcularPuntajeLongitudMaxima(tablero, cObjetivo, cantidadFichas, columna, JUGADA_ENEMIGA);
 
-  return puntajeCentralidad * paramCentralidad + puntajeLineaGanadora * paramLineaGanadora
+  return puntajeCentralidad * paramCentralidad
+    + puntajeLineaGanadora * paramLineaGanadora
     - puntajeRivalPuedeGanar * paramRivalPuedeGanar
     + puntajeLongitudMaximaPropia * paramLongitudMaximaPropia
     - puntajeLongitudMaximaRival * paramLongitudMaximaRival;
@@ -52,75 +49,204 @@ int ParamsStrategy::calcularPuntajeCentralidad(const Tablero& tablero, int colum
 }
 
 int ParamsStrategy::calcularPuntajeLineaGanadora(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada) {
-  // Si realizando este movimiento hace crecer alguna línea que tenga espacio suficiente para ganar
-  // devuelve un 1, si no devuelve un 0.
+  // Si realizando este movimiento puede hacer crecer alguna línea que tenga espacio suficiente para
+  // ganar devuelve un 1, si no devuelve un 0.
 
-  int puntajeVertical = 0, puntajeHorizontal = 0, puntajeDiagonalDescendente = 0, puntajeDiagonalAscendente = 0;
-  int fichasPropias;
-  
+  int puntajeVertical = 0, puntajeHorizontal = 0,
+      puntajeDiagonalDescendente = 0, puntajeDiagonalAscendente = 0;
+
   // Ver línea vertical:
 
-  int filasVacias = 0;
-  int fila = tablero.getFilas() - 1;
-  while (filasVacias < cObjetivo and tablero.jugadaEn(columnaJugada, fila) == VACIO) { 
-    filasVacias++;
-    fila--;
-  }
-  if (filasVacias == cObjetivo) {
-    puntajeVertical = 1;
-    goto horizontal;
-  }
-  fichasPropias = 0;
-  while (fila >= 0 and tablero.jugadaEn(columnaJugada, fila) == JUGADA_ALIADA) {
-    fichasPropias++;
-    fila--;
-  }
-  if (filasVacias + fichasPropias >= cObjetivo) {
-    puntajeVertical = 1;
-  }
+  if (columnaVivaParaElJugador(columnaJugada, tablero, cObjetivo, JUGADA_ALIADA)) puntajeVertical = 1;
 
   // Ver línea horizontal:
 
-  horizontal:
-  fila = tablero.getIndiceFila(columnaJugada) + 1;
-  int columnaEnemigaAnterior = -1;
-  for (int col = 0; col < tablero.getColumnas(); ++col) {
-    if (tablero.jugadaEn(col, fila) == JUGADA_ENEMIGA) {
-      if (columnaEnemigaAnterior == -1 and col >= cObjetivo) {
-        puntajeHorizontal = 1;
-        break;      
-      }
-      if (col - columnaEnemigaAnterior - 1 >= cObjetivo) {
-        puntajeHorizontal = 1;
-        break;
-      }
-      columnaEnemigaAnterior = col;
-    }
-  }
-  if (tablero.getColumnas() - columnaEnemigaAnterior >= cObjetivo) puntajeHorizontal = 1;
+  int fila = tablero.getFichasEnColumna(columnaJugada);
+  if (filaVivaParaElJugador(fila, tablero, cObjetivo, JUGADA_ALIADA)) puntajeHorizontal = 1;
 
-  // Ver línea diagonal descendente de izquierda a derecha:
-
-  //int filaJugada = tablero.getIndiceFila(columnaJugada) + 1;
-  //if (filaJugada + 1 < cObjetivo) goto diagonalAscendente;
-
-  //for (int col)
-
-  //diagonalAscendente:
+  // Ver líneas diagonales:
+  // TODO
 
   return puntajeVertical + puntajeHorizontal + puntajeDiagonalDescendente + puntajeDiagonalAscendente;
 }
 
+bool ParamsStrategy::columnaVivaParaElJugador(int columna, const Tablero& tablero, int cObjetivo, int jugador) {
+  int filasVacias = 0;
+  int fila = tablero.getFilas() - 1;
+  while (filasVacias < cObjetivo and tablero.jugadaEn(columna, fila) == VACIO) { 
+    filasVacias++;
+    fila--;
+  }
+  if (filasVacias == cObjetivo) {
+    return true;
+  }
+  int fichasPropias = 0;
+  while (fila >= 0 and tablero.jugadaEn(columna, fila) == jugador) {
+    fichasPropias++;
+    fila--;
+  }
+  if (filasVacias + fichasPropias >= cObjetivo) {
+    return true;
+  }
+  return false;
+}
+
+bool ParamsStrategy::filaVivaParaElJugador(int fila, const Tablero& tablero, int cObjetivo, int jugador) {
+  int columnaEnemigaAnterior = -1;
+  int jugadorRival = jugador == JUGADA_ALIADA ? JUGADA_ENEMIGA : JUGADA_ALIADA;
+  for (int col = 0; col < tablero.getColumnas(); ++col) {
+    if (tablero.jugadaEn(col, fila) == jugadorRival) {
+      if (columnaEnemigaAnterior == -1 and col >= cObjetivo) {
+        return true;     
+      }
+      if (col - columnaEnemigaAnterior - 1 >= cObjetivo) {
+        return true;
+      }
+      columnaEnemigaAnterior = col;
+    }
+  }
+  if (tablero.getColumnas() - columnaEnemigaAnterior >= cObjetivo) return true;
+  return false;
+}
+
 int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada) {
   int puntaje = 0;
-  // if (rival tiene una línea vertical a un movimiento de ganar) puntaje++;
-  // if (rival tiene una línea horizontal a dos movimientos de ganar) puntaje++;
-  // if (rival tiene una línea diagonal a dos movimientos de ganar) puntaje++;
+
+  // Líneas verticales:
+  // idea: if (rival tiene una línea vertical a un movimiento de ganar) puntaje++;
+
+  for (int col = 0; col < tablero.getColumnas(); ++col) {
+    if (tablero.columnaLlena(col) or col == columnaJugada) continue;
+    int filasVacias = 0;
+    int fila = tablero.getFilas() - 1;
+    while (fila >= 0 and tablero.jugadaEn(col, fila) == VACIO) { 
+      filasVacias++;
+      fila--;
+    }
+    int fichasRivales = 0;
+    while (fila >= 0 and tablero.jugadaEn(col, fila) == JUGADA_ENEMIGA) {
+      fichasRivales++;
+      fila--;
+    }
+    if (filasVacias + fichasRivales >= cObjetivo and fichasRivales == cObjetivo - 1) {
+      puntaje++;
+      break;
+    } 
+  }
+
+  // Líneas horizontales:
+  // idea: if (rival tiene una línea horizontal a dos movimientos de ganar) puntaje += 2;
+  // se hace con dos movimientos porque si el rival tiene una línea en el medio con lugar a los dos
+  // lados puede dejarte en una situación en que te gana sí o sí porque lo bloqueás en un lado y te
+  // gana por el otro lado
+
+  bool cortar = false;
+  for (int fila = 0; fila < tablero.getFilas() and not tablero.filaVacia(fila) and not cortar; ++fila) {
+    int longitud = 0;
+    if (not filaVivaParaElJugador(fila, tablero, cObjetivo, JUGADA_ENEMIGA)) continue;
+    for (int col = 0; col < tablero.getColumnas(); ++col) {
+      if (tablero.getFichasEnColumna(col) < fila) {
+        longitud = 0;
+        continue;
+      }
+      if (tablero.getFichasEnColumna(col) == fila and col == columnaJugada) {
+        longitud = 0;
+        continue;
+      }
+      int jugada = tablero.jugadaEn(fila, col);
+      if (jugada == JUGADA_ALIADA) {
+        longitud = 0;
+        continue;
+      } else if (jugada == JUGADA_ENEMIGA) {
+        longitud++;
+      } else if (longitud >= cObjetivo - 2) {
+        puntaje += 2;
+        cortar = true;
+        break;
+      } else {
+        longitud = 0;
+      }
+    }
+  }
+
+  // Líneas diagonales
+  // if (rival tiene una línea diagonal a dos movimientos de ganar) puntaje += 2;
+  // TODO
+
+
+  // Faltaría ver que el rival no tenga dos líneas separadas por un espacio en blanco, porque así
+  // también podría completar y ganar en un movimiento, pero no lo voy a hacer por el momento.
 
   return puntaje;
 }
 
 int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada, int jugador) {
-  // return longitudDeLíneaMáxima;
-  return 0;
+  int jugadorRival = jugador == JUGADA_ALIADA ? JUGADA_ENEMIGA : JUGADA_ALIADA;
+
+  // Línea vertical:
+
+  int longitudMaximaVertical = 0;
+  for (int col = 0; col < tablero.getColumnas(); ++col) {
+    if (tablero.columnaLlena(col) or (col == columnaJugada and jugador == JUGADA_ENEMIGA)) continue;
+    int filasVacias = 0;
+    int fila = tablero.getFilas() - 1;
+    while (fila >= 0 and tablero.jugadaEn(col, fila) == VACIO) { 
+      filasVacias++;
+      fila--;
+    }
+    int fichas = 0;
+    while (fila >= 0 and tablero.jugadaEn(col, fila) == jugador) {
+      fichas++;
+      fila--;
+    }
+    if (jugador == JUGADA_ALIADA and columnaJugada == col) {
+      filasVacias--;
+      fichas++;
+    }
+    if (filasVacias + fichas >= cObjetivo and fichas > longitudMaximaVertical) {
+      longitudMaximaVertical = fichas;
+    } 
+  }
+
+  // Línea horizontal:
+
+  int longitudMaximaHorizontal = 0, longitud = 0;
+  for (int fila = 0; fila < tablero.getFilas() and not tablero.filaVacia(fila); ++fila) {
+    longitud = 0;
+    if (not filaVivaParaElJugador(fila, tablero, cObjetivo, jugadorRival)) continue;
+    for (int col = 0; col < tablero.getColumnas(); ++col) {
+      if (tablero.getFichasEnColumna(col) < fila) {
+        if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
+        longitud = 0;
+        continue;
+      }
+      int jugada = tablero.jugadaEn(fila, col);
+      if (jugada == jugadorRival) {
+        if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
+        longitud = 0;
+      } else if (jugada == VACIO) {
+        if (tablero.getFichasEnColumna(col) == fila and col == columnaJugada) {
+          if (jugador == JUGADA_ALIADA) {
+            longitud++;
+          } else {
+            if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
+            longitud = 0;
+          }
+        } else {
+          if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
+          longitud = 0;
+        }
+      } else {
+        longitud++;
+      }
+    }
+  }
+  if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
+
+  // Longitud máxima diagonal:
+  // TODO
+
+  return longitudMaximaVertical + longitudMaximaHorizontal;
 }
+
+

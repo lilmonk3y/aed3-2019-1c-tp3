@@ -25,6 +25,10 @@ private:
   int calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada);
   int calcularPuntajeLineaGanadora(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada);
   int calcularPuntajeCentralidad(const Tablero& tablero, int columna);
+
+  // Métodos auxiliares:
+  bool filaVivaParaElJugador(int fila, const Tablero& tablero, int cObjetivo, int jugador);
+  bool columnaVivaParaElJugador(int columna, const Tablero& tablero, int cObjetivo, int jugador);
 };
 
 

@@ -13,6 +13,9 @@ int main(){
   // Estos parámetros hay que optimizar. Pueden tomar valores de 0 a 20 (el máximo lo acabo de definir,
   // podemos poner un máximo mayor).
 
+  // Podrían ser tambien double con valores entre 0 y 1, sería muy sencillo cambiarlo en el código.
+  // Lo que les parezca mejor.
+
   int paramCentralidad = 5;
   int paramLineaGanadora = 15;
   int paramRivalPuedeGanar = 20;

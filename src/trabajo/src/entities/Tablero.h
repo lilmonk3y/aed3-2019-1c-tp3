@@ -23,6 +23,10 @@ public:
 
     int jugadaEn(int columna, int fila) const;
 
+    int getFichasEnColumna(int columna) const;
+
+    bool filaVacia(int fila) const;
+
     std::vector<int> *getColumna(int i);
 
     int getTamanoColumna(int i) const;
@@ -31,6 +35,7 @@ private:
     std::vector<std::vector<int> *> *matrizFichas;
     int columnas;
     int filas;
+    int mayorFilaNoVacia = -1;
 };
 
 

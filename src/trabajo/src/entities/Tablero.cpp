@@ -15,12 +15,17 @@ Tablero::Tablero(int columnas, int filas) {
     }
 }
 
+bool Tablero::filaVacia(int fila) const {
+    return fila > mayorFilaNoVacia;
+}
+
 int Tablero::getFilas() const {
     return this->filas;
 }
 
 void Tablero::play(int fila, int jugador) {
     this->matrizFichas->at(fila)->push_back(jugador);
+    if (fila > mayorFilaNoVacia) mayorFilaNoVacia = fila;
 }
 
 bool Tablero::columnaLlena(int columna) const {
@@ -48,6 +53,10 @@ int Tablero::getIndiceFila(int indiceColumna) const {
 
 int Tablero::jugadaEn(int columna, int fila) const {
     return hayJugada(columna, fila) ? this->matrizFichas->at(columna)->at(fila) : VACIO;
+}
+
+int Tablero::getFichasEnColumna(int columna) const {
+    return (*matrizFichas)[columna]->size();
 }
 
 std::vector<int> *Tablero::getColumna(int columna) {
