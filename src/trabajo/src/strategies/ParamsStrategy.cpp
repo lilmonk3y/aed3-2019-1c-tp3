@@ -1,6 +1,7 @@
 #include "ParamsStrategy.h"
 #include <cstdlib>
 #include <limits>
+#include <cmath>
 #include "../entities/Defines.h"
 
 ParamsStrategy::ParamsStrategy(int paramCentralidad, int paramLineaGanadora,
@@ -135,7 +136,7 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
   }
 
   // Líneas horizontales:
-  // idea: if (rival tiene una línea horizontal a dos movimientos de ganar) puntaje += 2;
+  // idea: if (rival tiene una línea horizontal a dos movimientos de ganar) puntaje++;
   // se hace con dos movimientos porque si el rival tiene una línea en el medio con lugar a los dos
   // lados puede dejarte en una situación en que te gana sí o sí porque lo bloqueás en un lado y te
   // gana por el otro lado
@@ -156,11 +157,10 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
       int jugada = tablero.jugadaEn(fila, col);
       if (jugada == JUGADA_ALIADA) {
         longitud = 0;
-        continue;
       } else if (jugada == JUGADA_ENEMIGA) {
         longitud++;
       } else if (longitud >= cObjetivo - 2) {
-        puntaje += 2;
+        puntaje++;
         cortar = true;
         break;
       } else {
@@ -170,7 +170,7 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
   }
 
   // Líneas diagonales
-  // if (rival tiene una línea diagonal a dos movimientos de ganar) puntaje += 2;
+  // if (rival tiene una línea diagonal a dos movimientos de ganar) puntaje++;
   // TODO
 
 
@@ -246,7 +246,7 @@ int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int cO
   // Longitud máxima diagonal:
   // TODO
 
-  return longitudMaximaVertical + longitudMaximaHorizontal;
+  return std::max(longitudMaximaVertical, longitudMaximaHorizontal);
 }
 
 
