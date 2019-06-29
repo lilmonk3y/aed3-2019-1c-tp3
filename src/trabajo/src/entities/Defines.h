@@ -8,6 +8,7 @@
 
 #define JUGADA_ENEMIGA 0
 #define JUGADA_ALIADA 1
+#define VACIO 2
 
 #define PESO int
 

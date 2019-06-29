@@ -12,20 +12,20 @@ public:
     Tablero(int columnas, int filas);
     void play(int fila, int jugador);
 
-    int getFilas();
-    bool columnaLlena(int columna);
+    int getFilas() const;
+    bool columnaLlena(int columna) const;
 
-    int getColumnas();
+    int getColumnas() const;
 
-    bool hayJugada(int indiceEnColumna, int indiceFila);
+    bool hayJugada(int indiceEnColumna, int indiceFila) const;
 
-    int getIndiceFila(int indiceColumna);
+    int getIndiceFila(int indiceColumna) const;
 
-    int jugadaEn(int columna, int fila);
+    int jugadaEn(int columna, int fila) const;
 
     std::vector<int> *getColumna(int i);
 
-    int getTamanoColumna(int i);
+    int getTamanoColumna(int i) const;
 
 private:
     std::vector<std::vector<int> *> *matrizFichas;

@@ -55,13 +55,13 @@ include_directories(lib/googletest/googletest/include)
 include_directories(lib/googletest/googlemock/include)
 
 #Define your executable
-add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/JugadaAleatoria.cpp src/trabajo/src/strategies/parametriced_strategies/JugadaAleatoria.h)
+#add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/JugadaAleatoria.cpp src/trabajo/src/strategies/parametriced_strategies/JugadaAleatoria.h)
 
 #Link with GoogleTest
-target_link_libraries(tests gtest gtest_main)
+#target_link_libraries(tests gtest gtest_main)
 
 #Link with GoogleMock
-target_link_libraries(tests gmock gmock_main)
+#target_link_libraries(tests gmock gmock_main)
 #GTEST_END
 
 add_executable(random_player src/random_player.cpp)
@@ -80,9 +80,22 @@ add_executable(jugador_test
 
 
 
-add_executable(jugador_greedy
-        src/trabajo/src/players/greedy_player_main.cpp
-        ${SOURCES} )
+#add_executable(jugador_greedy
+#        src/trabajo/src/players/greedy_player_main.cpp
+#        ${SOURCES} )
+
+add_executable(jugador_con_parametros
+        src/trabajo/src/players/params_player_main.cpp
+        src/trabajo/src/strategies/PlayStrategy.h
+        src/trabajo/src/strategies/ParamsStrategy.h
+        src/trabajo/src/strategies/ParamsStrategy.cpp
+        src/trabajo/src/entities/Tablero.cpp
+        src/trabajo/src/entities/Tablero.h
+        src/trabajo/src/entities/Defines.h
+        src/trabajo/src/Player.cpp
+        src/trabajo/src/Player.h
+        src/trabajo/src/Game.cpp
+        src/trabajo/src/Game.h)
 
 set(PLAYER_SOURCES
         src/trabajo/src/parte-dos/main.cpp
