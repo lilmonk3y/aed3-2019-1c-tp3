@@ -5,44 +5,42 @@ project(aed3_tp3)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -O2")
 
 set(SOURCES
-        src/trabajo/src/strategies/PlayStrategy.h
-        src/trabajo/src/strategies/GreedyStrategy.cpp
-        src/trabajo/src/strategies/GreedyStrategy.h
-        src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalOfensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalDefensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/HorizontalStrategy.cpp
-        src/trabajo/src/strategies/parametriced_strategies/HorizontalOfensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/HorizontalDefensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/HorizontalStrategy.h
-        src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/VerticalStrategy.cpp
-        src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/VerticalStrategy.h
-        src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Ofensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Defensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Strategy.cpp
-        src/trabajo/src/strategies/parametriced_strategies/Diagonal45Ofensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/Diagonal45Defensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/Diagonal45Strategy.h
-        src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Defensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Ofensivo.cpp
-        src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Strategy.cpp
-        src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h
-        src/trabajo/src/strategies/parametriced_strategies/Diagonal315Strategy.h
-        src/trabajo/src/strategies/parametriced_strategies/impl/JugadaAleatoria.cpp
-        src/trabajo/src/strategies/parametriced_strategies/JugadaAleatoria.h
-        src/trabajo/src/strategies/parametriced_strategies/impl/Strategy.cpp
-        src/trabajo/src/strategies/parametriced_strategies/Strategy.h
+        src/trabajo/src/players/parametriced_strategies/impl/HorizontalOfensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/HorizontalDefensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/HorizontalStrategy.cpp
+        src/trabajo/src/players/parametriced_strategies/HorizontalOfensivo.h
+        src/trabajo/src/players/parametriced_strategies/HorizontalDefensivo.h
+        src/trabajo/src/players/parametriced_strategies/HorizontalStrategy.h
+        src/trabajo/src/players/parametriced_strategies/impl/VerticalDefensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/VerticalOfensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/VerticalStrategy.cpp
+        src/trabajo/src/players/parametriced_strategies/VerticalDefensivo.h
+        src/trabajo/src/players/parametriced_strategies/VerticalOfensivo.h
+        src/trabajo/src/players/parametriced_strategies/VerticalStrategy.h
+        src/trabajo/src/players/parametriced_strategies/impl/Diagonal45Ofensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/Diagonal45Defensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/Diagonal45Strategy.cpp
+        src/trabajo/src/players/parametriced_strategies/Diagonal45Ofensivo.h
+        src/trabajo/src/players/parametriced_strategies/Diagonal45Defensivo.h
+        src/trabajo/src/players/parametriced_strategies/Diagonal45Strategy.h
+        src/trabajo/src/players/parametriced_strategies/impl/Diagonal315Defensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/Diagonal315Ofensivo.cpp
+        src/trabajo/src/players/parametriced_strategies/impl/Diagonal315Strategy.cpp
+        src/trabajo/src/players/parametriced_strategies/Diagonal315Defensivo.h
+        src/trabajo/src/players/parametriced_strategies/Diagonal315Ofensivo.h
+        src/trabajo/src/players/parametriced_strategies/Diagonal315Strategy.h
+        src/trabajo/src/players/parametriced_strategies/impl/JugadaAleatoria.cpp
+        src/trabajo/src/players/parametriced_strategies/JugadaAleatoria.h
+        src/trabajo/src/players/parametriced_strategies/impl/Strategy.cpp
+        src/trabajo/src/players/parametriced_strategies/Strategy.h
+        src/trabajo/src/players/GreedyPlayer.cpp
+        src/trabajo/src/players/GreedyPlayer.h
+        src/trabajo/src/players/RandomPlayer.cpp
+        src/trabajo/src/players/RandomPlayer.h
+        src/trabajo/src/players/iPlayer.h
         src/trabajo/src/entities/Tablero.cpp
         src/trabajo/src/entities/Tablero.h
-        src/trabajo/src/entities/Defines.h
-        src/trabajo/src/Player.cpp
-        src/trabajo/src/Player.h
-        src/trabajo/src/Game.cpp
-        src/trabajo/src/Game.h)
+        src/trabajo/src/entities/Defines.h)
 
 #GTEST_BEGIN
 add_subdirectory(lib/googletest)
@@ -50,7 +48,10 @@ include_directories(lib/googletest/googletest/include)
 include_directories(lib/googletest/googlemock/include)
 
 #Define your executable
-add_executable(tests ${SOURCES} src/trabajo/test/test_main.cpp src/trabajo/test/PlayerTest.cpp src/trabajo/src/strategies/parametriced_strategies/impl/VerticalOfensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalOfensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/VerticalDefensivo.cpp src/trabajo/src/strategies/parametriced_strategies/VerticalDefensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal45Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal45Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Ofensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Ofensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/Diagonal315Defensivo.cpp src/trabajo/src/strategies/parametriced_strategies/Diagonal315Defensivo.h src/trabajo/src/strategies/parametriced_strategies/impl/JugadaAleatoria.cpp src/trabajo/src/strategies/parametriced_strategies/JugadaAleatoria.h)
+add_executable(tests
+        ${SOURCES}
+        src/trabajo/test/test_main.cpp
+        src/trabajo/test/PlayerTest.cpp)
 
 #Link with GoogleTest
 target_link_libraries(tests gtest gtest_main)
@@ -59,25 +60,25 @@ target_link_libraries(tests gtest gtest_main)
 target_link_libraries(tests gmock gmock_main)
 #GTEST_END
 
-add_executable(random_player src/random_player.cpp)
-
-add_executable(jugador_test
-        src/trabajo/src/players/test_player_main.cpp
-        src/trabajo/src/Game.cpp
-        src/trabajo/src/Game.h
-        src/trabajo/src/Player.cpp
-        src/trabajo/src/Player.h
-        src/trabajo/src/strategies/PlayStrategy.h
-        src/trabajo/src/strategies/TestStrategy.cpp
-        src/trabajo/src/strategies/TestStrategy.h
+add_executable(random_player
+        src/trabajo/src/executables/random_player_main.cpp
+        src/trabajo/src/ConsoleGame.cpp
+        src/trabajo/src/ConsoleGame.h
+        src/trabajo/src/players/RandomPlayer.cpp
+        src/trabajo/src/players/RandomPlayer.h
         src/trabajo/src/entities/Tablero.cpp
         src/trabajo/src/entities/Tablero.h)
 
-
-
 add_executable(jugador_greedy
-        src/trabajo/src/players/greedy_player_main.cpp
-        ${SOURCES} )
+        src/trabajo/src/executables/greedy_player_main.cpp
+        ${SOURCES})
+
+add_executable(test_inplace_game
+        src/trabajo/src/executables/test_inplace_game.cpp
+        src/trabajo/src/entities/ResultadosPartida.h
+        src/trabajo/src/InplaceGame.h
+        src/trabajo/src/InplaceGame.cpp
+        ${SOURCES})
 
 set(PLAYER_SOURCES
         src/trabajo/src/parte-dos/main.cpp

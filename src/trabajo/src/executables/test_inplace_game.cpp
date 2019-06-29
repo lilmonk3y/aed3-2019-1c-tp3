@@ -1,24 +1,19 @@
 //
-// Created by Christian nahuel Rivera on 16/6/19.
+// Created by Christian nahuel Rivera on 29/6/19.
 //
 
-#include "gtest/gtest.h"
-#include "../src/players/GreedyPlayer.h"
+#include <utility>
+#include <cstdlib>
+#include <map>
+#include "../entities/Defines.h"
+#include "../players/GreedyPlayer.h"
+#include "../entities/ResultadosPartida.h"
+#include "../players/RandomPlayer.h"
+#include "../InplaceGame.h"
 
-struct PlayerTest : testing::Test{
-    iPlayer *player;
-
-    PlayerTest(){}
-
-    ~PlayerTest(){
-        delete player;
-    }
-};
-
-TEST_F(PlayerTest, test)
-{
+int main(){
     auto *pesos = new std::map<STRATEGY_NAME, PESO>();
-    pesos->insert(std::make_pair(HORIZONTAL_OFENSIVO, 1));
+    pesos->insert(std::make_pair(HORIZONTAL_OFENSIVO, std::rand()));
     pesos->insert(std::make_pair(HORIZONTAL_DEFENSIVO, std::rand()));
     pesos->insert(std::make_pair(VERTICAL_OFENSIVO, std::rand()));
     pesos->insert(std::make_pair(VERTICAL_DEFENSIVO, std::rand()));
@@ -27,11 +22,7 @@ TEST_F(PlayerTest, test)
     pesos->insert(std::make_pair(DIAGONAL_315_OFENSIVO, std::rand()));
     pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO, std::rand()));
     pesos->insert(std::make_pair(JUGADA_ALEATORIA, std::rand()));
-    player = new GreedyPlayer(pesos);
-    Tablero *tablero = new Tablero(4,4);
 
-    int move = player->play(tablero,FICHA_ALIADA,2);
+    ResultadosPartida *resultados = jugar(4,4,2,10, new GreedyPlayer(pesos), new RandomPlayer());
 
-    ASSERT_GE(move, 0);
-    ASSERT_LE(move, 3);
 }

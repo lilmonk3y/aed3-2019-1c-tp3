@@ -10,7 +10,7 @@ using namespace std;
  * Base player class
  *
  * Designed to test all possible moves and decide the best based on score given by function
- * score_board_state that should be overriden according to different strategies.
+ * score_board_state that should be overriden according to different players.
  *
  * It is also possible to override the move function and do a completely different strategy.
  */

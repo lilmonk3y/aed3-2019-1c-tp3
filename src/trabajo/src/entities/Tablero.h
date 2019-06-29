@@ -6,24 +6,20 @@
 #define AED3_TP3_TABLERO_H
 
 #include <vector>
+#include "Defines.h"
 
 class Tablero{
 public:
     Tablero(int columnas, int filas);
-    void play(int fila, int jugador);
+    void actualizar(int columna, FICHA ficha);
 
-    int getFilas();
     bool columnaLlena(int columna);
 
     int getColumnas();
 
     bool hayJugada(int indiceEnColumna, int indiceFila);
 
-    int getIndiceFila(int indiceColumna);
-
     int jugadaEn(int columna, int fila);
-
-    std::vector<int> *getColumna(int i);
 
     int getTamanoColumna(int i);
 

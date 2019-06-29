@@ -6,10 +6,12 @@
 #define AED3_TP3_DEFINES_H
 
 
-#define JUGADA_ENEMIGA 0
-#define JUGADA_ALIADA 1
+#define FICHA_ENEMIGA 0
+#define FICHA_ALIADA 1
 
+#define STRATEGY_NAME int
 #define PESO int
+#define FICHA int
 
 #define HORIZONTAL_OFENSIVO 1
 #define HORIZONTAL_DEFENSIVO 2
