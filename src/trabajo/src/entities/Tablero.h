@@ -13,20 +13,31 @@ public:
     Tablero(int columnas, int filas);
     void actualizar(int columna, FICHA ficha);
 
-    bool columnaLlena(int columna);
+    int getFilas() const;
 
-    int getColumnas();
+    bool columnaLlena(int columna) const;
 
-    bool hayJugada(int indiceEnColumna, int indiceFila);
+    int getColumnas() const;
 
-    int jugadaEn(int columna, int fila);
+    bool hayJugada(int indiceEnColumna, int indiceFila) const;
 
-    int getTamanoColumna(int i);
+    int getIndiceFila(int indiceColumna) const;
+
+    int jugadaEn(int columna, int fila) const;
+
+    int getFichasEnColumna(int columna) const;
+
+    bool filaVacia(int fila) const;
+
+    std::vector<int> *getColumna(int i);
+
+    int getTamanoColumna(int i) const;
 
 private:
     std::vector<std::vector<int> *> *matrizFichas;
     int columnas;
     int filas;
+    int mayorFilaNoVacia = -1;
 };
 
 

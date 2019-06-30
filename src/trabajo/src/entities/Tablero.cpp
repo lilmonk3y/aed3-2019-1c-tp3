@@ -15,30 +15,56 @@ Tablero::Tablero(int columnas, int filas) {
     }
 }
 
-int Tablero::getColumnas() {
-    return this->columnas;
+bool Tablero::filaVacia(int fila) const {
+    return fila > mayorFilaNoVacia;
 }
 
-bool Tablero::columnaLlena(int columna) {
+int Tablero::getFilas() const {
+    return this->filas;
+}
+
+bool Tablero::columnaLlena(int columna) const {
     return this->matrizFichas->at(columna)->size() == this->filas;
 }
 
-bool Tablero::hayJugada(int indiceEnColumna, int indiceFila) {
+int Tablero::getColumnas() const {
+    return this->columnas;
+}
+
+bool Tablero::hayJugada(int indiceEnColumna, int indiceFila) const {
     if( this->matrizFichas->size() <= indiceEnColumna || indiceEnColumna < 0) return false;
     if( this->matrizFichas->at(indiceEnColumna)->size() <= indiceFila || indiceFila < 0) return false;
 
     return indiceFila < this->matrizFichas->at(indiceEnColumna)->size();
 }
 
-int Tablero::jugadaEn(int columna, int fila) {
-    return this->matrizFichas->at(columna)->at(fila);
+/*
+ * Obtengo el indice de la fila en la que sería la nueva jugada.
+ * Como size = cantElementos desde el 1, me da la posición en la columna.
+ */
+int Tablero::getIndiceFila(int indiceColumna) const {
+    return this->matrizFichas->at(indiceColumna)->size() -1;
 }
 
-int Tablero::getTamanoColumna(int i) {
-    if( i >= this->getColumnas() || i < 0) return 0;
+int Tablero::jugadaEn(int columna, int fila) const {
+    return hayJugada(columna, fila) ? this->matrizFichas->at(columna)->at(fila) : VACIO;
+}
+
+int Tablero::getFichasEnColumna(int columna) const {
+    return (*matrizFichas)[columna]->size();
+}
+
+std::vector<int> *Tablero::getColumna(int columna) {
+    return this->matrizFichas->at(columna);
+}
+
+int Tablero::getTamanoColumna(int i) const {
+    if( i >= this->getColumnas() || i < 0) return -1;
     return this->matrizFichas->at(i)->size() -1;
 }
 
 void Tablero::actualizar(int columna, FICHA ficha) {
     this->matrizFichas->at(columna)->push_back(ficha);
+    int filaDeLaFicha = getFichasEnColumna(columna)-1;
+    if (filaDeLaFicha > mayorFilaNoVacia) mayorFilaNoVacia = filaDeLaFicha;
 }

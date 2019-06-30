@@ -42,7 +42,12 @@ set(SOURCES
         src/trabajo/src/entities/Tablero.h
         src/trabajo/src/entities/Defines.h
         src/trabajo/src/ConsoleGame.h
-        src/trabajo/src/ConsoleGame.cpp)
+        src/trabajo/src/ConsoleGame.cpp
+        src/trabajo/src/entities/Individuo.h
+        src/trabajo/src/entities/Individuo.cpp
+        #src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.h
+        #src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.cpp
+        )
 
 #GTEST_BEGIN
 add_subdirectory(lib/googletest)
@@ -81,6 +86,17 @@ add_executable(test_inplace_game
         src/trabajo/src/InplaceGame.h
         src/trabajo/src/InplaceGame.cpp
         ${SOURCES})
+
+add_executable(jugador_con_parametros
+        src/trabajo/src/executables/params_player_main.cpp
+        src/trabajo/src/players/iPlayer.h
+        src/trabajo/src/players/ParamsStrategy.h
+        src/trabajo/src/players/ParamsStrategy.cpp
+        src/trabajo/src/entities/Tablero.cpp
+        src/trabajo/src/entities/Tablero.h
+        src/trabajo/src/entities/Defines.h
+        src/trabajo/src/ConsoleGame.cpp
+        src/trabajo/src/ConsoleGame.h)
 
 set(PLAYER_SOURCES
         src/trabajo/src/parte-dos/main.cpp
