@@ -19,7 +19,7 @@ void ConsoleGame::runGame(iPlayer *myPlayer) {
         p_fichas = read_int();
 
         this->player = myPlayer;
-        this->tablero = new Tablero(columns,rows);
+        this->tablero = new Tablero(columns,rows, c_objective, p_fichas);
 
         go_first = read_str();
         if (go_first == "vos") {

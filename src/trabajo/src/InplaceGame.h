@@ -9,8 +9,6 @@
 #include "players/iPlayer.h"
 
 ResultadosPartida jugar(int cantidadColumnas, int cantidadFilas, int c_objetivo, int cantidad_fichas,
-                        iPlayer& nuestroJugador, iPlayer& contrincante);
-
-bool gano(Tablero& tablero, int c_objetivo, bool jugadorAliado);
+                        iPlayer& jugadorA, iPlayer& jugadorB);
 
 #endif //AED3_TP3_INPLACEGAME_H

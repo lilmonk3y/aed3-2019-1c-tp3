@@ -10,7 +10,7 @@
 
 class Tablero{
 public:
-    Tablero(int columnas, int filas);
+    Tablero(int columnas, int filas, int fichasParaGanar, int fichasPorJugador);
     void actualizar(int columna, FICHA ficha);
 
     int getFilas() const;
@@ -33,11 +33,22 @@ public:
 
     int getTamanoColumna(int i) const;
 
+    bool partidaTerminada() const;
+
+    FICHA obtenerGanador() const;
+
 private:
     std::vector<std::vector<int> *> *matrizFichas;
     int columnas;
     int filas;
     int mayorFilaNoVacia = -1;
+    int fichasParaGanar;
+    int fichasDisponibles;
+    FICHA ganador = VACIO;
+    void actualizarGanador();
+    FICHA calcularGanadorEnLineasVerticales();
+    FICHA calcularGanadorEnLineasHorizontales();
+    FICHA calcularGanadorEnLineasDiagonales();
 };
 
 

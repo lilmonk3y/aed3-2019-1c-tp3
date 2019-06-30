@@ -28,7 +28,7 @@ TEST_F(PlayerTest, test)
     pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO, std::rand()));
     pesos->insert(std::make_pair(JUGADA_ALEATORIA, std::rand()));
     player = new GreedyPlayer(pesos);
-    Tablero *tablero = new Tablero(4,4);
+    Tablero *tablero = new Tablero(4,4,3,8);
 
     int move = player->play(tablero,FICHA_ALIADA,2);
 
