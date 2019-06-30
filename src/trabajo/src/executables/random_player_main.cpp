@@ -6,8 +6,9 @@
 #include "../players/RandomPlayer.h"
 
 int main(){
-    ConsoleGame *game = new ConsoleGame();
-    game->runGame(new RandomPlayer());
+    ConsoleGame game;
+    RandomPlayer player;
+    game.runGame(player);
 
     return 0;
 }

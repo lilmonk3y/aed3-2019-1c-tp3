@@ -5,6 +5,7 @@
 #include <utility>
 #include <cstdlib>
 #include <map>
+#include <iostream>
 #include "../entities/Defines.h"
 #include "../players/GreedyPlayer.h"
 #include "../entities/ResultadosPartida.h"
@@ -23,9 +24,11 @@ int main(){
     pesos[DIAGONAL_315_DEFENSIVO] = std::rand();
     pesos[JUGADA_ALEATORIA] = std::rand();
 
-    GreedyPlayer greedyPlayer(&pesos);
-    RandomPlayer randomPlayer;
+    GreedyPlayer jugadorAliado(&pesos);
+    RandomPlayer jugadorEnemigo;
 
-    ResultadosPartida resultados = jugar(4,4,2,10, greedyPlayer, randomPlayer);
+    ResultadosPartida resultados = jugar(4,4,2,10, jugadorAliado, jugadorEnemigo, FICHA_ALIADA);
+
+    std::cout << "Ganador: " << resultados.isGanoNuestroJugador() << std::endl;
 
 }

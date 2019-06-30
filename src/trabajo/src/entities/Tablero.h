@@ -37,12 +37,17 @@ public:
 
     FICHA obtenerGanador() const;
 
+    int getFichasParaGanar() const;
+
+    int getFichasPorJugador() const;
+
 private:
     std::vector<std::vector<int> *> *matrizFichas;
     int columnas;
     int filas;
     int mayorFilaNoVacia = -1;
     int fichasParaGanar;
+    int fichasPorJugador;
     int fichasDisponibles;
     FICHA ganador = VACIO;
     void actualizarGanador();

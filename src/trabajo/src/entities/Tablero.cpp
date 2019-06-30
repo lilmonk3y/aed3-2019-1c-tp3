@@ -6,7 +6,7 @@
 #include "Defines.h"
 
 Tablero::Tablero(int columnas, int filas, int fichasParaGanar, int fichasPorJugador) :
-        columnas(columnas), filas(filas),
+        columnas(columnas), filas(filas), fichasPorJugador(fichasPorJugador),
         fichasParaGanar(fichasParaGanar), fichasDisponibles(2*fichasPorJugador) {
     this->matrizFichas = new std::vector<std::vector<int> *>();
     for (int i = 0; i < columnas; i++) {
@@ -176,4 +176,12 @@ FICHA Tablero::calcularGanadorEnLineasDiagonales() {
         if (diagFila < getFilas()-1) ++diagFila;
         else --diagCol;
     }
+}
+
+int Tablero::getFichasParaGanar() const {
+    return fichasParaGanar;
+}
+
+int Tablero::getFichasPorJugador() const {
+    return fichasPorJugador;
 }

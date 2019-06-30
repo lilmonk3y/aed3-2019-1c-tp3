@@ -9,6 +9,6 @@
 
 class iPlayer{
 public:
-    virtual int play(Tablero *tablero, int miFicha, int c_objetivo) = 0;
+    virtual int play(Tablero& tablero, FICHA color) = 0;
 };
 #endif //AED3_TP3_IPLAYER_H

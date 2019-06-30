@@ -13,7 +13,7 @@
 class GreedyPlayer : public iPlayer {
 public:
     GreedyPlayer(std::map<STRATEGY_NAME,PESO> *pesosEstrategias);
-    int play(Tablero *tablero, int miFicha, int c_objetivo) override;
+    int play(Tablero& tablero, FICHA miColor) override;
 
 private:
     std::map<STRATEGY_NAME, Strategy*> *strategies;

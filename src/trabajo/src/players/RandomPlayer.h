@@ -10,7 +10,7 @@
 
 class RandomPlayer : public iPlayer{
 public:
-    int play(Tablero *tablero, int miFicha, int c_objetivo) override;
+    int play(Tablero& tablero, FICHA miColor) override;
 };
 
 

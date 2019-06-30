@@ -10,18 +10,22 @@
 #include "players/parametriced_strategies/Diagonal45Strategy.h"
 
 ResultadosPartida jugar(int cantidadColumnas, int cantidadFilas, int c_objetivo, int cantidad_fichas,
-                          iPlayer& jugadorA, iPlayer& jugadorB){
-    Tablero tablero = Tablero(cantidadColumnas, cantidadFilas, c_objetivo, cantidad_fichas);
-    iPlayer* jugador;
-    int jugada;
+                          iPlayer& jugadorAliado, iPlayer& jugadorEnemigo, FICHA colorPrimeraJugada){
+    Tablero tablero(cantidadColumnas, cantidadFilas, c_objetivo, cantidad_fichas);
     int duracionPartida = 0;
-    bool jugadorAliado = true;
+    FICHA color = colorPrimeraJugada;
+    iPlayer* jugador = colorPrimeraJugada == FICHA_ALIADA ? &jugadorAliado : &jugadorEnemigo;
     do {
-        jugadorAliado = !jugadorAliado;
-        jugador = jugadorAliado ? &jugadorA : &jugadorB;
-        jugada = jugador->play(&tablero, jugadorAliado ? FICHA_ALIADA : FICHA_ENEMIGA, c_objetivo);
-        tablero.actualizar(jugada,jugadorAliado ? FICHA_ALIADA : FICHA_ENEMIGA);
+        int jugada = jugador->play(tablero, color);
+        tablero.actualizar(jugada, color);
         duracionPartida++;
+        if (color == FICHA_ALIADA) {
+            color = FICHA_ENEMIGA;
+            jugador = &jugadorEnemigo;
+        } else {
+            color = FICHA_ALIADA;
+            jugador = &jugadorAliado;
+        }
     } while (not tablero.partidaTerminada());
 
     return ResultadosPartida(duracionPartida, tablero.obtenerGanador() == FICHA_ALIADA);

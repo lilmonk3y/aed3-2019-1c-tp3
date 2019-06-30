@@ -8,7 +8,7 @@
 
 
 int main(){
-  ConsoleGame game = ConsoleGame();
+  ConsoleGame game;
 
   // Estos parámetros hay que optimizar. Pueden tomar valores de 0 a 20 (el máximo lo acabo de definir,
   // podemos poner un máximo mayor).
@@ -25,7 +25,7 @@ int main(){
   ParamsStrategy strategy(paramCentralidad, paramLineaGanadora, paramRivalPuedeGanar,
                           paramLongitudMaximaPropia, paramLongitudMaximaRival);
   
-  game.runGame(&strategy);
+  game.runGame(strategy);
   
   return 0;
 }

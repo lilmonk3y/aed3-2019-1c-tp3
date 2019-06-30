@@ -4,7 +4,7 @@
 
 #include "ConsoleGame.h"
 
-void ConsoleGame::runGame(iPlayer *myPlayer) {
+void ConsoleGame::runGame(iPlayer& player) {
     std::string msg, color, oponent_color, go_first;
     int columns, rows, c_objective, p_fichas, move;
     msg = read_str();
@@ -18,12 +18,11 @@ void ConsoleGame::runGame(iPlayer *myPlayer) {
         c_objective = read_int();
         p_fichas = read_int();
 
-        this->player = myPlayer;
-        this->tablero = new Tablero(columns,rows, c_objective, p_fichas);
+        Tablero tablero(columns,rows, c_objective, p_fichas);
 
         go_first = read_str();
         if (go_first == "vos") {
-            move = this->player->play(tablero, FICHA_ALIADA, c_objective);
+            move = player.play(tablero, FICHA_ALIADA);
             send(move);
         }
 
@@ -34,9 +33,9 @@ void ConsoleGame::runGame(iPlayer *myPlayer) {
             }
 
             //actualizar tablero con el movimiento del enemigo
-            this->tablero->actualizar(stoi(msg), FICHA_ENEMIGA);
+            tablero.actualizar(stoi(msg), FICHA_ENEMIGA);
 
-            move = this->player->play(tablero,FICHA_ALIADA, c_objective);
+            move = player.play(tablero,FICHA_ALIADA);
 
             send(move);
         }

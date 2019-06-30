@@ -10,16 +10,12 @@
 
 class ConsoleGame {
 public:
-    void runGame(iPlayer *myPlayer);
+    void runGame(iPlayer& myPlayer);
 
     void send(const std::string& msg);
     void send(int msg);
     int read_int();
     std::string read_str();
-
-private:
-    iPlayer *player;
-    Tablero *tablero;
 };
 
 

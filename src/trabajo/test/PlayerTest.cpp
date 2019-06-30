@@ -15,23 +15,25 @@ struct PlayerTest : testing::Test{
     }
 };
 
-TEST_F(PlayerTest, test)
-{
-    auto *pesos = new std::map<STRATEGY_NAME, PESO>();
-    pesos->insert(std::make_pair(HORIZONTAL_OFENSIVO, 1));
-    pesos->insert(std::make_pair(HORIZONTAL_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(VERTICAL_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(VERTICAL_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_45_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_45_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_315_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(JUGADA_ALEATORIA, std::rand()));
-    player = new GreedyPlayer(pesos);
-    Tablero *tablero = new Tablero(4,4,3,8);
+TEST_F(PlayerTest, test) {
+    std::map<STRATEGY_NAME, PESO> pesos;
+    pesos[HORIZONTAL_OFENSIVO] = std::rand();
+    pesos[HORIZONTAL_DEFENSIVO] = std::rand();
+    pesos[VERTICAL_OFENSIVO] = std::rand();
+    pesos[VERTICAL_DEFENSIVO] = std::rand();
+    pesos[DIAGONAL_45_OFENSIVO] = std::rand();
+    pesos[DIAGONAL_45_DEFENSIVO] = std::rand();
+    pesos[DIAGONAL_315_OFENSIVO] = std::rand();
+    pesos[DIAGONAL_315_DEFENSIVO] = std::rand();
+    pesos[JUGADA_ALEATORIA] = std::rand();
+    
+    player = new GreedyPlayer(&pesos);
+    Tablero tablero(4, 4, 3, 8);
 
-    int move = player->play(tablero,FICHA_ALIADA,2);
+    int move = player->play(tablero, FICHA_ALIADA);
 
     ASSERT_GE(move, 0);
     ASSERT_LE(move, 3);
+
+    delete player;
 }

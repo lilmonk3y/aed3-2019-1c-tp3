@@ -6,6 +6,6 @@
 #include "../entities/Tablero.h"
 #include "RandomPlayer.h"
 
-int RandomPlayer::play(Tablero *tablero, int miFicha, int c_objetivo) {
-    return rand() % tablero->getColumnas();
+int RandomPlayer::play(Tablero& tablero, FICHA miColor) {
+    return rand() % tablero.getColumnas();
 }

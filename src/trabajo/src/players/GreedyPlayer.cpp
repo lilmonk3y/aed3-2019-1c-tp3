@@ -37,20 +37,20 @@ GreedyPlayer::GreedyPlayer( std::map<STRATEGY_NAME, PESO> *pesos) {
                                             new JugadaAleatoria(pesos->at(JUGADA_ALEATORIA))));
 }
 
-int GreedyPlayer::play(Tablero *tablero, int miFicha, int c_objetivo) {
+int GreedyPlayer::play(Tablero& tablero, FICHA miColor) {
     std::vector<Strategy*> strategy;
     for (auto estrategia : *this->strategies) {
-        estrategia.second->selectMoves(tablero, c_objetivo, miFicha);
+        estrategia.second->selectMoves(&tablero, tablero.getFichasParaGanar(), miColor);
 
         strategy.push_back( estrategia.second);
     }
 
     std::sort(strategy.begin(), strategy.end());
 
-    auto mejoresMovimientos = new std::vector<int>(tablero->getColumnas(), 0);
+    auto mejoresMovimientos = new std::vector<int>(tablero.getColumnas(), 0);
     mejoresMovimientos = ponderarLosMovimientosDeLasEstrategias(strategy, mejoresMovimientos);
 
-    return elegirMejorMovimientoFactible(tablero, mejoresMovimientos);
+    return elegirMejorMovimientoFactible(&tablero, mejoresMovimientos);
 }
 
 std::vector<int> * GreedyPlayer::ponderarLosMovimientosDeLasEstrategias(const std::vector<Strategy *> &strategy,

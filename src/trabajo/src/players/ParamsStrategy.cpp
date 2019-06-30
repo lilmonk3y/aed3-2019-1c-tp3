@@ -12,13 +12,13 @@ ParamsStrategy::ParamsStrategy(int paramCentralidad, int paramLineaGanadora,
     paramLongitudMaximaPropia(paramLongitudMaximaPropia),
     paramLongitudMaximaRival(paramLongitudMaximaRival) {};
 
-int ParamsStrategy::play(Tablero *tablero, int cObjetivo, int cantidadFichas) {
+int ParamsStrategy::play(Tablero& tablero, FICHA miColor) {
   int mejorColumna = 0;
   int puntajeMaximo = std::numeric_limits<int>::min();
 
-  for (int col = 0; col < tablero->getColumnas(); ++col) {
-    if (tablero->columnaLlena(col)) continue;
-    int puntaje = calcularPuntajeDelMovimiento(*tablero, cObjetivo, cantidadFichas, col);
+  for (int col = 0; col < tablero.getColumnas(); ++col) {
+    if (tablero.columnaLlena(col)) continue;
+    int puntaje = calcularPuntajeDelMovimiento(tablero, col, miColor);
     if (puntaje > puntajeMaximo) {
       puntajeMaximo = puntaje;
       mejorColumna = col;
@@ -27,12 +27,13 @@ int ParamsStrategy::play(Tablero *tablero, int cObjetivo, int cantidadFichas) {
   return mejorColumna;
 }
 
-int ParamsStrategy::calcularPuntajeDelMovimiento(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columna) {
+int ParamsStrategy::calcularPuntajeDelMovimiento(const Tablero& tablero, int columna, FICHA miColor) {
+  FICHA colorRival = miColor == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA;
   int puntajeCentralidad = calcularPuntajeCentralidad(tablero, columna),
-      puntajeLineaGanadora = calcularPuntajeLineaGanadora(tablero, cObjetivo, cantidadFichas, columna),
-      puntajeRivalPuedeGanar = calcularPuntajeRivalPuedeGanar(tablero, cObjetivo, cantidadFichas, columna),
-      puntajeLongitudMaximaPropia = calcularPuntajeLongitudMaxima(tablero, cObjetivo, cantidadFichas, columna, FICHA_ALIADA),
-      puntajeLongitudMaximaRival = calcularPuntajeLongitudMaxima(tablero, cObjetivo, cantidadFichas, columna, FICHA_ENEMIGA);
+      puntajeLineaGanadora = calcularPuntajeLineaGanadora(tablero, columna, miColor),
+      puntajeRivalPuedeGanar = calcularPuntajeRivalPuedeGanar(tablero, columna, miColor),
+      puntajeLongitudMaximaPropia = calcularPuntajeLongitudMaxima(tablero, columna, miColor, miColor),
+      puntajeLongitudMaximaRival = calcularPuntajeLongitudMaxima(tablero, columna, colorRival, miColor);
 
   return puntajeCentralidad * paramCentralidad
     + puntajeLineaGanadora * paramLineaGanadora
@@ -49,7 +50,7 @@ int ParamsStrategy::calcularPuntajeCentralidad(const Tablero& tablero, int colum
   return columna <= columnaCentral ? columna : columna - columnaCentral;
 }
 
-int ParamsStrategy::calcularPuntajeLineaGanadora(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada) {
+int ParamsStrategy::calcularPuntajeLineaGanadora(const Tablero& tablero, int columnaJugada, FICHA miColor) {
   // Si realizando este movimiento puede hacer crecer alguna línea que tenga espacio suficiente para
   // ganar devuelve un 1, si no devuelve un 0.
 
@@ -58,12 +59,12 @@ int ParamsStrategy::calcularPuntajeLineaGanadora(const Tablero& tablero, int cOb
 
   // Ver línea vertical:
 
-  if (columnaVivaParaElJugador(columnaJugada, tablero, cObjetivo, FICHA_ALIADA)) puntajeVertical = 1;
+  if (columnaVivaParaElJugador(columnaJugada, tablero, miColor)) puntajeVertical = 1;
 
   // Ver línea horizontal:
 
   int fila = tablero.getFichasEnColumna(columnaJugada);
-  if (filaVivaParaElJugador(fila, tablero, cObjetivo, FICHA_ALIADA)) puntajeHorizontal = 1;
+  if (filaVivaParaElJugador(fila, tablero, miColor)) puntajeHorizontal = 1;
 
   // Ver líneas diagonales:
   // TODO
@@ -71,46 +72,47 @@ int ParamsStrategy::calcularPuntajeLineaGanadora(const Tablero& tablero, int cOb
   return puntajeVertical + puntajeHorizontal + puntajeDiagonalDescendente + puntajeDiagonalAscendente;
 }
 
-bool ParamsStrategy::columnaVivaParaElJugador(int columna, const Tablero& tablero, int cObjetivo, int jugador) {
+bool ParamsStrategy::columnaVivaParaElJugador(int columna, const Tablero& tablero, FICHA color) {
   int filasVacias = 0;
   int fila = tablero.getFilas() - 1;
-  while (filasVacias < cObjetivo and tablero.jugadaEn(columna, fila) == VACIO) { 
+  while (filasVacias < tablero.getFichasParaGanar() and tablero.jugadaEn(columna, fila) == VACIO) { 
     filasVacias++;
     fila--;
   }
-  if (filasVacias == cObjetivo) {
+  if (filasVacias == tablero.getFichasParaGanar()) {
     return true;
   }
   int fichasPropias = 0;
-  while (fila >= 0 and tablero.jugadaEn(columna, fila) == jugador) {
+  while (fila >= 0 and tablero.jugadaEn(columna, fila) == color) {
     fichasPropias++;
     fila--;
   }
-  if (filasVacias + fichasPropias >= cObjetivo) {
+  if (filasVacias + fichasPropias >= tablero.getFichasParaGanar()) {
     return true;
   }
   return false;
 }
 
-bool ParamsStrategy::filaVivaParaElJugador(int fila, const Tablero& tablero, int cObjetivo, int jugador) {
+bool ParamsStrategy::filaVivaParaElJugador(int fila, const Tablero& tablero, FICHA color) {
   int columnaEnemigaAnterior = -1;
-  int jugadorRival = jugador == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA;
+  int colorRival = color == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA;
   for (int col = 0; col < tablero.getColumnas(); ++col) {
-    if (tablero.jugadaEn(col, fila) == jugadorRival) {
-      if (columnaEnemigaAnterior == -1 and col >= cObjetivo) {
+    if (tablero.jugadaEn(col, fila) == colorRival) {
+      if (columnaEnemigaAnterior == -1 and col >= tablero.getFichasParaGanar()) {
         return true;     
       }
-      if (col - columnaEnemigaAnterior - 1 >= cObjetivo) {
+      if (col - columnaEnemigaAnterior - 1 >= tablero.getFichasParaGanar()) {
         return true;
       }
       columnaEnemigaAnterior = col;
     }
   }
-  if (tablero.getColumnas() - columnaEnemigaAnterior >= cObjetivo) return true;
+  if (tablero.getColumnas() - columnaEnemigaAnterior >= tablero.getFichasParaGanar()) return true;
   return false;
 }
 
-int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada) {
+int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int columnaJugada, FICHA miColor) {
+  FICHA colorRival = miColor == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA;
   int puntaje = 0;
 
   // Líneas verticales:
@@ -125,11 +127,11 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
       fila--;
     }
     int fichasRivales = 0;
-    while (fila >= 0 and tablero.jugadaEn(col, fila) == FICHA_ENEMIGA) {
+    while (fila >= 0 and tablero.jugadaEn(col, fila) == colorRival) {
       fichasRivales++;
       fila--;
     }
-    if (filasVacias + fichasRivales >= cObjetivo and fichasRivales == cObjetivo - 1) {
+    if (filasVacias + fichasRivales >= tablero.getFichasParaGanar() and fichasRivales == tablero.getFichasParaGanar() - 1) {
       puntaje++;
       break;
     } 
@@ -144,7 +146,7 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
   bool cortar = false;
   for (int fila = 0; fila < tablero.getFilas() and not tablero.filaVacia(fila) and not cortar; ++fila) {
     int longitud = 0;
-    if (not filaVivaParaElJugador(fila, tablero, cObjetivo, FICHA_ENEMIGA)) continue;
+    if (not filaVivaParaElJugador(fila, tablero, colorRival)) continue;
     for (int col = 0; col < tablero.getColumnas(); ++col) {
       if (tablero.getFichasEnColumna(col) < fila) {
         longitud = 0;
@@ -155,11 +157,11 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
         continue;
       }
       int jugada = tablero.jugadaEn(fila, col);
-      if (jugada == FICHA_ALIADA) {
+      if (jugada == miColor) {
         longitud = 0;
-      } else if (jugada == FICHA_ENEMIGA) {
+      } else if (jugada == colorRival) {
         longitud++;
-      } else if (longitud >= cObjetivo - 2) {
+      } else if (longitud >= tablero.getFichasParaGanar() - 2) {
         puntaje++;
         cortar = true;
         break;
@@ -180,14 +182,14 @@ int ParamsStrategy::calcularPuntajeRivalPuedeGanar(const Tablero& tablero, int c
   return puntaje;
 }
 
-int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int cObjetivo, int cantidadFichas, int columnaJugada, int jugador) {
-  int jugadorRival = jugador == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA;
+int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int columnaJugada, FICHA color, FICHA miColor) {
+  int colorRival = miColor == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA;
 
   // Línea vertical:
 
   int longitudMaximaVertical = 0;
   for (int col = 0; col < tablero.getColumnas(); ++col) {
-    if (tablero.columnaLlena(col) or (col == columnaJugada and jugador == FICHA_ENEMIGA)) continue;
+    if (tablero.columnaLlena(col) or (col == columnaJugada and color == colorRival)) continue;
     int filasVacias = 0;
     int fila = tablero.getFilas() - 1;
     while (fila >= 0 and tablero.jugadaEn(col, fila) == VACIO) { 
@@ -195,15 +197,15 @@ int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int cO
       fila--;
     }
     int fichas = 0;
-    while (fila >= 0 and tablero.jugadaEn(col, fila) == jugador) {
+    while (fila >= 0 and tablero.jugadaEn(col, fila) == color) {
       fichas++;
       fila--;
     }
-    if (jugador == FICHA_ALIADA and columnaJugada == col) {
+    if (color == miColor and columnaJugada == col) {
       filasVacias--;
       fichas++;
     }
-    if (filasVacias + fichas >= cObjetivo and fichas > longitudMaximaVertical) {
+    if (filasVacias + fichas >= tablero.getFichasParaGanar() and fichas > longitudMaximaVertical) {
       longitudMaximaVertical = fichas;
     } 
   }
@@ -213,7 +215,7 @@ int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int cO
   int longitudMaximaHorizontal = 0, longitud = 0;
   for (int fila = 0; fila < tablero.getFilas() and not tablero.filaVacia(fila); ++fila) {
     longitud = 0;
-    if (not filaVivaParaElJugador(fila, tablero, cObjetivo, jugadorRival)) continue;
+    if (not filaVivaParaElJugador(fila, tablero, colorRival)) continue;
     for (int col = 0; col < tablero.getColumnas(); ++col) {
       if (tablero.getFichasEnColumna(col) < fila) {
         if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
@@ -221,12 +223,12 @@ int ParamsStrategy::calcularPuntajeLongitudMaxima(const Tablero& tablero, int cO
         continue;
       }
       int jugada = tablero.jugadaEn(fila, col);
-      if (jugada == jugadorRival) {
+      if (jugada == colorRival) {
         if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
         longitud = 0;
       } else if (jugada == VACIO) {
         if (tablero.getFichasEnColumna(col) == fila and col == columnaJugada) {
-          if (jugador == FICHA_ALIADA) {
+          if (color == miColor) {
             longitud++;
           } else {
             if (longitud > longitudMaximaHorizontal) longitudMaximaHorizontal = longitud;
