@@ -12,17 +12,20 @@
 #include "../InplaceGame.h"
 
 int main(){
-    auto *pesos = new std::map<STRATEGY_NAME, PESO>();
-    pesos->insert(std::make_pair(HORIZONTAL_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(HORIZONTAL_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(VERTICAL_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(VERTICAL_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_45_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_45_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_315_OFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(DIAGONAL_315_DEFENSIVO, std::rand()));
-    pesos->insert(std::make_pair(JUGADA_ALEATORIA, std::rand()));
+    std::map<STRATEGY_NAME, PESO> pesos;
+    pesos[HORIZONTAL_OFENSIVO] = std::rand();
+    pesos[HORIZONTAL_DEFENSIVO] = std::rand();
+    pesos[VERTICAL_OFENSIVO] = std::rand();
+    pesos[VERTICAL_DEFENSIVO] = std::rand();
+    pesos[DIAGONAL_45_OFENSIVO] = std::rand();
+    pesos[DIAGONAL_45_DEFENSIVO] = std::rand();
+    pesos[DIAGONAL_315_OFENSIVO] = std::rand();
+    pesos[DIAGONAL_315_DEFENSIVO] = std::rand();
+    pesos[JUGADA_ALEATORIA] = std::rand();
 
-    ResultadosPartida *resultados = jugar(4,4,2,10, new GreedyPlayer(pesos), new RandomPlayer());
+    GreedyPlayer greedyPlayer(&pesos);
+    RandomPlayer randomPlayer;
+
+    ResultadosPartida resultados = jugar(4,4,2,10, greedyPlayer, randomPlayer);
 
 }

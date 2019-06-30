@@ -8,9 +8,9 @@
 #include "entities/ResultadosPartida.h"
 #include "players/iPlayer.h"
 
-ResultadosPartida *jugar(int cantidadColumnas, int cantidadFilas, int c_objetivo, int cantidad_fichas,
-                        iPlayer *nuestroJugador, iPlayer *contrincante);
+ResultadosPartida jugar(int cantidadColumnas, int cantidadFilas, int c_objetivo, int cantidad_fichas,
+                        iPlayer& nuestroJugador, iPlayer& contrincante);
 
-bool gano(Tablero *tablero, int c_objetivo, bool jugadorAliado);
+bool gano(Tablero& tablero, int c_objetivo, bool jugadorAliado);
 
 #endif //AED3_TP3_INPLACEGAME_H

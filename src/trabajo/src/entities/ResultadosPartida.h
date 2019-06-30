@@ -9,14 +9,9 @@
 
 class ResultadosPartida{
 public:
-    ResultadosPartida (iPlayer *nuestroJugador, int largoPartida, bool ganoNuestroJugador){
+    ResultadosPartida (int largoPartida, bool ganoNuestroJugador){
         this->ganoNuestroJugador = ganoNuestroJugador;
         this->largoPartida = largoPartida;
-        this->nuestroJugador = nuestroJugador;
-    }
-
-    iPlayer *getNuestroJugador() const {
-        return nuestroJugador;
     }
 
     int getLargoPartida() const {
@@ -28,7 +23,6 @@ public:
     }
 
 private:
-    iPlayer *nuestroJugador;
     int largoPartida;
     bool ganoNuestroJugador;
 };
