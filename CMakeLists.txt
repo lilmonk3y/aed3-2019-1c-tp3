@@ -98,6 +98,17 @@ add_executable(jugador_con_parametros
         src/trabajo/src/ConsoleGame.cpp
         src/trabajo/src/ConsoleGame.h)
 
+add_executable(grid_search_main
+        src/trabajo/src/parameter_optimizations/grid_search_main.cpp
+        src/trabajo/src/players/iPlayer.h
+        src/trabajo/src/players/ParamsStrategy.h
+        src/trabajo/src/players/ParamsStrategy.cpp
+        src/trabajo/src/entities/Tablero.cpp
+        src/trabajo/src/entities/Tablero.h
+        src/trabajo/src/entities/Defines.h
+        src/trabajo/src/InplaceGame.cpp
+        src/trabajo/src/InplaceGame.h)
+
 set(PLAYER_SOURCES
         src/trabajo/src/parte-dos/main.cpp
         src/trabajo/src/parte-dos/player.h
