@@ -23,6 +23,8 @@ void ConsoleGame::runGame(iPlayer& player) {
         go_first = read_str();
         if (go_first == "vos") {
             move = player.play(tablero, FICHA_ALIADA);
+            tablero.actualizar(move, FICHA_ALIADA);
+
             send(move);
         }
 
@@ -36,6 +38,7 @@ void ConsoleGame::runGame(iPlayer& player) {
             tablero.actualizar(stoi(msg), FICHA_ENEMIGA);
 
             move = player.play(tablero,FICHA_ALIADA);
+            tablero.actualizar(move, FICHA_ALIADA);
 
             send(move);
         }

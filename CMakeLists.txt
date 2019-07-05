@@ -41,12 +41,8 @@ set(SOURCES
         src/trabajo/src/entities/Tablero.cpp
         src/trabajo/src/entities/Tablero.h
         src/trabajo/src/entities/Defines.h
-        src/trabajo/src/ConsoleGame.h
-        src/trabajo/src/ConsoleGame.cpp
         src/trabajo/src/entities/Individuo.h
         src/trabajo/src/entities/Individuo.cpp
-        #src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.h
-        #src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.cpp
         )
 
 #GTEST_BEGIN
@@ -78,6 +74,8 @@ add_executable(random_player
 
 add_executable(jugador_greedy
         src/trabajo/src/executables/greedy_player_main.cpp
+        src/trabajo/src/ConsoleGame.cpp
+        src/trabajo/src/ConsoleGame.h
         ${SOURCES})
 
 add_executable(test_inplace_game
@@ -85,6 +83,15 @@ add_executable(test_inplace_game
         src/trabajo/src/entities/ResultadosPartida.h
         src/trabajo/src/InplaceGame.h
         src/trabajo/src/InplaceGame.cpp
+        ${SOURCES})
+
+add_executable(optimizaciones_jugador_greedy
+        src/trabajo/src/executables/optimizaciones_genetico_jugador_greedy_main.cpp
+        src/trabajo/src/entities/ResultadosPartida.h
+        src/trabajo/src/InplaceGame.h
+        src/trabajo/src/InplaceGame.cpp
+        src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.h
+        src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.cpp
         ${SOURCES})
 
 add_executable(jugador_con_parametros

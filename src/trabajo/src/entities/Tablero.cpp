@@ -38,14 +38,6 @@ bool Tablero::hayJugada(int indiceEnColumna, int indiceFila) const {
     return indiceFila < this->matrizFichas->at(indiceEnColumna)->size();
 }
 
-/*
- * Obtengo el indice de la fila en la que sería la nueva jugada.
- * Como size = cantElementos desde el 1, me da la posición en la columna.
- */
-int Tablero::getIndiceFila(int indiceColumna) const {
-    return this->matrizFichas->at(indiceColumna)->size() -1;
-}
-
 int Tablero::jugadaEn(int columna, int fila) const {
     return hayJugada(columna, fila) ? this->matrizFichas->at(columna)->at(fila) : VACIO;
 }

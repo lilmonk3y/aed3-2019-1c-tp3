@@ -3,50 +3,46 @@
 
 #include "../entities/Individuo.h"
 #include "../entities/Tablero.h"
-#include <vector>
-#include <map>
 #include "../entities/Defines.h"
-
-#include "GreedyStrategy.h"
-#include "TestStrategy.h"
-#include "../Game.h"
-
-using namespace std;
+#include "../players/iPlayer.h"
+#include <vector>
+#include <utility>
 
 class AlgoritmoGenetico {
 public:
-        AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,PlayStrategy* rival);
+        AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuos, int pesoLimite, Tablero* tablero, iPlayer* aliado, iPlayer* rival);
+
         Individuo* correrAlgoritmo();
 
 private:
         // ATRIBUTOS:
-        vector<Individuo* >* poblacionActual;// se va reemplazando por la nueva generacion.
+        std::vector<Individuo* >* poblacionActual;// se va reemplazando por la nueva generacion.
         int generacion;
         int cantidadDeGeneraciones;
-        int columnas;
-        int filas;
         int tamanioLinea;
         int cantidadFichas;
         int cantidadMaximaDeJugadas;
         int pesoLimite;
         int cantidadIndividuos;
         int fitnessPromedio;
-        TestStrategy* jugadorRival; // REVISAR
+        Tablero* tablero;
+        iPlayer* aliado;
+        iPlayer* rival;
 
         // METODOS:
 
         // metodos obligatorios de la heuristica:
-        vector<Individuo* >* generarPoblacion();
+        std::vector<Individuo* >* generarPoblacion();
         void fitness(Individuo* individuo);
         void fitness1(Individuo* individuo);
         void fitness2(Individuo* individuo);
 
-        pair <Individuo*, Individuo*> seleccion();
-        pair <Individuo*, Individuo*> seleccion1();
-        pair <Individuo*, Individuo*> seleccion2();
+        std::pair <Individuo*, Individuo*> seleccion();
+        std::pair <Individuo*, Individuo*> seleccion1();
+        std::pair <Individuo*, Individuo*> seleccion2();
 
         // operadores geneticos (obligatorios)
-        pair <Individuo*, Individuo*> crossover(Individuo* individuo1,Individuo* individuo2); // cruza y reproduccion
+        std::pair <Individuo*, Individuo*> crossover(Individuo* individuo1,Individuo* individuo2); // cruza y reproduccion
         void mutacion(Individuo* individuo);
 
         // metodos para emprolijar el codigo:
@@ -56,7 +52,6 @@ private:
         bool condicionDeMutacion(Individuo* individuo); // probabilidad por evaluacion del individuo
         void recalcularEvaluacionPromedioDeLaPoblacion();
         Individuo* mejorIndividuo();
-        GreedyStrategy* contruirPlayerNuestro(Individuo* individuo);
 };
 
 #endif //AED3_TP3_ALGORITMOGENETICO_H

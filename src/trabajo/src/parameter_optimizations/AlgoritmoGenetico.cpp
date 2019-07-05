@@ -1,17 +1,16 @@
 #include "AlgoritmoGenetico.h"
 
-AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones,int cols, int fils,int tamLinea, int cantFichas, int pesoLimite, int cantIndividuos,PlayStrategy* rival) {
+AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuos, int pesoLimite,
+        Tablero *tablero, iPlayer *aliado, iPlayer *rival) {
     this->generacion = 0;
     this->cantidadDeGeneraciones = cantidadGeneraciones;
-    this->columnas = cols;
-    this->filas = fils;
-    this->tamanioLinea = tamLinea;
-    this->cantidadFichas = cantFichas;
-    this->cantidadMaximaDeJugadas = fils*cols;
-    this->pesoLimite = pesoLimite;
     this->cantidadIndividuos = cantIndividuos;
-    this->fitnessPromedio = fils*cols;
-    PlayStrategy* jugadorRival = rival;
+    this->pesoLimite = pesoLimite;
+    this->tablero = tablero;
+    this->cantidadMaximaDeJugadas = tablero->getColumnas() * tablero->getFilas();
+    this->fitnessPromedio = tablero->getColumnas() * tablero->getFilas();
+    this->aliado = aliado;
+    this->rival = rival;
 }
 
 Individuo* AlgoritmoGenetico::correrAlgoritmo() {
@@ -48,10 +47,19 @@ Individuo* AlgoritmoGenetico::correrAlgoritmo() {
 vector<Individuo* >* AlgoritmoGenetico::generarPoblacion() {
     vector<Individuo*>* nuevaPoblacion = new vector<Individuo*>(cantidadIndividuos);
 
-    for(int i = 0; i < cantidadIndividuos; i = i + 1) {
+    for(int i = 0; i < cantidadIndividuos; i++) {
         // individuos con genes aleatorios entre 0 y pesoLimite-1:
-        int evaluacionInicial = this->filas*this->columnas;
-        Individuo* individuo = new Individuo(rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,rand() % pesoLimite,evaluacionInicial);
+        int evaluacionInicial = this->cantidadMaximaDeJugadas;
+        Individuo* individuo = new Individuo(rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                rand() % pesoLimite,
+                evaluacionInicial);
         nuevaPoblacion->push_back(individuo);
     }
 
@@ -307,4 +315,3 @@ GreedyStrategy* AlgoritmoGenetico::contruirPlayerNuestro(Individuo* individuo) {
 
     return new GreedyStrategy(pesos);
 }
-
