@@ -94,17 +94,6 @@ add_executable(optimizaciones_jugador_greedy
         src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.cpp
         ${SOURCES})
 
-add_executable(jugador_con_parametros
-        src/trabajo/src/executables/params_player_main.cpp
-        src/trabajo/src/players/iPlayer.h
-        src/trabajo/src/players/ParamsStrategy.h
-        src/trabajo/src/players/ParamsStrategy.cpp
-        src/trabajo/src/entities/Tablero.cpp
-        src/trabajo/src/entities/Tablero.h
-        src/trabajo/src/entities/Defines.h
-        src/trabajo/src/ConsoleGame.cpp
-        src/trabajo/src/ConsoleGame.h)
-
 add_executable(grid_search_main
         src/trabajo/src/parameter_optimizations/grid_search_main.cpp
         src/trabajo/src/players/iPlayer.h
@@ -115,15 +104,3 @@ add_executable(grid_search_main
         src/trabajo/src/entities/Defines.h
         src/trabajo/src/InplaceGame.cpp
         src/trabajo/src/InplaceGame.h)
-
-set(PLAYER_SOURCES
-        src/trabajo/src/parte-dos/main.cpp
-        src/trabajo/src/parte-dos/player.h
-        src/trabajo/src/parte-dos/manager.hpp
-        src/trabajo/src/parte-dos/statehelper.cpp
-        src/trabajo/src/parte-dos/statehelper.h)
-file(GLOB PATH_TO_PLAYERS src/trabajo/src/parte-dos/strategies/*.cpp)
-FOREACH(PLAYER_CPP_PATH ${PATH_TO_PLAYERS})
-  get_filename_component(PLAYER_NAME ${PLAYER_CPP_PATH} NAME_WE)
-  add_executable(_${PLAYER_NAME} ${PLAYER_CPP_PATH} ${PLAYER_SOURCES})
-ENDFOREACH()

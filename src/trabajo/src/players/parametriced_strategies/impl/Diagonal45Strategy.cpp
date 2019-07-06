@@ -18,6 +18,9 @@ void Diagonal45Strategy::mejorDiagonal45(Tablero *tablero, int cObjetivo, int fi
 bool
 Diagonal45Strategy::completarDiagonal45(Tablero *tablero, int cObjetivo, int ficha, int indiceColumna,
                                         bool deboSumarUnaFicha) {
+    if(deboSumarUnaFicha && tablero->jugadaEn(indiceColumna,tablero->ultimaJugadaEnColumna(indiceColumna)) != ficha){
+        return false;
+    }
     int consecutivosADerecha = 0;
     int indiceFila = indiceColumna + 1;
     while( tablero->hayJugada(indiceFila, indiceFila) ){

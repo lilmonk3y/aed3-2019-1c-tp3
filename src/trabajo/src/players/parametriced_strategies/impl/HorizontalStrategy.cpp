@@ -8,17 +8,22 @@ void HorizontalStrategy::mejorHorizontal(Tablero *tablero, int cObjetivo, int fi
     this->getMoves()->clear(); // limpio los movimientos previos
 
     for(int indiceColumna = 0; indiceColumna < tablero->getColumnas(); indiceColumna++){
-        if(completarFila(indiceColumna, tablero->getTamanoColumna(indiceColumna), ficha, cObjetivo,
+        if(completarFila(indiceColumna, ficha, cObjetivo,
                          tablero, true)){
             this->getMoves()->push_back(indiceColumna);
         }
     }
 }
 
-bool HorizontalStrategy::completarFila(int columnaEsperada, int indiceFila, int ficha, int cObjetivo,
-                                      Tablero *tablero, bool deboSumarUnaJugada) {
+bool HorizontalStrategy::completarFila(int indiceColumna, int ficha, int cObjetivo, Tablero *tablero,
+                                      bool deboSumarUnaJugada) {
+    int indiceFila = tablero->ultimaJugadaEnColumna(indiceColumna);
+    if(deboSumarUnaJugada && tablero->jugadaEn(indiceColumna,indiceFila) != ficha){
+        return false;
+    }
+
     int jugadasConsecutivasADerecha = 0;
-    for(int columnaADerecha = columnaEsperada+1; columnaADerecha < tablero->getColumnas(); columnaADerecha++){
+    for(int columnaADerecha = indiceColumna+1; columnaADerecha < tablero->getColumnas(); columnaADerecha++){
         if( tablero->hayJugada(columnaADerecha, indiceFila) && tablero->jugadaEn(columnaADerecha, indiceFila) == ficha ){
             jugadasConsecutivasADerecha++;
         }else{
@@ -27,7 +32,7 @@ bool HorizontalStrategy::completarFila(int columnaEsperada, int indiceFila, int 
     }
 
     int jugadasConsecutivasAIzquierda = 0;
-    for(int columnaAIzquierda = columnaEsperada-1; columnaAIzquierda >= 0; columnaAIzquierda--){
+    for(int columnaAIzquierda = indiceColumna-1; columnaAIzquierda >= 0; columnaAIzquierda--){
         if( tablero->hayJugada(columnaAIzquierda, indiceFila) && tablero->jugadaEn(columnaAIzquierda, indiceFila) == ficha ){
             jugadasConsecutivasAIzquierda++;
         }else{

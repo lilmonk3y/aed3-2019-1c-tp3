@@ -15,10 +15,6 @@ Tablero::Tablero(int columnas, int filas, int fichasParaGanar, int fichasPorJuga
     }
 }
 
-bool Tablero::filaVacia(int fila) const {
-    return fila > mayorFilaNoVacia;
-}
-
 int Tablero::getFilas() const {
     return this->filas;
 }
@@ -42,142 +38,141 @@ int Tablero::jugadaEn(int columna, int fila) const {
     return hayJugada(columna, fila) ? this->matrizFichas->at(columna)->at(fila) : VACIO;
 }
 
-int Tablero::getFichasEnColumna(int columna) const {
-    return (*matrizFichas)[columna]->size();
-}
-
-std::vector<int> *Tablero::getColumna(int columna) {
-    return this->matrizFichas->at(columna);
-}
-
-int Tablero::getTamanoColumna(int i) const {
-    if( i >= this->getColumnas() || i < 0) return -1;
-    return this->matrizFichas->at(i)->size() -1;
+int Tablero::ultimaJugadaEnColumna(int indiceColumna) const {
+    if( indiceColumna >= this->getColumnas() || indiceColumna < 0) return -1;
+    return this->matrizFichas->at(indiceColumna)->size() -1;
 }
 
 void Tablero::actualizar(int columna, FICHA ficha) {
     this->matrizFichas->at(columna)->push_back(ficha);
-    int filaDeLaFicha = getFichasEnColumna(columna)-1;
-    if (filaDeLaFicha > mayorFilaNoVacia) mayorFilaNoVacia = filaDeLaFicha;
-    actualizarGanador();
-    --fichasDisponibles;
-}
-
-bool Tablero::partidaTerminada() const {
-    return ganador != VACIO or fichasDisponibles == 0;
-}
-
-FICHA Tablero::obtenerGanador() const {
-    return ganador;
-}
-
-void Tablero::actualizarGanador() {
-    ganador = calcularGanadorEnLineasVerticales();
-    if (ganador != VACIO) return;
-
-    ganador = calcularGanadorEnLineasHorizontales();
-    if (ganador != VACIO) return;
-
-    ganador = calcularGanadorEnLineasDiagonales();
-}
-
-FICHA Tablero::calcularGanadorEnLineasVerticales() {
-    for (int col = 0; col < getColumnas(); ++col) {
-        int fichasEnColumna = getFichasEnColumna(col);
-        if (fichasEnColumna < fichasParaGanar) continue;
-        FICHA colorAnterior = VACIO;
-        int longitud = 0;
-        for (int fila = 0; fila < fichasEnColumna; ++fila) {
-            int color = jugadaEn(col, fila);
-            if (color == colorAnterior) {
-                longitud++;
-                if (longitud == fichasParaGanar) return color;
-            } else {
-                longitud = 1;
-                colorAnterior = color; 
-            } 
-        }
-    }
-    return VACIO;
-}
-
-FICHA Tablero::calcularGanadorEnLineasHorizontales() {
-    for (int fila = 0; fila < getFilas() and not filaVacia(fila); ++fila) {
-        FICHA colorAnterior = VACIO;
-        int longitud = 0;
-        for (int col = 0; col < getColumnas(); ++col) {
-            int color = jugadaEn(col, fila);
-            if (color == VACIO) {
-                longitud = 0;
-            } else if (color == colorAnterior) {
-                longitud++;
-                if (longitud == fichasParaGanar) return color;
-            } else {
-                longitud = 1;
-                colorAnterior = color; 
-            } 
-        }
-    }
-    return VACIO;
-}
-    
-FICHA Tablero::calcularGanadorEnLineasDiagonales() {
-    int diagonales = getFilas() + getColumnas() - 2 * fichasParaGanar + 1;
-    
-    // Diagonales principales:
-
-    int diagFila = fichasParaGanar, diagCol = 0;
-    for (int i = 0; i < diagonales; ++i) {
-        FICHA colorAnterior = VACIO;
-        int longitud = 0;
-        for (int fila = diagFila, col = diagCol; fila >= 0 and col < getColumnas(); --fila, ++col) {
-            int color = jugadaEn(col, fila);
-            if (color == VACIO) {
-                longitud = 0;
-            } else if (color == colorAnterior) {
-                longitud++;
-                if (longitud == fichasParaGanar) return color;
-            } else {
-                longitud = 1;
-                colorAnterior = color; 
-            } 
-        }
-        if (diagFila < getFilas()-1) ++diagFila;
-        else ++diagCol;
-    }
-
-    // Diagonales secundarias:
-
-    diagFila = fichasParaGanar;
-    diagCol = getColumnas() - 1;
-    for (int i = 0; i < diagonales; ++i) {
-        FICHA colorAnterior = VACIO;
-        int longitud = 0;
-        for (int fila = diagFila, col = diagCol; fila >= 0 and col >= 0; --fila, --col) {
-            int color = jugadaEn(col, fila);
-            if (color == VACIO) {
-                longitud = 0;
-            } else if (color == colorAnterior) {
-                longitud++;
-                if (longitud == fichasParaGanar) return color;
-            } else {
-                longitud = 1;
-                colorAnterior = color; 
-            } 
-        }
-        if (diagFila < getFilas()-1) ++diagFila;
-        else --diagCol;
-    }
+    //--fichasDisponibles;
 }
 
 int Tablero::getFichasParaGanar() const {
     return fichasParaGanar;
 }
 
-int Tablero::getFichasPorJugador() const {
-    return fichasPorJugador;
-}
 
 void Tablero::setFichas(int i) {
     this->fichasDisponibles = i;
 }
+
+//bool Tablero::partidaTerminada() const {
+//    return ganador != VACIO or fichasDisponibles == 0;
+//}
+//
+//FICHA Tablero::obtenerGanador() const {
+//    return ganador;
+//}
+//
+//void Tablero::actualizarGanador() {
+//    ganador = calcularGanadorEnLineasVerticales();
+//    if (ganador != VACIO) return;
+//
+//    ganador = calcularGanadorEnLineasHorizontales();
+//    if (ganador != VACIO) return;
+//
+//    ganador = calcularGanadorEnLineasDiagonales();
+//}
+//
+//FICHA Tablero::calcularGanadorEnLineasVerticales() {
+//    for (int col = 0; col < getColumnas(); ++col) {
+//        int fichasEnColumna = getFichasEnColumna(col);
+//        if (fichasEnColumna < fichasParaGanar) continue;
+//        FICHA colorAnterior = VACIO;
+//        int longitud = 0;
+//        for (int fila = 0; fila < fichasEnColumna; ++fila) {
+//            int color = jugadaEn(col, fila);
+//            if (color == colorAnterior) {
+//                longitud++;
+//                if (longitud == fichasParaGanar) return color;
+//            } else {
+//                longitud = 1;
+//                colorAnterior = color;
+//            }
+//        }
+//    }
+//    return VACIO;
+//}
+//
+//FICHA Tablero::calcularGanadorEnLineasHorizontales() {
+//    for (int fila = 0; fila < getFilas() and not filaVacia(fila); ++fila) {
+//        FICHA colorAnterior = VACIO;
+//        int longitud = 0;
+//        for (int col = 0; col < getColumnas(); ++col) {
+//            int color = jugadaEn(col, fila);
+//            if (color == VACIO) {
+//                longitud = 0;
+//            } else if (color == colorAnterior) {
+//                longitud++;
+//                if (longitud == fichasParaGanar) return color;
+//            } else {
+//                longitud = 1;
+//                colorAnterior = color;
+//            }
+//        }
+//    }
+//    return VACIO;
+//}
+//
+//FICHA Tablero::calcularGanadorEnLineasDiagonales() {
+//    int diagonales = getFilas() + getColumnas() - 2 * fichasParaGanar + 1;
+//
+//    // Diagonales principales:
+//
+//    int diagFila = fichasParaGanar, diagCol = 0;
+//    for (int i = 0; i < diagonales; ++i) {
+//        FICHA colorAnterior = VACIO;
+//        int longitud = 0;
+//        for (int fila = diagFila, col = diagCol; fila >= 0 and col < getColumnas(); --fila, ++col) {
+//            int color = jugadaEn(col, fila);
+//            if (color == VACIO) {
+//                longitud = 0;
+//            } else if (color == colorAnterior) {
+//                longitud++;
+//                if (longitud == fichasParaGanar) return color;
+//            } else {
+//                longitud = 1;
+//                colorAnterior = color;
+//            }
+//        }
+//        if (diagFila < getFilas()-1) ++diagFila;
+//        else ++diagCol;
+//    }
+//
+//    // Diagonales secundarias:
+//
+//    diagFila = fichasParaGanar;
+//    diagCol = getColumnas() - 1;
+//    for (int i = 0; i < diagonales; ++i) {
+//        FICHA colorAnterior = VACIO;
+//        int longitud = 0;
+//        for (int fila = diagFila, col = diagCol; fila >= 0 and col >= 0; --fila, --col) {
+//            int color = jugadaEn(col, fila);
+//            if (color == VACIO) {
+//                longitud = 0;
+//            } else if (color == colorAnterior) {
+//                longitud++;
+//                if (longitud == fichasParaGanar) return color;
+//            } else {
+//                longitud = 1;
+//                colorAnterior = color;
+//            }
+//        }
+//        if (diagFila < getFilas()-1) ++diagFila;
+//        else --diagCol;
+//    }
+//}
+//int Tablero::getFichasEnColumna(int columna) const {
+//    return (*matrizFichas)[columna]->size();
+//}
+//
+//std::vector<int> *Tablero::getColumna(int columna) {
+//    return this->matrizFichas->at(columna);
+//}
+//bool Tablero::filaVacia(int fila) const {
+//    return fila > mayorFilaNoVacia;
+//}
+//int Tablero::getFichasPorJugador() const {
+//    return fichasPorJugador;
+//}

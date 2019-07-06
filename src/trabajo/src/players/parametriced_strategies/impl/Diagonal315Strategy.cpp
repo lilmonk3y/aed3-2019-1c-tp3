@@ -18,10 +18,13 @@ void Diagonal315Strategy::mejorDiagonal315(Tablero *tablero, int cObjetivo, int 
 bool
 Diagonal315Strategy::completarDiagonal315(Tablero *tablero, int cObjetivo, int ficha, int indiceColumna,
                                          bool deboSumarUnaFicha) {
-    int consecutivosAIzquierda = 0;
+    if(deboSumarUnaFicha && tablero->jugadaEn(indiceColumna,tablero->ultimaJugadaEnColumna(indiceColumna)) != ficha){
+        return false;
+    }
 
+    int consecutivosAIzquierda = 0;
     int indColumna = indiceColumna - 1;
-    int indFila = tablero->getTamanoColumna(indColumna) + 1;
+    int indFila = tablero->ultimaJugadaEnColumna(indColumna) + 1;
     while( tablero->hayJugada(indColumna,indFila) ){
             if( tablero->jugadaEn(indColumna, indFila) == ficha ){
                 consecutivosAIzquierda++;
@@ -33,9 +36,8 @@ Diagonal315Strategy::completarDiagonal315(Tablero *tablero, int cObjetivo, int f
         }
 
     int consecutivosADerecha = 0;
-
     indColumna = indiceColumna + 1;
-    indFila = tablero->getTamanoColumna(indColumna) - 1;
+    indFila = tablero->ultimaJugadaEnColumna(indColumna) - 1;
     while( tablero->hayJugada(indColumna,indFila) ){
             if( tablero->jugadaEn(indColumna, indFila) == ficha ){
                 consecutivosADerecha++;

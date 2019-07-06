@@ -22,7 +22,7 @@ bool VerticalStrategy::completarColumna(Tablero *tablero, int cObjetivo, int fic
     // para poder re utilizar el código de la estrategia para el arbitro tengo que parametrizar si debo evaluar la parte
     // superior de la columna.
     int evaluacion = deboSumarMiJugada ? 1 : 0;
-    for(int indexFila = tablero->getTamanoColumna(indexColumna) - evaluacion; indexFila >= 0; indexFila--){
+    for(int indexFila = tablero->ultimaJugadaEnColumna(indexColumna) - evaluacion; indexFila >= 0; indexFila--){
         if(tablero->jugadaEn(indexColumna,indexFila) == ficha){
             consecutivosHaciaAbajo ++;
         }else{

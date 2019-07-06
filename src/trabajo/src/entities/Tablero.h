@@ -11,6 +11,7 @@
 class Tablero{
 public:
     Tablero(int columnas, int filas, int fichasParaGanar, int fichasPorJugador);
+
     void actualizar(int columna, FICHA ficha);
 
     int getFilas() const;
@@ -21,9 +22,15 @@ public:
 
     bool hayJugada(int indiceEnColumna, int indiceFila) const;
 
-    int getIndiceFila(int indiceColumna) const;
-
     int jugadaEn(int columna, int fila) const;
+
+    int ultimaJugadaEnColumna(int indiceColumna) const;
+
+    int getFichasParaGanar() const;
+
+    void setFichas(int i);
+
+    int getIndiceFila(int indiceColumna) const;
 
     int getFichasEnColumna(int columna) const;
 
@@ -31,17 +38,12 @@ public:
 
     std::vector<int> *getColumna(int i);
 
-    int getTamanoColumna(int i) const;
-
     bool partidaTerminada() const;
 
     FICHA obtenerGanador() const;
 
-    int getFichasParaGanar() const;
 
     int getFichasPorJugador() const;
-
-    void setFichas(int i);
 
 private:
     std::vector<std::vector<int> *> *matrizFichas;

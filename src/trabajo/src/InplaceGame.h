@@ -10,4 +10,5 @@
 
 ResultadosPartida jugar(Tablero& tablero, iPlayer& jugadorA, iPlayer& jugadorB, FICHA colorPrimeraJugada);
 
+bool gano(Tablero* tablero, FICHA colorRecienJugado);
 #endif //AED3_TP3_INPLACEGAME_H

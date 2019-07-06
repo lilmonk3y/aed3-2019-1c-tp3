@@ -7,9 +7,6 @@
 #include "../players/GreedyPlayer.h"
 #include "../entities/Tablero.h"
 #include <map>
-#include <stdexcept>
-
-void imprimirMejoresParametrosAConsola(Individuo *pIndividuo);
 
 int main(){
     std::map<STRATEGY_NAME, PESO> pesos;
