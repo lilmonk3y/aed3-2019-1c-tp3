@@ -15,6 +15,8 @@ public:
     GreedyPlayer(std::map<STRATEGY_NAME,PESO> *pesosEstrategias);
     int play(Tablero& tablero, FICHA miColor) override;
 
+    void setNuevosPesosParaEstrategias(std::map<STRATEGY_NAME,PESO> *nuevosPesos);
+
 private:
     std::map<STRATEGY_NAME, Strategy*> *strategies;
 

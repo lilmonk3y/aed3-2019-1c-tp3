@@ -27,8 +27,10 @@ int main(){
     GreedyPlayer jugadorAliado(&pesos);
     RandomPlayer jugadorEnemigo;
 
-    ResultadosPartida resultados = jugar(4,4,2,10, jugadorAliado, jugadorEnemigo, FICHA_ALIADA);
+    Tablero *tablero = new Tablero(4, 4, 2, 10);
+    ResultadosPartida resultados = jugar(*tablero, jugadorAliado, jugadorEnemigo, FICHA_ALIADA);
 
-    std::cout << "Ganador: " << resultados.isGanoNuestroJugador() << std::endl;
+    std::string ganador = resultados.isGanoNuestroJugador() ? "aliado" : "enemigo";
+    std::cout << "Ganador: " << ganador << std::endl;
 
 }

@@ -7,3 +7,7 @@
 void VerticalDefensivo::selectMoves(Tablero *tablero, int cObjetivo, int miFicha) {
     mejorVertical(tablero,cObjetivo,fichaContraria(miFicha));
 }
+
+STRATEGY_NAME VerticalDefensivo::getName() {
+    return VERTICAL_DEFENSIVO;
+}

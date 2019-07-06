@@ -41,6 +41,8 @@ public:
 
     int getFichasPorJugador() const;
 
+    void setFichas(int i);
+
 private:
     std::vector<std::vector<int> *> *matrizFichas;
     int columnas;

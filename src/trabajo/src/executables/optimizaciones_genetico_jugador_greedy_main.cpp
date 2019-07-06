@@ -7,6 +7,9 @@
 #include "../players/GreedyPlayer.h"
 #include "../entities/Tablero.h"
 #include <map>
+#include <stdexcept>
+
+void imprimirMejoresParametrosAConsola(Individuo *pIndividuo);
 
 int main(){
     std::map<STRATEGY_NAME, PESO> pesos;
@@ -22,5 +25,5 @@ int main(){
 
     AlgoritmoGenetico *optimizaciones = new AlgoritmoGenetico(10, 6, 10, new Tablero(8,8,4, 100), new GreedyPlayer(&pesos), new RandomPlayer());
 
-
+    Individuo* individuo = optimizaciones->correrAlgoritmo();
 }

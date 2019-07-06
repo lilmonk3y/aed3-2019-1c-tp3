@@ -87,3 +87,10 @@ int GreedyPlayer::elegirMejorIndice(std::vector<int> *mejoresMovimientos) {
     }
     return columna;
 }
+
+void GreedyPlayer::setNuevosPesosParaEstrategias(std::map<STRATEGY_NAME, PESO> *nuevosPesos) {
+    for(auto estrategia : *(this->strategies)){
+        estrategia.second->setWeigth(nuevosPesos->at(estrategia.second->getName()));
+    }
+
+}

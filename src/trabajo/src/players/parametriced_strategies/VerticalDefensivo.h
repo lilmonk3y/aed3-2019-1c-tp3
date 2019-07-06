@@ -14,6 +14,7 @@ class VerticalDefensivo : public VerticalStrategy {
 public:
     explicit VerticalDefensivo(int peso) : VerticalStrategy(peso, VERTICAL_DEFENSIVO) {}
     void selectMoves(Tablero *tablero, int cObjetivo, int miFicha) override;
+    STRATEGY_NAME getName() override;
 };
 
 

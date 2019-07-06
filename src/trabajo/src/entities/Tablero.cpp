@@ -177,3 +177,7 @@ int Tablero::getFichasParaGanar() const {
 int Tablero::getFichasPorJugador() const {
     return fichasPorJugador;
 }
+
+void Tablero::setFichas(int i) {
+    this->fichasDisponibles = i;
+}

@@ -9,9 +9,7 @@
 #include "players/parametriced_strategies/Diagonal315Strategy.h"
 #include "players/parametriced_strategies/Diagonal45Strategy.h"
 
-ResultadosPartida jugar(int cantidadColumnas, int cantidadFilas, int c_objetivo, int cantidad_fichas,
-                          iPlayer& jugadorAliado, iPlayer& jugadorEnemigo, FICHA colorPrimeraJugada){
-    Tablero tablero(cantidadColumnas, cantidadFilas, c_objetivo, cantidad_fichas);
+ResultadosPartida jugar(Tablero& tablero,iPlayer& jugadorAliado, iPlayer& jugadorEnemigo, FICHA colorPrimeraJugada){
     int duracionPartida = 0;
     FICHA color = colorPrimeraJugada;
     iPlayer* jugador = colorPrimeraJugada == FICHA_ALIADA ? &jugadorAliado : &jugadorEnemigo;

@@ -34,6 +34,4 @@ TEST_F(PlayerTest, test) {
 
     ASSERT_GE(move, 0);
     ASSERT_LE(move, 3);
-
-    delete player;
 }

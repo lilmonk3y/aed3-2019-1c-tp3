@@ -13,7 +13,7 @@ class HorizontalOfensivo : public HorizontalStrategy {
 public:
     HorizontalOfensivo(int peso) : HorizontalStrategy(peso, HORIZONTAL_OFENSIVO) {};
     void selectMoves(Tablero *tablero, int cObjetivo, int miFicha) override;
-
+    STRATEGY_NAME getName() override;
 };
 
 

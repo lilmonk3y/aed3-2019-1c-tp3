@@ -5,6 +5,7 @@
 #include "../entities/Tablero.h"
 #include "../entities/Defines.h"
 #include "../players/iPlayer.h"
+#include "../players/GreedyPlayer.h"
 #include <vector>
 #include <utility>
 
@@ -52,6 +53,7 @@ private:
         bool condicionDeMutacion(Individuo* individuo); // probabilidad por evaluacion del individuo
         void recalcularEvaluacionPromedioDeLaPoblacion();
         Individuo* mejorIndividuo();
+        void setParametrosDesde(Individuo *individuo, GreedyPlayer *player);
 };
 
 #endif //AED3_TP3_ALGORITMOGENETICO_H

@@ -14,6 +14,8 @@ public:
 
     std::list<int> *getMoves();
     int getWeigth() ;
+    virtual STRATEGY_NAME getName() = 0;
+    void setWeigth(int weigth);
 
     bool operator<(const Strategy& s);
     bool operator>(const Strategy& s);

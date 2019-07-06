@@ -45,3 +45,19 @@ bool Individuo::fueSeleccionado() {
 void Individuo::seleccionar() {
     this->seleccionado = true;
 }
+
+Individuo::Individuo(Individuo &anotherIndividuo) {
+    this->evaluacion = anotherIndividuo.evaluacion;
+    this->seleccionado = anotherIndividuo.seleccionado;
+    // genoma/genotipo: (conjunto de genes)
+    this->horizontal_defensivo = anotherIndividuo.horizontal_defensivo;
+    this->horizontal_ofensivo = anotherIndividuo.horizontal_ofensivo;
+    this->vertical_defensivo = anotherIndividuo.vertical_defensivo;
+    this->vertical_ofensivo = anotherIndividuo.vertical_ofensivo;
+    this->diagonal_45_defensivo = anotherIndividuo.diagonal_45_defensivo;
+    this->diagonal_45_ofensivo = anotherIndividuo.diagonal_45_ofensivo;
+    this->diagonal_315_defensivo = anotherIndividuo.diagonal_315_defensivo;
+    this->diagonal_315_ofensivo = anotherIndividuo.diagonal_315_ofensivo;
+    this->jugada_aleatoria = anotherIndividuo.jugada_aleatoria;
+
+}

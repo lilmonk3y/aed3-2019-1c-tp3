@@ -13,6 +13,7 @@ class Diagonal315Defensivo : public Diagonal315Strategy {
 public:
     explicit Diagonal315Defensivo(float peso) : Diagonal315Strategy(peso, DIAGONAL_315_DEFENSIVO) {}
     void selectMoves(Tablero *tablero, int cObjetivo, int miFicha) override;
+    STRATEGY_NAME getName() override;
 
 };
 

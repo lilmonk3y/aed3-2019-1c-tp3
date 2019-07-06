@@ -9,5 +9,9 @@ void HorizontalOfensivo::selectMoves(Tablero *tablero, int cObjetivo, int miFich
     mejorHorizontal(tablero, cObjetivo, miFicha);
 }
 
+STRATEGY_NAME HorizontalOfensivo::getName() {
+    return HORIZONTAL_OFENSIVO;
+}
+
 
 

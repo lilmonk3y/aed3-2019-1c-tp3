@@ -7,3 +7,7 @@
 void Diagonal45Ofensivo::selectMoves(Tablero *tablero, int cObjetivo, int miFicha) {
     mejorDiagonal45(tablero,cObjetivo,miFicha);
 }
+
+STRATEGY_NAME Diagonal45Ofensivo::getName() {
+    return DIAGONAL_45_OFENSIVO;
+}

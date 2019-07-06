@@ -37,3 +37,7 @@ std::list<int> *Strategy::getMoves() {
 }
 
 int Strategy::fichaContraria(int miFicha) const { return miFicha == FICHA_ALIADA ? FICHA_ENEMIGA : FICHA_ALIADA; }
+
+void Strategy::setWeigth(int weigth) {
+    this->peso = weigth;
+}

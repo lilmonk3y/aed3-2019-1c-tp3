@@ -13,6 +13,7 @@ class JugadaAleatoria : public Strategy{
 public:
     JugadaAleatoria(float peso) : Strategy(peso, JUGADA_ALEATORIA) {}
     void selectMoves(Tablero *tablero, int cObjetivo, int miFicha);
+    STRATEGY_NAME getName();
 };
 
 
