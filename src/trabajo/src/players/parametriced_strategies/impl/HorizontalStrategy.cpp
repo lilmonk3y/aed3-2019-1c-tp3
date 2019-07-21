@@ -20,7 +20,7 @@ bool HorizontalStrategy::completarFila(int indiceColumna, int ficha, int cObjeti
 
     if(!deboSumarUnaJugada && tablero->columnaLlena(indiceColumna)){
         return false;
-    }else if(!tablero->columnaVacia(indiceColumna)){
+    }else if(!tablero->columnaVacia(indiceColumna) && deboSumarUnaJugada){
         indiceFila += 1;
     }
 
@@ -44,6 +44,6 @@ bool HorizontalStrategy::completarFila(int indiceColumna, int ficha, int cObjeti
 
     // para poder re utilizar el código de la estrategia para el arbitro tengo que parametrizar si debo evaluar la parte
     // superior de la columna.
-    int evaluacion = deboSumarUnaJugada ? 1 : 0;
+    int evaluacion = deboSumarUnaJugada ? 1 : tablero->jugadaEn(indiceColumna,tablero->ultimaJugadaEnColumna(indiceColumna));
     return jugadasConsecutivasADerecha + jugadasConsecutivasAIzquierda + evaluacion >= cObjetivo;
 }
