@@ -54,9 +54,17 @@ include_directories(lib/googletest/googlemock/include)
 
 #Define your executable
 add_executable(tests
+        src/trabajo/src/entities/ResultadosPartida.h
+        src/trabajo/src/InplaceGame.h
+        src/trabajo/src/InplaceGame.cpp
         ${SOURCES}
         src/trabajo/test/test_main.cpp
-        src/trabajo/test/PlayerTest.cpp)
+        src/trabajo/test/players/PlayerTest.cpp
+        src/trabajo/test/players/parametriced_strategies/VerticalStrategyTest.cpp
+        src/trabajo/test/players/parametriced_strategies/HorizontalStrategyTest.cpp
+        src/trabajo/test/players/parametriced_strategies/Diagonal45StrategyTest.cpp
+        src/trabajo/test/players/parametriced_strategies/Diagonal315StrategyTest.cpp
+        src/trabajo/test/InplaceGameTest.cpp)
 
 #Link with GoogleTest
 target_link_libraries(tests gtest gtest_main)

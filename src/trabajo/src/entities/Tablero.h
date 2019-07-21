@@ -24,26 +24,15 @@ public:
 
     int jugadaEn(int columna, int fila) const;
 
+    bool hayJugada(int indiceColumna) const;
+
     int ultimaJugadaEnColumna(int indiceColumna) const;
 
     int getFichasParaGanar() const;
 
     void setFichas(int i);
 
-    int getIndiceFila(int indiceColumna) const;
-
-    int getFichasEnColumna(int columna) const;
-
-    bool filaVacia(int fila) const;
-
-    std::vector<int> *getColumna(int i);
-
-    bool partidaTerminada() const;
-
-    FICHA obtenerGanador() const;
-
-
-    int getFichasPorJugador() const;
+    bool columnaVacia(int indiceColumna)const ;
 
 private:
     std::vector<std::vector<int> *> *matrizFichas;
