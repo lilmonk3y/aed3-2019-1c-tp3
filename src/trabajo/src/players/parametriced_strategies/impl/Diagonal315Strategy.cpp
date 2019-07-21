@@ -18,13 +18,14 @@ void Diagonal315Strategy::mejorDiagonal315(Tablero *tablero, int cObjetivo, int 
 bool
 Diagonal315Strategy::completarDiagonal315(Tablero *tablero, int cObjetivo, int ficha, int indiceColumna,
                                          bool deboSumarUnaFicha) {
-    if(deboSumarUnaFicha && tablero->jugadaEn(indiceColumna,tablero->ultimaJugadaEnColumna(indiceColumna)) != ficha){
+    if(deboSumarUnaFicha && tablero->ultimaJugadaEnColumna(indiceColumna) == tablero->getFilas() - 2){
         return false;
     }
+    int evaluacion = deboSumarUnaFicha ? 1 : 0;
 
     int consecutivosAIzquierda = 0;
     int indColumna = indiceColumna - 1;
-    int indFila = tablero->ultimaJugadaEnColumna(indColumna) + 1;
+    int indFila = tablero->ultimaJugadaEnColumna(indiceColumna) + 1 + evaluacion;
     while( tablero->hayJugada(indColumna,indFila) ){
             if( tablero->jugadaEn(indColumna, indFila) == ficha ){
                 consecutivosAIzquierda++;
@@ -37,7 +38,7 @@ Diagonal315Strategy::completarDiagonal315(Tablero *tablero, int cObjetivo, int f
 
     int consecutivosADerecha = 0;
     indColumna = indiceColumna + 1;
-    indFila = tablero->ultimaJugadaEnColumna(indColumna) - 1;
+    indFila = tablero->ultimaJugadaEnColumna(indiceColumna) - 1 + evaluacion;
     while( tablero->hayJugada(indColumna,indFila) ){
             if( tablero->jugadaEn(indColumna, indFila) == ficha ){
                 consecutivosADerecha++;
@@ -50,6 +51,5 @@ Diagonal315Strategy::completarDiagonal315(Tablero *tablero, int cObjetivo, int f
 
     // para poder re utilizar el código de la estrategia para el arbitro tengo que parametrizar si debo evaluar la parte
     // superior de la columna.
-    int evaluacion = deboSumarUnaFicha ? 1 : 0;
     return consecutivosAIzquierda + consecutivosADerecha + evaluacion >= cObjetivo;
 }

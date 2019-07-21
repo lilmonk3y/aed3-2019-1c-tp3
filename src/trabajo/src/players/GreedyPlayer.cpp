@@ -45,7 +45,7 @@ int GreedyPlayer::play(Tablero& tablero, FICHA miColor) {
         strategy.push_back( estrategia.second);
     }
 
-    std::sort(strategy.begin(), strategy.end());
+    // std::sort(strategy.begin(), strategy.end());
 
     auto mejoresMovimientos = new std::vector<int>(tablero.getColumnas(), 0);
     mejoresMovimientos = ponderarLosMovimientosDeLasEstrategias(strategy, mejoresMovimientos);

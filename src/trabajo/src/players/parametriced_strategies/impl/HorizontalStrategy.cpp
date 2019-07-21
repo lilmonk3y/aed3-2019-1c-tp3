@@ -8,8 +8,7 @@ void HorizontalStrategy::mejorHorizontal(Tablero *tablero, int cObjetivo, int fi
     this->getMoves()->clear(); // limpio los movimientos previos
 
     for(int indiceColumna = 0; indiceColumna < tablero->getColumnas(); indiceColumna++){
-        if(completarFila(indiceColumna, ficha, cObjetivo,
-                         tablero, true)){
+        if(completarFila(indiceColumna, ficha, cObjetivo,tablero, true)){
             this->getMoves()->push_back(indiceColumna);
         }
     }
@@ -17,9 +16,12 @@ void HorizontalStrategy::mejorHorizontal(Tablero *tablero, int cObjetivo, int fi
 
 bool HorizontalStrategy::completarFila(int indiceColumna, int ficha, int cObjetivo, Tablero *tablero,
                                       bool deboSumarUnaJugada) {
-    int indiceFila = tablero->ultimaJugadaEnColumna(indiceColumna);
-    if(deboSumarUnaJugada && tablero->jugadaEn(indiceColumna,indiceFila) != ficha){
+    int indiceFila = tablero->hayJugada(indiceColumna) ? tablero->ultimaJugadaEnColumna(indiceColumna) : 0;
+
+    if(!deboSumarUnaJugada && tablero->columnaLlena(indiceColumna)){
         return false;
+    }else if(!tablero->columnaVacia(indiceColumna)){
+        indiceFila += 1;
     }
 
     int jugadasConsecutivasADerecha = 0;

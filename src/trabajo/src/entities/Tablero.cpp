@@ -38,11 +38,6 @@ int Tablero::jugadaEn(int columna, int fila) const {
     return hayJugada(columna, fila) ? this->matrizFichas->at(columna)->at(fila) : VACIO;
 }
 
-int Tablero::ultimaJugadaEnColumna(int indiceColumna) const {
-    if( indiceColumna >= this->getColumnas() || indiceColumna < 0) return -1;
-    return this->matrizFichas->at(indiceColumna)->size() -1;
-}
-
 void Tablero::actualizar(int columna, FICHA ficha) {
     this->matrizFichas->at(columna)->push_back(ficha);
     //--fichasDisponibles;
@@ -52,11 +47,23 @@ int Tablero::getFichasParaGanar() const {
     return fichasParaGanar;
 }
 
-
 void Tablero::setFichas(int i) {
     this->fichasDisponibles = i;
 }
 
+bool Tablero::hayJugada(int indiceColumna) const{
+    if( indiceColumna >= this->getColumnas() || indiceColumna < 0) return false;
+    return this->matrizFichas->at(indiceColumna)->size() != 0;
+}
+
+int Tablero::ultimaJugadaEnColumna(int indiceColumna) const {
+    return !columnaVacia(indiceColumna) ? this->matrizFichas->at(indiceColumna)->size() -1 : -1;
+}
+
+bool Tablero::columnaVacia(int indiceColumna) const {
+    if(! hayJugada(indiceColumna) ) return false;
+    return this->matrizFichas->at(indiceColumna)->size() == 0;
+}
 //bool Tablero::partidaTerminada() const {
 //    return ganador != VACIO or fichasDisponibles == 0;
 //}

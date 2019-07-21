@@ -15,36 +15,41 @@ void Diagonal45Strategy::mejorDiagonal45(Tablero *tablero, int cObjetivo, int fi
     }
 }
 
-bool
-Diagonal45Strategy::completarDiagonal45(Tablero *tablero, int cObjetivo, int ficha, int indiceColumna,
+bool Diagonal45Strategy::completarDiagonal45(Tablero *tablero, int cObjetivo, int ficha, int indiceColumna,
                                         bool deboSumarUnaFicha) {
-    if(deboSumarUnaFicha && tablero->jugadaEn(indiceColumna,tablero->ultimaJugadaEnColumna(indiceColumna)) != ficha){
+    if(deboSumarUnaFicha && tablero->ultimaJugadaEnColumna(indiceColumna) == tablero->getFilas() - 2){
         return false;
     }
+    int evaluacion = deboSumarUnaFicha ? 1 : 0;
+
     int consecutivosADerecha = 0;
-    int indiceFila = indiceColumna + 1;
-    while( tablero->hayJugada(indiceFila, indiceFila) ){
-            if(tablero->jugadaEn(indiceFila, indiceFila) == ficha){
-                consecutivosADerecha++;
-            }else{
-                break;
-            }
-            indiceFila++;
+    int indiceColumnaIterar = indiceColumna +1;
+    int indiceFila = tablero->ultimaJugadaEnColumna(indiceColumna) + 1 + evaluacion;
+    while( tablero->hayJugada(indiceColumnaIterar, indiceFila) ){
+        if(tablero->jugadaEn(indiceColumnaIterar, indiceFila) == ficha){
+            consecutivosADerecha++;
+        }else{
+            break;
         }
+        indiceFila++;
+        indiceColumnaIterar++;
+    }
 
     int consecutivosAIzquierda = 0;
-    indiceFila = indiceColumna - 1;
-    while( tablero->hayJugada(indiceFila, indiceFila) ){
-            if(tablero->jugadaEn(indiceFila, indiceFila) == ficha){
-                consecutivosAIzquierda++;
-            }else{
-                break;
-            }
-            indiceFila--;
+    indiceColumnaIterar = indiceColumna - 1;
+    indiceFila = tablero->ultimaJugadaEnColumna(indiceColumna) - 1 + evaluacion;
+    while( tablero->hayJugada(indiceColumnaIterar, indiceFila) ){
+        if(tablero->jugadaEn(indiceColumnaIterar, indiceFila) == ficha){
+            consecutivosAIzquierda++;
+        }else{
+            break;
         }
+        indiceFila--;
+        indiceColumnaIterar--;
+    }
 
     // para poder re utilizar el código de la estrategia para el arbitro tengo que parametrizar si debo evaluar la parte
     // superior de la columna.
-    int evaluacion = deboSumarUnaFicha ? 1 : 0;
+
     return consecutivosAIzquierda + consecutivosADerecha + evaluacion >= cObjetivo;
 }

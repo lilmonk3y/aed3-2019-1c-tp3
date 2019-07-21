@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/players/GreedyPlayer.h"
+#include "../../src/players/GreedyPlayer.h"
 
 struct PlayerTest : testing::Test{
     iPlayer *player;

@@ -9,6 +9,7 @@
 #define FICHA_ENEMIGA 0
 #define FICHA_ALIADA 1
 #define VACIO 2
+#define FICHA_TEST 3
 
 #define STRATEGY_NAME int
 #define PESO int
