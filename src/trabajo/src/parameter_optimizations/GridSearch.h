@@ -20,8 +20,6 @@ public:
 
     Solucion* mejorSolucion(vector<Solucion* >* mejoresQueActualSolucion,Tablero& tablero );
 
-    void setParametrosDesde(Solucion* solucion, GreedyPlayer* player);
-
     int variacion(int valor, int radio);
 
     GreedyPlayer& generarJugador(Solucion* solucion);
