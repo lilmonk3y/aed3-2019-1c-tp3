@@ -43,6 +43,8 @@ set(SOURCES
         src/trabajo/src/entities/Defines.h
         src/trabajo/src/entities/Individuo.h
         src/trabajo/src/entities/Individuo.cpp
+        src/trabajo/src/entities/Solucion.h
+        src/trabajo/src/entities/Solucion.cpp
         )
 
 #GTEST_BEGIN
@@ -92,6 +94,8 @@ add_executable(optimizaciones_jugador_greedy
         src/trabajo/src/InplaceGame.cpp
         src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.h
         src/trabajo/src/parameter_optimizations/AlgoritmoGenetico.cpp
+        src/trabajo/src/parameter_optimizations/GridSearch.h
+        src/trabajo/src/parameter_optimizations/GridSearch.cpp
         ${SOURCES})
 
 add_executable(grid_search_main
