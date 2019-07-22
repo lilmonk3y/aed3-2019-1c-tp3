@@ -13,7 +13,12 @@ int main(){
     int cantidadCandidatos = 10;
     int radio = 30;
     Solucion* solucionInicial = new Solucion(1,1,1,1,1,1,1,1,1);
-    Tablero tablero = Tablero(3,3,2, 10);
+
+    int columnas = 3;
+    int filas = 3;
+    int fichasParaGanar = 2;
+    int fichasPorJugador = 10;
+    Tablero tablero = Tablero(columnas,filas,fichasParaGanar, fichasPorJugador);
 
     optimizaciones->gridSearch(cantIteraciones,cantidadCandidatos,radio,solucionInicial,tablero);
 
