@@ -11,7 +11,6 @@ Solucion* GridSearch::gridSearch(int cantidadIteraciones,int cantidadCandidatos,
     int cantIteraciones = cantidadIteraciones;
     bool hayMejorSolucion = true;
     while( cantIteraciones > 0 && hayMejorSolucion){
-        cout << "iteracion: " << cantIteraciones << endl; // BORRAR
         vector<Solucion* >* candidatos = generarCandidatos(cantidadCandidatos,radio,solucion);
         vector<Solucion* >*  mejoresQueActualSolucion = comparar(candidatos,solucion,tablero);
         if(!mejoresQueActualSolucion->empty()) {
@@ -77,32 +76,8 @@ vector<Solucion* >* GridSearch::comparar(vector<Solucion* >* candidatos,Solucion
     for(std::size_t i=0; i<candidatos->size(); ++i) { // itero todos los candidatos
         GreedyPlayer& mejorJugadorHastaAhora = generarJugador(solucion);
         GreedyPlayer& jugadorCandidato = generarJugador(candidatos->at(i));
-        cout << "van a jugar" << endl; // BORRAR
-
-        std::cout << "horizontal_ofensivo: " << solucion->horizontal_ofensivo << std::endl;
-        std::cout << "horizontal_defensivo: " << solucion->horizontal_defensivo << std::endl;
-        std::cout << "vertical_ofensivo: " << solucion->vertical_ofensivo << std::endl;
-        std::cout << "vertical_defensivo: " << solucion->vertical_defensivo << std::endl;
-        std::cout << "diagonal_45_ofensivo: " << solucion->diagonal_45_ofensivo << std::endl;
-        std::cout << "diagonal_45_defensivo: " << solucion->diagonal_45_defensivo << std::endl;
-        std::cout << "diagonal_315_ofensivo: " << solucion->diagonal_315_ofensivo << std::endl;
-        std::cout << "diagonal_315_defensivo: " << solucion->diagonal_315_defensivo << std::endl;
-        std::cout << "jugada_aleatoria: " << solucion->jugada_aleatoria << std::endl;
-
-        std::cout << "------------------------------"  << std::endl;
-
-        std::cout << "horizontal_ofensivo: " << candidatos->at(i)->horizontal_ofensivo << std::endl;
-        std::cout << "horizontal_defensivo: " << candidatos->at(i)->horizontal_defensivo << std::endl;
-        std::cout << "vertical_ofensivo: " << candidatos->at(i)->vertical_ofensivo << std::endl;
-        std::cout << "vertical_defensivo: " << candidatos->at(i)->vertical_defensivo << std::endl;
-        std::cout << "diagonal_45_ofensivo: " << candidatos->at(i)->diagonal_45_ofensivo << std::endl;
-        std::cout << "diagonal_45_defensivo: " << candidatos->at(i)->diagonal_45_defensivo << std::endl;
-        std::cout << "diagonal_315_ofensivo: " << candidatos->at(i)->diagonal_315_ofensivo << std::endl;
-        std::cout << "diagonal_315_defensivo: " << candidatos->at(i)->diagonal_315_defensivo << std::endl;
-        std::cout << "jugada_aleatoria: " << candidatos->at(i)->jugada_aleatoria << std::endl;
 
         ResultadosPartida datos = jugar(tablero,jugadorCandidato,mejorJugadorHastaAhora, FICHA_ALIADA);
-        cout << "ya jugaron" << endl; // BORRAR
 
         if(datos.isGanoNuestroJugador()) {
             mejoresSoluciones->push_back(candidatos->at(i));
