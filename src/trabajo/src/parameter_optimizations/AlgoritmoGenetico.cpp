@@ -114,72 +114,37 @@ std::pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* mejor
 
 void AlgoritmoGenetico::mutacion(Individuo* individuo) {
     if(condicionDeMutacion(individuo)){ // % de probabilidad de mutacion depende del desempeño
+        int valorAleatorio = rand()%pesoLimite; // aleatorio de 0 a pesoLimite-1
         int genAleatorio = rand()%10; // aleatorio de 0 a 9 (CANTIDAD DE GENES)
         if( genAleatorio==1 ){
-            individuo->horizontal_defensivo = individuo->horizontal_defensivo + variacion();
-            if(individuo->horizontal_defensivo < 0) {
-                individuo->horizontal_defensivo = 0;
-            }
+            individuo->horizontal_defensivo = valorAleatorio;
         }
         if( genAleatorio==2 ){
-            individuo->horizontal_ofensivo = individuo->horizontal_ofensivo + variacion();
-            if(individuo->horizontal_ofensivo < 0){
-                individuo->horizontal_ofensivo = 0;
-            }
+            individuo->horizontal_ofensivo = valorAleatorio;
 
         }
         if( genAleatorio==3 ){
-            individuo->vertical_defensivo = individuo->vertical_defensivo + variacion();
-            if( individuo->vertical_defensivo < 0 ){
-                individuo->vertical_defensivo = 0;
-            }
+            individuo->vertical_defensivo = valorAleatorio;
         }
         if( genAleatorio==4 ){
-            individuo->vertical_ofensivo = individuo->vertical_ofensivo + variacion();
-            if( individuo->vertical_ofensivo < 0 ){
-                individuo->vertical_ofensivo = 0;
-            }
+            individuo->vertical_ofensivo = valorAleatorio;
         }
         if( genAleatorio==5 ){
-            individuo->diagonal_315_defensivo = individuo->diagonal_315_defensivo + variacion();
-            if(individuo->diagonal_315_defensivo){
-                individuo->diagonal_315_defensivo = 0;
-            }
+            individuo->diagonal_315_defensivo = valorAleatorio;
 
         }
         if( genAleatorio==6 ){
-            individuo->diagonal_315_ofensivo = individuo->diagonal_315_ofensivo + variacion();
-            if(individuo->diagonal_315_ofensivo  < 0){
-                individuo->diagonal_315_ofensivo = 0;
-            }
+            individuo->diagonal_315_ofensivo = valorAleatorio;
         }
         if( genAleatorio==7 ){
-            individuo->diagonal_45_defensivo = individuo->diagonal_45_defensivo + variacion();
-            if( individuo->diagonal_45_defensivo < 0 ){
-                individuo->diagonal_45_defensivo = 0;
-            }
+            individuo->diagonal_45_defensivo = valorAleatorio;
         }
         if( genAleatorio==8 ){
-            individuo->diagonal_45_ofensivo = individuo->diagonal_45_ofensivo + variacion();
-            if(  individuo->diagonal_45_ofensivo  < 0){
-                individuo->diagonal_45_ofensivo = 0;
-            }
+            individuo->diagonal_45_ofensivo = valorAleatorio;
         }
         if( genAleatorio==9 ){
-            individuo->jugada_aleatoria = individuo->jugada_aleatoria + variacion();
-            if( individuo->jugada_aleatoria < 0){
-                individuo->jugada_aleatoria = 0;
-            }
+            individuo->jugada_aleatoria = valorAleatorio;
         }
-    }
-}
-
-int AlgoritmoGenetico::variacion() {
-    if( rand()%2 == 0){
-        return 1;
-    }
-    else {
-        return -1;
     }
 }
 
