@@ -11,7 +11,8 @@
 
 class AlgoritmoGenetico {
 public:
-        AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuos, int pesoLimite, Tablero* tablero, iPlayer* aliado, iPlayer* rival);
+        AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuos, int pesoLimite, Tablero *tablero,
+                                  iPlayer *aliado, iPlayer *rival, bool fitness1, bool seleccion1);
 
         Individuo* correrAlgoritmo();
 
@@ -29,6 +30,8 @@ private:
         Tablero* tablero;
         iPlayer* aliado;
         iPlayer* rival;
+        bool fitness_1;
+        bool seleccion_1;
 
         // METODOS:
 
@@ -36,7 +39,7 @@ private:
         std::vector<Individuo* >* generarPoblacion();
         void fitness(Individuo* individuo);
         void fitness1(Individuo* individuo);
-        void fitness2(Individuo* individuo);
+        void fitness2(Individuo *individuo);
 
         std::pair <Individuo*, Individuo*> seleccion();
         std::pair <Individuo*, Individuo*> seleccion1();
@@ -47,7 +50,7 @@ private:
         void mutacion(Individuo* individuo);
 
         // metodos para emprolijar el codigo:
-        void evaluarTodosLosIndividuos(); // puede ser por fitness1 o fitness2 (cambiar adentro)
+        void evaluarTodosLosIndividuos(std::vector<Individuo *> *poblacion); // puede ser por fitness1 o fitness2 (cambiar adentro)
         bool condicionTerminacion1(); // por cantidad de generaciones
         bool condicionTerminacion2(); // por promedio entre generaciones
         bool condicionDeMutacion(Individuo* individuo); // probabilidad por evaluacion del individuo

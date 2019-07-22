@@ -20,7 +20,9 @@ int main(){
     pesos[DIAGONAL_315_DEFENSIVO] = std::rand();
     pesos[JUGADA_ALEATORIA] = std::rand();
 
-    AlgoritmoGenetico *optimizaciones = new AlgoritmoGenetico(10, 6, 10, new Tablero(8,8,4, 100), new GreedyPlayer(&pesos), new RandomPlayer());
+    AlgoritmoGenetico *optimizaciones = new AlgoritmoGenetico(100, 8, 100, new Tablero(8, 8, 4, 100),
+                                                              new GreedyPlayer(&pesos), new RandomPlayer(), true,
+                                                              false);
 
     Individuo* individuo = optimizaciones->correrAlgoritmo();
 }

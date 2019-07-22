@@ -11,15 +11,15 @@ int main(){
     ConsoleGame game;
 
     std::map<STRATEGY_NAME, PESO> pesos;
-    pesos[HORIZONTAL_OFENSIVO] = std::rand();
-    pesos[HORIZONTAL_DEFENSIVO] = std::rand();
-    pesos[VERTICAL_OFENSIVO] = std::rand();
-    pesos[VERTICAL_DEFENSIVO] = std::rand();
-    pesos[DIAGONAL_45_OFENSIVO] = std::rand();
-    pesos[DIAGONAL_45_DEFENSIVO] = std::rand();
-    pesos[DIAGONAL_315_OFENSIVO] = std::rand();
-    pesos[DIAGONAL_315_DEFENSIVO] = std::rand();
-    pesos[JUGADA_ALEATORIA] = std::rand();
+    pesos[HORIZONTAL_OFENSIVO] = 47;
+    pesos[HORIZONTAL_DEFENSIVO] = 80;
+    pesos[VERTICAL_OFENSIVO] = 98;
+    pesos[VERTICAL_DEFENSIVO] = 75;
+    pesos[DIAGONAL_45_OFENSIVO] = 40;
+    pesos[DIAGONAL_45_DEFENSIVO] = 78;
+    pesos[DIAGONAL_315_OFENSIVO] = 28;
+    pesos[DIAGONAL_315_DEFENSIVO] = 40;
+    pesos[JUGADA_ALEATORIA] = 90;
 
     GreedyPlayer player(&pesos);
 

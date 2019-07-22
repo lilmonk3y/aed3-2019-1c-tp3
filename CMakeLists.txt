@@ -88,6 +88,14 @@ add_executable(jugador_greedy
         src/trabajo/src/ConsoleGame.h
         ${SOURCES})
 
+add_executable(genetic_parametriced_player
+        src/trabajo/src/executables/genetic_parametriced_player.cpp
+        src/trabajo/src/ConsoleGame.cpp
+        src/trabajo/src/ConsoleGame.h
+        ${SOURCES})
+
+
+
 add_executable(test_inplace_game
         src/trabajo/src/executables/test_inplace_game.cpp
         src/trabajo/src/entities/ResultadosPartida.h
@@ -157,4 +165,4 @@ add_executable(grid_search_axel_main
         src/trabajo/src/InplaceGame.cpp
         src/trabajo/src/InplaceGame.h
         src/trabajo/src/players/GreedyPlayer.cpp
-        src/trabajo/src/players/GreedyPlayer.h)
+        src/trabajo/src/players/GreedyPlayer.h src/trabajo/src/executables/genetic_parametriced_player.cpp)
