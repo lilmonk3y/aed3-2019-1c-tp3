@@ -32,10 +32,11 @@ ResultadosPartida jugar(Tablero& tablero,iPlayer& jugadorAliado, iPlayer& jugado
 bool gano(Tablero* tablero, FICHA colorRecienJugado){
     bool hayGanador = false;
     for(int indiceColumna = 0; indiceColumna < tablero->getColumnas() && !hayGanador; indiceColumna++){
-        hayGanador = HorizontalStrategy::completarFila(indiceColumna, colorRecienJugado, tablero->getFichasParaGanar(),tablero, true) &&
-                     VerticalStrategy::completarColumna(tablero,tablero->getFichasParaGanar(),colorRecienJugado,indiceColumna,true) &&
-                     Diagonal315Strategy::completarDiagonal315(tablero,tablero->getFichasParaGanar(),colorRecienJugado,indiceColumna,true) &&
-                     Diagonal45Strategy::completarDiagonal45(tablero,tablero->getFichasParaGanar(),colorRecienJugado,indiceColumna,true);
+        bool horizontal = HorizontalStrategy::completarFila(indiceColumna, colorRecienJugado, tablero->getFichasParaGanar(), tablero, false);
+        bool vertical = VerticalStrategy::completarColumna(tablero, tablero->getFichasParaGanar(), colorRecienJugado, indiceColumna, false);
+        bool diagonal315 = Diagonal315Strategy::completarDiagonal315(tablero, tablero->getFichasParaGanar(), colorRecienJugado, indiceColumna, false);
+        bool diagonal45 = Diagonal45Strategy::completarDiagonal45(tablero, tablero->getFichasParaGanar(), colorRecienJugado, indiceColumna, false);
+        hayGanador = horizontal || vertical || diagonal315 || diagonal45;
     }
     return hayGanador;
 }

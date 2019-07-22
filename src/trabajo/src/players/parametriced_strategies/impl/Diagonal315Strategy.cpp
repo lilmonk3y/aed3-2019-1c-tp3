@@ -51,5 +51,7 @@ Diagonal315Strategy::completarDiagonal315(Tablero *tablero, int cObjetivo, int f
 
     // para poder re utilizar el código de la estrategia para el arbitro tengo que parametrizar si debo evaluar la parte
     // superior de la columna.
-    return consecutivosAIzquierda + consecutivosADerecha + evaluacion >= cObjetivo;
+    int sumar = deboSumarUnaFicha ? 1 : tablero->jugadaEn(indiceColumna,tablero->ultimaJugadaEnColumna(indiceColumna));
+
+    return consecutivosAIzquierda + consecutivosADerecha + sumar >= cObjetivo;
 }
