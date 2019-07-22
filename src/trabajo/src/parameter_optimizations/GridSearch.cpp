@@ -6,7 +6,7 @@ GridSearch::GridSearch() {
 
 }
 
-Solucion* GridSearch::gridSearch(int cantidadIteraciones,int cantidadCandidatos,int radio,Solucion* solucionInicial,Tablero* tablero) {
+Solucion* GridSearch::gridSearch(int cantidadIteraciones,int cantidadCandidatos,int radio,Solucion* solucionInicial,Tablero& tablero) {
     Solucion* solucion = solucionInicial;
     int cantIteraciones = cantidadIteraciones;
     bool hayMejorSolucion = true;
@@ -15,11 +15,14 @@ Solucion* GridSearch::gridSearch(int cantidadIteraciones,int cantidadCandidatos,
         vector<Solucion* >* candidatos = generarCandidatos(cantidadCandidatos,radio,solucion);
         vector<Solucion* >*  mejoresQueActualSolucion = comparar(candidatos,solucion,tablero);
         if(!mejoresQueActualSolucion->empty()) {
+            delete solucion;
             solucion = mejorSolucion(mejoresQueActualSolucion, tablero);
         }else{
                 hayMejorSolucion = false;
             }
             cantIteraciones = cantIteraciones - 1;
+        delete candidatos;
+        delete mejoresQueActualSolucion;
         }
 
     std::cout << "horizontal_ofensivo: " << solucion->horizontal_ofensivo << std::endl;
@@ -68,7 +71,7 @@ int GridSearch::variacion(int valor, int radio) {
     return nuevoValor;
 }
 
-vector<Solucion* >* GridSearch::comparar(vector<Solucion* >* candidatos,Solucion* solucion,Tablero* tablero) {
+vector<Solucion* >* GridSearch::comparar(vector<Solucion* >* candidatos,Solucion* solucion,Tablero& tablero) {
     vector<Solucion* >* mejoresSoluciones = new vector<Solucion* >();
 
     for(std::size_t i=0; i<candidatos->size(); ++i) { // itero todos los candidatos
@@ -98,7 +101,7 @@ vector<Solucion* >* GridSearch::comparar(vector<Solucion* >* candidatos,Solucion
         std::cout << "diagonal_315_defensivo: " << candidatos->at(i)->diagonal_315_defensivo << std::endl;
         std::cout << "jugada_aleatoria: " << candidatos->at(i)->jugada_aleatoria << std::endl;
 
-        ResultadosPartida datos = jugar(*tablero,jugadorCandidato,mejorJugadorHastaAhora, FICHA_ALIADA);
+        ResultadosPartida datos = jugar(tablero,jugadorCandidato,mejorJugadorHastaAhora, FICHA_ALIADA);
         cout << "ya jugaron" << endl; // BORRAR
 
         if(datos.isGanoNuestroJugador()) {
@@ -108,20 +111,20 @@ vector<Solucion* >* GridSearch::comparar(vector<Solucion* >* candidatos,Solucion
     return mejoresSoluciones;
 }
 
-Solucion* GridSearch::mejorSolucion(vector<Solucion* >* mejoresQueActualSolucion,Tablero* tablero ) { //  no puede ser vacio el parametro
+Solucion* GridSearch::mejorSolucion(vector<Solucion* >* mejoresQueActualSolucion,Tablero& tablero ) { //  no puede ser vacio el parametro
     Solucion* mejorSolucion = mejoresQueActualSolucion->at(0);
 
     for(std::size_t i=0; i<mejoresQueActualSolucion->size(); ++i) { // itero todos los candidatos
         GreedyPlayer& mejorJugadorHastaAhora = generarJugador(mejorSolucion);
         GreedyPlayer& jugador = generarJugador(mejoresQueActualSolucion->at(i));
-        ResultadosPartida datos = jugar(*tablero,jugador,mejorJugadorHastaAhora, FICHA_ALIADA);
+        ResultadosPartida datos = jugar(tablero,jugador,mejorJugadorHastaAhora, FICHA_ALIADA);
 
         if(datos.isGanoNuestroJugador()) {
             mejorSolucion = mejoresQueActualSolucion->at(i);
         }
     }
 
-    return mejorSolucion;
+    return new Solucion(*mejorSolucion);
 }
 
 GreedyPlayer& GridSearch::generarJugador(Solucion* solucion) {

@@ -5,7 +5,7 @@
 #include <vector>
 
 AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuos, int pesoLimite,
-        Tablero *tablero, iPlayer *aliado, iPlayer *rival) {
+        Tablero *tablero, iPlayer *aliado, iPlayer *rival, string fitness) {
     this->generacion = 0;
     this->cantidadDeGeneraciones = cantidadGeneraciones;
     this->cantidadIndividuos = cantIndividuos;
@@ -15,6 +15,7 @@ AlgoritmoGenetico::AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuo
     this->fitnessPromedio = tablero->getColumnas() * tablero->getFilas();
     this->aliado = aliado;
     this->rival = rival;
+    this->funcionfitness = fitness;
 }
 
 Individuo* AlgoritmoGenetico::correrAlgoritmo() {
@@ -92,7 +93,7 @@ void AlgoritmoGenetico::fitness2(Individuo* individuo) { // EVALUACION POR CANTI
  }
 
 void AlgoritmoGenetico::fitness(Individuo* individuo) {
-    if( rand()%2==0 ){ //%50
+    if( funcionfitness=="fitness1" ){
         fitness1(individuo);
     } else {
         fitness2(individuo);
@@ -124,44 +125,72 @@ std::pair <Individuo*, Individuo*> AlgoritmoGenetico::crossover(Individuo* mejor
 
 void AlgoritmoGenetico::mutacion(Individuo* individuo) {
     if(condicionDeMutacion(individuo)){ // % de probabilidad de mutacion depende del desempeño
-        int valorAleatorio = rand()%pesoLimite; // aleatorio de 0 a pesoLimite-1
         int genAleatorio = rand()%10; // aleatorio de 0 a 9 (CANTIDAD DE GENES)
         if( genAleatorio==1 ){
-            individuo->horizontal_defensivo = valorAleatorio;
-
+            individuo->horizontal_defensivo = individuo->horizontal_defensivo + variacion();
+            if(individuo->horizontal_defensivo < 0) {
+                individuo->horizontal_defensivo = 0;
+            }
         }
         if( genAleatorio==2 ){
-            individuo->horizontal_ofensivo = valorAleatorio;
+            individuo->horizontal_ofensivo = individuo->horizontal_ofensivo + variacion();
+            if(individuo->horizontal_ofensivo < 0){
+                individuo->horizontal_ofensivo = 0;
+            }
 
         }
         if( genAleatorio==3 ){
-            individuo->vertical_defensivo = valorAleatorio;
-
+            individuo->vertical_defensivo = individuo->vertical_defensivo + variacion();
+            if( individuo->vertical_defensivo < 0 ){
+                individuo->vertical_defensivo = 0;
+            }
         }
         if( genAleatorio==4 ){
-            individuo->vertical_ofensivo = valorAleatorio;
-
+            individuo->vertical_ofensivo = individuo->vertical_ofensivo + variacion();
+            if( individuo->vertical_ofensivo < 0 ){
+                individuo->vertical_ofensivo = 0;
+            }
         }
         if( genAleatorio==5 ){
-            individuo->diagonal_315_defensivo = valorAleatorio;
+            individuo->diagonal_315_defensivo = individuo->diagonal_315_defensivo + variacion();
+            if(individuo->diagonal_315_defensivo){
+                individuo->diagonal_315_defensivo = 0;
+            }
 
         }
         if( genAleatorio==6 ){
-            individuo->diagonal_315_ofensivo = valorAleatorio;
-
+            individuo->diagonal_315_ofensivo = individuo->diagonal_315_ofensivo + variacion();
+            if(individuo->diagonal_315_ofensivo  < 0){
+                individuo->diagonal_315_ofensivo = 0;
+            }
         }
         if( genAleatorio==7 ){
-            individuo->diagonal_45_defensivo = valorAleatorio;
-
+            individuo->diagonal_45_defensivo = individuo->diagonal_45_defensivo + variacion();
+            if( individuo->diagonal_45_defensivo < 0 ){
+                individuo->diagonal_45_defensivo = 0;
+            }
         }
         if( genAleatorio==8 ){
-            individuo->diagonal_45_ofensivo = valorAleatorio;
-
+            individuo->diagonal_45_ofensivo = individuo->diagonal_45_ofensivo + variacion();
+            if(  individuo->diagonal_45_ofensivo  < 0){
+                individuo->diagonal_45_ofensivo = 0;
+            }
         }
         if( genAleatorio==9 ){
-            individuo->jugada_aleatoria = valorAleatorio;
-
+            individuo->jugada_aleatoria = individuo->jugada_aleatoria + variacion();
+            if( individuo->jugada_aleatoria < 0){
+                individuo->jugada_aleatoria = 0;
+            }
         }
+    }
+}
+
+int AlgoritmoGenetico::variacion() {
+    if( rand()%2 == 0){
+        return 1;
+    }
+    else {
+        return -1;
     }
 }
 
@@ -245,7 +274,7 @@ bool AlgoritmoGenetico::condicionDeMutacion(Individuo* individuo){ // peor fitne
 void AlgoritmoGenetico::evaluarTodosLosIndividuos() {
     for(std::size_t i=0; i<this->poblacionActual->size(); ++i) {
         Individuo* individuo = this->poblacionActual->at(i);
-        fitness2(individuo);
+        fitness(individuo);
     }
 }
 
