@@ -9,6 +9,8 @@
 #include <vector>
 #include <utility>
 
+using namespace std;
+
 class AlgoritmoGenetico {
 public:
         AlgoritmoGenetico(int cantidadGeneraciones, int cantIndividuos, int pesoLimite, Tablero *tablero,
@@ -27,6 +29,7 @@ private:
         int pesoLimite;
         int cantidadIndividuos;
         int fitnessPromedio;
+        string funcionfitness;
         Tablero* tablero;
         iPlayer* aliado;
         iPlayer* rival;
@@ -57,6 +60,7 @@ private:
         void recalcularEvaluacionPromedioDeLaPoblacion();
         Individuo* mejorIndividuo();
         void setParametrosDesde(Individuo *individuo, GreedyPlayer *player);
+        int variacion();
 };
 
 #endif //AED3_TP3_ALGORITMOGENETICO_H

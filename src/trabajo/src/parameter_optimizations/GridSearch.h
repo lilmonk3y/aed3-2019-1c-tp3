@@ -14,13 +14,13 @@ public:
 
     GridSearch();
 
-    Solucion* gridSearch(int cantIteraciones,int cantidadCandidatos,int radio,Solucion* solucionInicial,Tablero* tablero);
+    Solucion* gridSearch(int cantIteraciones,int cantidadCandidatos,int radio,Solucion* solucionInicial,Tablero& tablero);
 
     vector<Solucion* >* generarCandidatos(int cantidadCandidatos,int radio,Solucion* solucion);
 
-    vector<Solucion* >* comparar(vector<Solucion* >* candidatos,Solucion* solucion, Tablero* tablero);
+    vector<Solucion* >* comparar(vector<Solucion* >* candidatos,Solucion* solucion, Tablero& tablero);
 
-    Solucion* mejorSolucion(vector<Solucion* >* mejoresQueActualSolucion,Tablero* tablero );
+    Solucion* mejorSolucion(vector<Solucion* >* mejoresQueActualSolucion,Tablero& tablero );
 
     int variacion(int valor, int radio);
 
