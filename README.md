@@ -45,3 +45,12 @@ cmake ..
 make
 python c_linea.py --blue_player ./genetic_parametriced_player --first azul --ui True --columns 7 --rows 6 --p 21 --c 4
 ```
+
+## Correr experimento random contra jugador genético
+
+```
+cd cmake-build-debug
+cmake ..
+make
+python c_linea.py --blue_player ./experimento-genetico-random --first azul --ui True --columns 7 --rows 6 --p 21 --c 4
+```

@@ -94,6 +94,12 @@ add_executable(genetic_parametriced_player
         src/trabajo/src/ConsoleGame.h
         ${SOURCES})
 
+add_executable(experimento-genetico-random
+        src/trabajo/src/executables/jugador-random-contra-genetico.cpp
+        src/trabajo/src/InplaceGame.h
+        src/trabajo/src/InplaceGame.cpp
+        ${SOURCES})
+
 
 #add_executable(test_inplace_game
 #        src/trabajo/src/executables/test_inplace_game.cpp
