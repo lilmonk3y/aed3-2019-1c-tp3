@@ -9,15 +9,15 @@
 int main(){
     GridSearch* optimizaciones = new GridSearch();
 
-    int cantIteraciones = 10;
-    int cantidadCandidatos = 10;
+    int cantIteraciones = 1000;
+    int cantidadCandidatos = 30;
     int radio = 30;
-    Solucion* solucionInicial = new Solucion(1,1,1,1,1,1,1,1,1);
+    Solucion* solucionInicial = new Solucion(1,2,3,4,5,6,7,8,9);
 
-    int columnas = 3;
-    int filas = 3;
-    int fichasParaGanar = 2;
-    int fichasPorJugador = 10;
+    int columnas = 20;
+    int filas = 20;
+    int fichasParaGanar = 5;
+    int fichasPorJugador = 1000;
     Tablero tablero = Tablero(columnas,filas,fichasParaGanar, fichasPorJugador);
 
     optimizaciones->gridSearch(cantIteraciones,cantidadCandidatos,radio,solucionInicial,tablero);
